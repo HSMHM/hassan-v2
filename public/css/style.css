@@ -2462,3 +2462,46 @@ h6 {
     margin-bottom: 18px;
   }
 }
+/* RTL specific adjustments */
+html[dir="rtl"] .hassan_tm_portfolio .portfolio_list .details {
+  left: unset;
+  right: 20px;
+}
+
+html[dir="rtl"] .hassan_tm_contact .wrapper .left {
+  padding-right: 0;
+  padding-left: 50px;
+}
+
+html[dir="rtl"] .hassan_tm_contact .wrapper .right {
+  padding-left: 0;
+  padding-right: 50px;
+}
+
+html[dir="rtl"] .hassan_tm_contact .fields .first ul {
+  margin: 0px -20px 0px 0px;
+}
+
+html[dir="rtl"] .hassan_tm_news .news_list .details {
+  text-align: right;
+}
+
+/* Adjust modal content for RTL */
+html[dir="rtl"] .hassan_tm_modalbox .description_wrap {
+  text-align: right;
+}
+
+/* Fix swiper slider direction */
+html[dir="rtl"] .swiper {
+  direction: ltr;
+}
+
+html[dir="rtl"] .swiper-container {
+  direction: ltr;
+}
+
+/* But keep the content inside slides RTL */
+html[dir="rtl"] .swiper-slide {
+  direction: rtl;
+  text-align: right;
+}

@@ -3,7 +3,7 @@
     <div class="section_inner">
       <div class="hassan_tm_portfolio swiper-section">
         <div class="hassan_tm_main_title">
-          <h3>Creative <span class="coloring">Portfolio</span></h3>
+          <h3>{{ $t('portfolio.title') }} <span class="coloring">{{ $t('portfolio.titleColored') }}</span></h3>
         </div>
         <div class="portfolio_list gallery_zoom">
           <swiper

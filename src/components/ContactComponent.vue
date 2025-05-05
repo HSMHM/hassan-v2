@@ -3,7 +3,7 @@
     <div class="section_inner">
       <div class="hassan_tm_contact">
         <div class="hassan_tm_main_title">
-          <h3>Get in <span class="coloring">Touch</span></h3>
+          <h3>{{ $t('contact.title') }} <span class="coloring">{{ $t('contact.titleColored') }}</span></h3>
         </div>
         <div class="wrapper">
           <div class="left">
@@ -66,7 +66,7 @@
                         <input
                           id="name"
                           type="text"
-                          placeholder="Name"
+                          :placeholder="$t('contact.name')"
                           autocomplete="off"
                         />
                       </div>
@@ -76,7 +76,7 @@
                         <input
                           id="email"
                           type="text"
-                          placeholder="Email"
+                          :placeholder="$t('contact.email')"
                           autocomplete="off"
                         />
                       </div>
@@ -84,10 +84,10 @@
                   </ul>
                 </div>
                 <div class="last">
-                  <textarea id="message" placeholder="Message"></textarea>
+                  <textarea id="message" :placeholder="$t('contact.message')"></textarea>
                 </div>
                 <div class="hassan_tm_button">
-                  <a id="send_message" href="#">Send Message</a>
+                  <a id="send_message" href="#">{{ $t('contact.sendMessage') }}</a>
                 </div>
 
                 <!-- If you want change mail address to yours, just open "modal" folder >> contact.php and go to line 4 and change detail to yours.  -->

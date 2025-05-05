@@ -10,21 +10,16 @@
         </div>
         <div class="right">
           <div class="short">
-            <h3 class="name">David <span class="coloring">Parker</span></h3>
+            <h3 class="name">{{ $t('about.name') }}</h3>
             <h3 class="job">
               <AnimationText />
             </h3>
           </div>
           <div class="text">
-            <p>
-              My name is <span>David Parker.</span> I am a graphic designer, and
-              I'm very passionate and dedicated to my work. With 20 years
-              experience as a professional a graphic designer, I have acquired
-              the skills and knowledge.
-            </p>
+            <p v-html="$t('about.intro')"></p>
           </div>
           <div class="hassan_tm_button" id="aboutPopup">
-            <a href="#">Learn More</a>
+            <a href="#">{{ $t('about.learnMore') }}</a>
           </div>
         </div>
       </div>

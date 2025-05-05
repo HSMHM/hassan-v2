@@ -3,7 +3,7 @@
     <div class="section_inner">
       <div class="hassan_tm_news swiper-section">
         <div class="hassan_tm_main_title">
-          <h3>Latest <span class="coloring">News</span></h3>
+          <h3>{{ $t('news.title') }} <span class="coloring">{{ $t('news.titleColored') }}</span></h3>
         </div>
         <div class="news_list">
           <swiper
