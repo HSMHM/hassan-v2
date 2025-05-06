@@ -1,0 +1,94 @@
+{
+  "navigation": {
+    "home": "الرئيسية",
+    "about": "حول",
+    "portfolio": "المشاريع",
+    "news": "الأخبار",
+    "contact": "اتصل بنا"
+  },
+  "home": {
+    "name": "حسن المالكي",
+    "titles": {
+      "designer": "مصمم",
+      "developer": "مطور",
+      "product_manager": "مدير منتجات"
+    },
+    "getInTouch": "تواصل معنا"
+  },
+  "about": {
+    "title": "حول",
+    "name": "حسن",
+    "lastName": "المالكي",
+    "description": "اسمي حسن المالكي. أنا مطور ويب ومدير منتجات، وأنا شغوف جدًا ومخصص لعملي.",
+    "learnMore": "اقرأ المزيد",
+    "detail": {
+      "personal": {
+        "title": "معلومات شخصية",
+        "firstName": "الاسم الأول",
+        "lastName": "اسم العائلة",
+        "birthday": "تاريخ الميلاد",
+        "address": "العنوان",
+        "phone": "الهاتف",
+        "email": "البريد الإلكتروني"
+      },
+      "languages": {
+        "title": "مهارات اللغة",
+        "english": "الإنجليزية",
+        "arabic": "العربية"
+      },
+      "education": {
+        "title": "المؤهلات العلمية"
+      },
+      "work": {
+        "title": "الخبرات العملية"
+      },
+      "partners": {
+        "title": "شركاؤنا"
+      },
+      "clients": {
+        "title": "آراء العملاء"
+      },
+      "skills": {
+        "title": "مهارات البرمجة",
+        "wordpress": "ووردبريس",
+        "javascript": "جافاسكريبت",
+        "angular": "أنجولار"
+      }
+    }
+  },
+  "portfolio": {
+    "title": "المشاريع الإبداعية",
+    "details": "التفاصيل"
+  },
+  "news": {
+    "title": "أحدث الأخبار",
+    "readMore": "اقرأ المزيد"
+  },
+  "contact": {
+    "title": "تواصل معنا",
+    "location": "الموقع",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "facebook": "فيسبوك",
+    "form": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "message": "الرسالة",
+      "send": "إرسال الرسالة",
+      "success": "تم استلام رسالتك، سنتواصل معك قريبًا.",
+      "error": "الرجاء ملء الحقول المطلوبة"
+    }
+  },
+  "settings": {
+    "colors": "ألوان غير محدودة",
+    "cursor": "المؤشر السحري",
+    "show": "إظهار",
+    "hide": "إخفاء"
+  },
+  "languageSwitcher": {
+    "english": "English",
+    "arabic": "عربي",
+    "switchToLtr": "التبديل إلى LTR",
+    "switchToRtl": "التبديل إلى RTL"
+  }
+}

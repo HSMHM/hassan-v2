@@ -1,0 +1,94 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "portfolio": "Portfolio", 
+    "news": "News",
+    "contact": "Contact"
+  },
+  "home": {
+    "name": "Hassan Almalki",
+    "titles": {
+      "designer": "Designer",
+      "developer": "Developer",
+      "product_manager": "Product Manager"
+    },
+    "getInTouch": "Get in Touch"
+  },
+  "about": {
+    "title": "About",
+    "name": "Hassan",
+    "lastName": "Almalki",
+    "description": "My name is Hassan Almalki. I am a web developer and product manager, and I'm very passionate and dedicated to my work.",
+    "learnMore": "Learn More",
+    "detail": {
+      "personal": {
+        "title": "Personal Info",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "birthday": "Birthday",
+        "address": "Address",
+        "phone": "Phone",
+        "email": "Email"
+      },
+      "languages": {
+        "title": "Language Skills",
+        "english": "English",
+        "arabic": "Arabic"
+      },
+      "education": {
+        "title": "Education Timeline"
+      },
+      "work": {
+        "title": "Working Timeline"
+      },
+      "partners": {
+        "title": "My Partners"
+      },
+      "clients": {
+        "title": "Clients Feedback"
+      },
+      "skills": {
+        "title": "Programming Skills",
+        "wordpress": "WordPress",
+        "javascript": "JavaScript",
+        "angular": "Angular"
+      }
+    }
+  },
+  "portfolio": {
+    "title": "Creative Portfolio",
+    "details": "Details"
+  },
+  "news": {
+    "title": "Latest News",
+    "readMore": "Read More"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "location": "Location",
+    "phone": "Phone",
+    "email": "Email",
+    "facebook": "Facebook",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send Message",
+      "success": "Your message has been received, We will contact you soon.",
+      "error": "Please Fill Required Fields"
+    }
+  },
+  "settings": {
+    "colors": "Unlimited Colors",
+    "cursor": "Magic Cursor",
+    "show": "Show",
+    "hide": "Hide"
+  },
+  "languageSwitcher": {
+    "english": "English",
+    "arabic": "عربي",
+    "switchToLtr": "Switch to LTR",
+    "switchToRtl": "Switch to RTL"
+  }
+}
