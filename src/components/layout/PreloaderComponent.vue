@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import { edreaPreLoader } from "@/utilits";
+import { hassanPreLoader } from "@/utilits";
 
 export default {
   name: `PreloaderComponent`,
   mounted() {
-    edreaPreLoader();
+    hassanPreLoader();
   },
 };
 </script>

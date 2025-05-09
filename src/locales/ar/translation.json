@@ -1,16 +1,16 @@
 {
   "navigation": {
     "home": "الرئيسية",
-    "about": "حول",
-    "portfolio": "المشاريع",
-    "news": "الأخبار",
-    "contact": "اتصل بنا"
+    "about": "نبذة عامة",
+    "portfolio": "الأعمال",
+    "news": "ورش العمل",
+    "contact": "تواصل معي"
   },
   "home": {
-    "name": "حسن المالكي",
+    "name": "حسان المالكي",
     "titles": {
-      "designer": "مصمم",
-      "developer": "مطور",
+      "designer": "مطور تطبيقات ويب",
+      "developer": "مدير منتج تقني",
       "product_manager": "مدير منتجات"
     },
     "getInTouch": "تواصل معنا"

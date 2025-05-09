@@ -1,5 +1,5 @@
 <template>
-  <div class="edrea_tm_settings" :class="toggle ? 'opened' : ''">
+  <div class="hassan_tm_settings" :class="toggle ? 'opened' : ''">
     <div class="icon" @click="toggle = !toggle">
       <img class="svg" src="img/setting.svg" alt="" />
       <a class="link" href="#"></a>
@@ -47,15 +47,16 @@ export default {
     return {
       toggle: false,
       magicCursor: true,
-      color: "#EB4A4C",
+      color: "#A0A0A0",
       colors: [
-        "#4169e1",
+        "#A0A0A0",
+        "#4169E1",
         "#66B95C",
         "#ff9800",
         "#ff5e94",
         "#fa5b0f",
         "#f39977",
-        "#9200ee",
+        "#9200EE",
         "#00D4BD",
         "#5e9e9f",
         "#EB4A4C",
@@ -68,18 +69,18 @@ export default {
     changeColor(value) {
       this.color = value;
       document.querySelector("html").style.setProperty("--main-color", value);
-      localStorage.setItem("edrea-color", value);
+      localStorage.setItem("hassan-color", value);
     },
     magicCursorFun(value) {
       this.magicCursor = value;
-      localStorage.setItem("edrea-cursor", value);
-      const edrea_tm_all_wrap = document.querySelector(".edrea_tm_all_wrap");
-      edrea_tm_all_wrap.setAttribute("data-magic-cursor", value);
+      localStorage.setItem("hassan-cursor", value);
+      const hassan_tm_all_wrap = document.querySelector(".hassan_tm_all_wrap");
+      hassan_tm_all_wrap.setAttribute("data-magic-cursor", value);
     },
   },
   mounted() {
-    const color = localStorage.getItem("edrea-color"),
-      cursor = localStorage.getItem("edrea-cursor");
+    const color = localStorage.getItem("hassan-color"),
+      cursor = localStorage.getItem("hassan-cursor");
     if (color) {
       this.changeColor(color);
     } else {
@@ -94,8 +95,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.colors li {
-  margin: 0 2.5px;
-}
-</style>

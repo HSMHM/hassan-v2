@@ -1,7 +1,7 @@
 <template>
   <MobileHeaderComponent />
   <!-- Header -->
-  <div class="edrea_tm_header">
+  <div class="hassan_tm_header">
     <div class="header_inner">
       <div class="logo">
         <a href="#" @click="navFuntions.activeSection('home')"
@@ -14,6 +14,7 @@
       <LanguageSwitcher class="desktop-lang-switch" />
     </div>
   </div>
+
 </template>
 
 <script>
@@ -32,9 +33,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.desktop-lang-switch {
-  margin-left: 20px;
-}
-</style>

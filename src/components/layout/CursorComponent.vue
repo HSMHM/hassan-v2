@@ -4,12 +4,12 @@
 </template>
 
 <script>
-import { edreaCursor } from "@/utilits";
+import { hassanCursor } from "@/utilits";
 
 export default {
   name: `CursorComponent`,
   mounted() {
-    edreaCursor();
+    hassanCursor();
   },
 };
 </script>

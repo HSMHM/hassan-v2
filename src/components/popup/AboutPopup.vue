@@ -1,8 +1,8 @@
 <template>
-  <div class="edrea_tm_modalbox" :class="open ? 'opened' : ''">
+  <div class="hassan_tm_modalbox" :class="open ? 'opened' : ''">
     <div class="box_inner">
       <div class="close">
-        <a href="#" @click="close"><i class="icon-cancel"></i></a>
+        <a href="#" @click="close"><i class="fa-solid fa-xmark"></i></a>
       </div>
       <div class="description_wrap">
         <div class="about_popup_details">
@@ -27,7 +27,7 @@
                 <ul>
                   <li>
                     <div class="list_inner">
-                      <i class="icon-user"></i>
+                      <i class="fa-solid fa-user"></i>
                       <span
                         >{{ aboutData.firstName }}
                         {{ aboutData.lastName }}</span
@@ -36,13 +36,13 @@
                   </li>
                   <li>
                     <div class="list_inner">
-                      <i class="icon-calendar"></i>
+                        <i class="fa-solid fa-calendar"></i>
                       <span>{{ aboutData.bithday }}</span>
                     </div>
                   </li>
                   <li>
                     <div class="list_inner">
-                      <i class="icon-location"></i>
+                        <i class="fa-solid fa-location-dot"></i>
                       <span
                         ><a href="#" class="href_location">{{
                           aboutData.address
@@ -52,7 +52,7 @@
                   </li>
                   <li>
                     <div class="list_inner">
-                      <i class="icon-phone"></i>
+                        <i class="fa-solid fa-phone"></i>
                       <span
                         ><a href="#">{{ aboutData.phn }}</a></span
                       >
@@ -60,7 +60,7 @@
                   </li>
                   <li>
                     <div class="list_inner">
-                      <i class="icon-mail-1"></i>
+                        <i class="fa-solid fa-envelope"></i>
                       <span
                         ><a :href="`mailto:${aboutData.email}`">{{
                           aboutData.email
@@ -70,7 +70,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="edrea_tm_button full">
+              <div class="hassan_tm_button full">
                 <a href="img/about/1.jpg" download>Download CV</a>
               </div>
             </div>
@@ -102,7 +102,7 @@
                 <div class="list">
                   <ul>
                     <li v-for="(service, i) in aboutData.serviceLists" :key="i">
-                      <i class="icon-right-dir"></i>{{ service }}
+                        <i class="fa-solid fa-check"></i>{{ service }}
                     </li>
                   </ul>
                 </div>
@@ -252,7 +252,7 @@
                     <swiper-slide>
                       <div class="list_inner">
                         <div class="text">
-                          <i class="icon-quote-left"></i>
+                            <i class="fa-solid fa-quote-left"></i>
                           <p>
                             Beautiful minimalist design and great, fast response
                             with support. Highly recommend. Thanks Marketify!
@@ -275,7 +275,7 @@
                     <swiper-slide>
                       <div class="list_inner">
                         <div class="text">
-                          <i class="icon-quote-left"></i>
+                            <i class="fa-solid fa-quote-left"></i>
                           <p>
                             These people really know what they are doing! Great
                             customer support availability and supperb kindness.
@@ -298,7 +298,7 @@
                     <swiper-slide>
                       <div class="list_inner">
                         <div class="text">
-                          <i class="icon-quote-left"></i>
+                            <i class="fa-solid fa-quote-left"></i>
                           <p>
                             I had a little problem and the support was just
                             awesome to quickly solve the situation. And keep
@@ -444,46 +444,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.testimonial {
-  overflow: hidden;
-}
-.owl-carousel.swiper {
-  overflow: unset;
-}
-
-.myCircle {
-  --hue: 220;
-  --holesize: 67%;
-  --track-bg: hsl(233, 34%, 92%);
-
-  min-width: 110px;
-  min-height: 110px;
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  place-items: center;
-  position: relative;
-  margin-bottom: 5px;
-}
-.myCircle::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border-radius: 50%;
-  z-index: -1;
-  background: conic-gradient(
-    var(--main-color) var(--progress, 0%),
-    rgba(255, 255, 255, 0.15) var(--progress, 0%) 100%
-  );
-
-  mask-image: radial-gradient(
-    transparent var(--holesize),
-    black calc(var(--holesize) + 1px)
-  );
-}
-</style>

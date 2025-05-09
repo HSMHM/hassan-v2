@@ -3,6 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import i18n from "./i18n";
 
+// Import Font Awesome Kit
+import '@awesome.me/kit-832d2556f4';
+
 // Import CSS files for processing with PostCSS
 import "../public/css/plugins.css";
 import "../public/css/style.css";

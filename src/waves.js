@@ -453,21 +453,21 @@ export const waves = () => {
 
     update() {
       const gl = this.gl;
-
+    
       const now = performance.now();
       const elapsed = (now - this.time.start) / 5000;
       const delta = now - this.time.old;
       this.time.old = now;
-
+    
       this.uniforms.time = elapsed;
-
+    
       if (this.count > 0) {
-        gl.clear(gl.COLORBUFFERBIT);
+        gl.clear(gl.COLOR_BUFFER_BIT); // Corrected constant
         gl.drawArrays(gl.POINTS, 0, this.count);
       }
-
+    
       this.onUpdate(delta);
-
+    
       requestAnimationFrame(this.update);
     }
   }
@@ -538,9 +538,9 @@ export const waves = () => {
         for (let z = 0; z < depth; z += distance) {
           position.push(-width / 2 + x, -30, -depth / 2 + z);
           color.push(
-            0,
-            1 - (x / width) * 1,
-            0.5 + (x / width) * 0.5,
+            0.627,
+            0.627,
+            0.627,
             z / depth
           );
         }

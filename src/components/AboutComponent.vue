@@ -1,7 +1,7 @@
 <template>
-  <div class="edrea_tm_section" id="about">
+  <div class="hassan_tm_section" id="about">
     <div class="section_inner">
-      <div class="edrea_tm_about">
+      <div class="hassan_tm_about">
         <div class="left">
           <div class="image">
             <img src="img/thumbs/1-1.jpg" alt="" />
@@ -23,7 +23,7 @@
               the skills and knowledge.
             </p>
           </div>
-          <div class="edrea_tm_button" id="aboutPopup">
+          <div class="hassan_tm_button" id="aboutPopup">
             <a href="#">Learn More</a>
           </div>
         </div>
@@ -46,9 +46,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.edrea_tm_modalbox {
-  top: -90px;
-}
-</style>

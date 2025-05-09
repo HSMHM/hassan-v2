@@ -28,7 +28,7 @@ export const imgToSVG = () => {
 };
 
 // Cursor
-export const edreaCursor = () => {
+export const hassanCursor = () => {
   let myCursor = document.querySelectorAll(".mouse-cursor"),
     hamburger = document.querySelector(".hamburger"),
     kura_tm_topbar = document.querySelector(".kura_tm_topbar "),
@@ -83,7 +83,7 @@ export const edreaCursor = () => {
 };
 
 // PreLoader
-export const edreaPreLoader = () => {
+export const hassanPreLoader = () => {
   let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(
     navigator.userAgent
   )
@@ -106,15 +106,15 @@ export const edreaPreLoader = () => {
 };
 
 // Active Section
-export const edreaSectionActive = (value) => {
-  const sections = document.querySelectorAll(".edrea_tm_section");
+export const hassanSectionActive = (value) => {
+  const sections = document.querySelectorAll(".hassan_tm_section");
   const menuLists = document.querySelectorAll(".transition_link li");
   sections.forEach((section) => {
     let id = section.getAttribute("id");
     if (id == value) {
-      section.className = "edrea_tm_section active wow animated fadeInUp";
+      section.className = "hassan_tm_section active wow animated fadeInUp";
     } else {
-      section.className = "edrea_tm_section hidden animated";
+      section.className = "hassan_tm_section hidden animated";
     }
   });
 };
@@ -130,7 +130,7 @@ export const dataImage = () => {
   }
 };
 
-// edrea custom pagination in swiper slider
+// hassan custom pagination in swiper slider
 
 export const swiperSliderCustomSlider = (
   current,
@@ -140,7 +140,7 @@ export const swiperSliderCustomSlider = (
   allCls
 ) => {
   var scale, translateX;
-  var progressDOM = document.querySelector(".edrea_tm_swiper_progress");
+  var progressDOM = document.querySelector(".hassan_tm_swiper_progress");
   if (progressDOM.classList.contains("fill")) {
     translateX = "0px";
     scale = parseInt((current / total) * 100) / 100;

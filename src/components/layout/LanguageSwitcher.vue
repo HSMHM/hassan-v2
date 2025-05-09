@@ -53,20 +53,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.language-switcher button {
-  background: transparent;
-  border: 1px solid var(--main-color);
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 14px;
-}
-
-.language-switcher button:hover {
-  background-color: var(--main-color);
-}
-</style>

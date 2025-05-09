@@ -1,8 +1,8 @@
 <template>
-  <div class="edrea_tm_section" id="contact">
+  <div class="hassan_tm_section" id="contact">
     <div class="section_inner">
-      <div class="edrea_tm_contact">
-        <div class="edrea_tm_main_title">
+      <div class="hassan_tm_contact">
+        <div class="hassan_tm_main_title">
           <h3>Get in <span class="coloring">Touch</span></h3>
         </div>
         <div class="wrapper">
@@ -10,7 +10,7 @@
             <ul>
               <li>
                 <div class="list_inner">
-                  <i class="icon-location"></i>
+                    <i class="fa fa-map-marker"></i>
                   <span
                     ><a href="#" class="href_location"
                       >Avon str. 22, NYC, USA</a
@@ -20,13 +20,13 @@
               </li>
               <li>
                 <div class="list_inner">
-                  <i class="icon-phone"></i>
+                    <i class="fa fa-phone"></i>
                   <span><a href="#">+77 022 155 02 02</a></span>
                 </div>
               </li>
               <li>
                 <div class="list_inner">
-                  <i class="icon-mail-1"></i>
+                    <i class="fa fa-envelope"></i>
                   <span
                     ><a href="mailto:example@gmail.com"
                       >example@gmail.com</a
@@ -36,7 +36,7 @@
               </li>
               <li>
                 <div class="list_inner">
-                  <i class="icon-facebook-rect"></i>
+                    <i class="fa fa-facebook"></i>
                   <span
                     ><a href="https://www.facebook.com">@facebookNick</a></span
                   >
@@ -86,7 +86,7 @@
                 <div class="last">
                   <textarea id="message" placeholder="Message"></textarea>
                 </div>
-                <div class="edrea_tm_button">
+                <div class="hassan_tm_button">
                   <a id="send_message" href="#">Send Message</a>
                 </div>
 

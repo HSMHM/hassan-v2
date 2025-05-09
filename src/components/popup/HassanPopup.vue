@@ -1,8 +1,8 @@
 <template>
-  <div class="edrea_tm_modalbox" :class="open ? 'opened' : ''">
+  <div class="hassan_tm_modalbox" :class="open ? 'opened' : ''">
     <div class="box_inner">
       <div class="close">
-        <a href="#" @click="close"><i class="icon-cancel"></i></a>
+        <a href="#" @click.prevent="close"><i class="fas fa-times"></i></a>
       </div>
       <div
         class="description_wrap"
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: `EdreaPopup`,
+  name: `HassanPopup`,
   data() {
     return {
       element: null,
@@ -22,17 +22,17 @@ export default {
     };
   },
   mounted() {
-    let edrea_tm_hidden_content = document.querySelectorAll(
-      ".edrea_tm_hidden_content"
+    let hassan_tm_hidden_content = document.querySelectorAll(
+      ".hassan_tm_hidden_content"
     );
-    edrea_tm_hidden_content.forEach((element) => {
+    hassan_tm_hidden_content.forEach((element) => {
       let parent = element.parentElement,
         a = parent.getElementsByTagName("a")[0];
       document.querySelectorAll(`.details a`).forEach((element_) => {
         element_.addEventListener("click", () => {
           let popup_details = element_
             .closest(".list_inner")
-            .getElementsByClassName("edrea_tm_hidden_content")[0]
+            .getElementsByClassName("hassan_tm_hidden_content")[0]
             .getElementsByTagName("div")[0];
           this.element = popup_details;
           this.open = true;

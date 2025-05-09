@@ -1,8 +1,8 @@
 <template>
-  <div class="edrea_tm_section" id="news">
+  <div class="hassan_tm_section" id="news">
     <div class="section_inner">
-      <div class="edrea_tm_news swiper-section">
-        <div class="edrea_tm_main_title">
+      <div class="hassan_tm_news swiper-section">
+        <div class="hassan_tm_main_title">
           <h3>Latest <span class="coloring">News</span></h3>
         </div>
         <div class="news_list">
@@ -42,7 +42,7 @@
                 <div class="image">
                   <img src="img/thumbs/4-3.jpg" alt="" />
                   <div class="main" :data-img-url="data.img"></div>
-                  <a class="edrea_tm_full_link news_popup" href="#"></a>
+                  <a class="hassan_tm_full_link news_popup" href="#"></a>
                 </div>
                 <div class="details">
                   <h3>
@@ -54,7 +54,7 @@
                 </div>
 
                 <!-- News Popup Informations -->
-                <div class="edrea_tm_hidden_content">
+                <div class="hassan_tm_hidden_content">
                   <div class="news_popup_details">
                     <div class="top_image">
                       <img src="img/thumbs/4-2.jpg" alt="" />
@@ -77,7 +77,7 @@
                 <!-- /News Popup Informations -->
               </div>
             </swiper-slide>
-            <div class="edrea_tm_swiper_progress fill">
+            <div class="hassan_tm_swiper_progress fill">
               <div class="my_pagination_in">
                 <span class="currentNews">0</span>
                 <span class="pagination_progress"
@@ -89,12 +89,12 @@
                 <ul>
                   <li>
                     <a class="my_prev" href="#"
-                      ><i class="icon-left-open-1"></i
+                      ><i class="fas fa-chevron-left"></i
                     ></a>
                   </li>
                   <li>
                     <a class="my_next" href="#"
-                      ><i class="icon-right-open-1"></i
+                      ><i class="fas fa-chevron-right"></i
                     ></a>
                   </li>
                 </ul>
@@ -127,7 +127,7 @@ export default {
     return {
       modules: [Navigation, Pagination],
       pagination: {
-        el: ".edrea_tm_swiper_progress",
+        el: ".hassan_tm_swiper_progress",
         type: "custom", // progressbar
         renderCustom: function (swiper, current, total) {
           swiperSliderCustomSlider(

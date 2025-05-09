@@ -8,6 +8,7 @@
     "build:static": "vue-cli-service build --modern"
   },
   "dependencies": {
+    "@awesome.me/kit-832d2556f4": "^1.0.4",
     "apexcharts": "^3.35.5",
     "core-js": "^3.8.3",
     "swiper": "^8.3.2",

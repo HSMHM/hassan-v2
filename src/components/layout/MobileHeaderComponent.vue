@@ -1,5 +1,5 @@
 <template>
-  <div class="edrea_tm_topbar">
+  <div class="hassan_tm_topbar">
     <div class="topbar_inner">
       <div class="logo">
         <a href="#" @click="navFuntions.activeSection('home')"
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div
-    class="edrea_tm_mobile_menu"
+    class="hassan_tm_mobile_menu"
     :class="navFuntions.mobileToggle ? 'opened' : ''"
   >
     <div class="inner">
@@ -49,22 +49,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.edrea_tm_topbar,
-.edrea_tm_mobile_menu {
-  display: none;
-}
-@media (max-width: 1040px) {
-  .edrea_tm_topbar,
-  .edrea_tm_mobile_menu {
-    display: block;
-  }
-}
-.mobile-controls {
-  display: flex;
-  align-items: center;
-}
-.mobile-lang-switch {
-  margin-right: 15px;
-}
-</style>

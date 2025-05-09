@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { edreaSectionActive } from "./utilits";
+import { hassanSectionActive } from "./utilits";
 
 export const navFuntions = reactive({
   active: "home",
@@ -7,7 +7,7 @@ export const navFuntions = reactive({
   activeSection(value) {
     this.active = value;
     this.mobileToggle = false;
-    edreaSectionActive(value);
+    hassanSectionActive(value);
   },
   activeNavCls(value) {
     return this.active == value ? "active" : "";
