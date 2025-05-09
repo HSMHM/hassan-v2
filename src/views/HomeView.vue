@@ -1,10 +1,9 @@
 <template>
   <MfpPopup />
   <HassanPopup />
-  <AboutPopup />
   <PreloaderComponent />
   <div
-    class="hassan_tm_all_wrap"
+    class="hassan_almalki_all_wrap"
     data-magic-cursor="show"
     data-enter="fadeInUp"
     data-exit=""
@@ -20,7 +19,7 @@
     <!-- /HEADER -->
 
     <!-- CONTENT -->
-    <div class="hassan_tm_content">
+    <div class="hassan_almalki_content">
       <!-- HOME -->
       <HomeComponent />
       <!-- /HOME -->
@@ -52,7 +51,6 @@
 <script>
 import PreloaderComponent from "@/components/layout/PreloaderComponent.vue";
 
-import AboutPopup from "@/components/popup/AboutPopup.vue";
 import HassanPopup from "@/components/popup/HassanPopup.vue";
 import MfpPopup from "@/components/popup/MfpPopup.vue";
 import AboutComponent from "../components/AboutComponent.vue";
@@ -87,7 +85,6 @@ export default {
     PreloaderComponent,
     MfpPopup,
     HassanPopup,
-    AboutPopup,
   },
 };
 </script>

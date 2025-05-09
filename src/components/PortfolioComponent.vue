@@ -1,8 +1,8 @@
 <template>
-  <div class="hassan_tm_section" id="portfolio">
+  <div class="hassan_almalki_section" id="portfolio">
     <div class="section_inner">
-      <div class="hassan_tm_portfolio swiper-section">
-        <div class="hassan_tm_main_title">
+      <div class="hassan_almalki_portfolio swiper-section">
+        <div class="hassan_almalki_main_title">
           <h3>Creative <span class="coloring">Portfolio</span></h3>
         </div>
         <div class="portfolio_list gallery_zoom">
@@ -44,7 +44,7 @@
                   <span>Vimeo</span>
                 </div>
                 <a
-                  class="hassan_tm_full_link popup-vimeo"
+                  class="hassan_almalki_full_link popup-vimeo"
                   href="//player.vimeo.com/video/321091335?autoplay=1"
                 ></a>
               </div>
@@ -60,7 +60,7 @@
                   <span>Youtube</span>
                 </div>
                 <a
-                  class="hassan_tm_full_link popup-youtube"
+                  class="hassan_almalki_full_link popup-youtube"
                   href="//www.youtube.com/embed/toClS5fCudA?autoplay=1"
                 ></a>
               </div>
@@ -76,7 +76,7 @@
                   <span>Soundcloud</span>
                 </div>
                 <a
-                  class="hassan_tm_full_link soundcloude_link mfp-iframe audio"
+                  class="hassan_almalki_full_link soundcloude_link mfp-iframe audio"
                   href="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/471954807&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
                 ></a>
               </div>
@@ -91,10 +91,10 @@
                   <h3>Delicious Apple</h3>
                   <span>Detail</span>
                 </div>
-                <a class="hassan_tm_full_link portfolio_popup" href="#"></a>
+                <a class="hassan_almalki_full_link portfolio_popup" href="#"></a>
 
                 <!-- Portfolio Popup Informations -->
-                <div class="hassan_tm_hidden_content">
+                <div class="hassan_almalki_hidden_content">
                   <div class="portfolio_popup_details">
                     <div class="top_image">
                       <img src="img/thumbs/4-2.jpg" alt="" />
@@ -136,7 +136,7 @@
                                 data-img-url="img/portfolio/7.jpg"
                               ></div>
                               <a
-                                class="hassan_tm_full_link zoom"
+                                class="hassan_almalki_full_link zoom"
                                 href="img/portfolio/7.jpg"
                               ></a>
                             </div>
@@ -151,7 +151,7 @@
                                 data-img-url="img/portfolio/8.jpg"
                               ></div>
                               <a
-                                class="hassan_tm_full_link zoom"
+                                class="hassan_almalki_full_link zoom"
                                 href="img/portfolio/8.jpg"
                               ></a>
                             </div>
@@ -166,7 +166,7 @@
                                 data-img-url="img/portfolio/9.jpg"
                               ></div>
                               <a
-                                class="hassan_tm_full_link zoom"
+                                class="hassan_almalki_full_link zoom"
                                 href="img/portfolio/9.jpg"
                               ></a>
                             </div>
@@ -190,7 +190,7 @@
                   <span>Image</span>
                 </div>
                 <a
-                  class="hassan_tm_full_link zoom"
+                  class="hassan_almalki_full_link zoom"
                   href="img/portfolio/5.jpg"
                 ></a>
               </div>
@@ -206,12 +206,12 @@
                   <span>Image</span>
                 </div>
                 <a
-                  class="hassan_tm_full_link zoom"
+                  class="hassan_almalki_full_link zoom"
                   href="img/portfolio/6.jpg"
                 ></a>
               </div>
             </swiper-slide>
-            <div class="hassan_tm_swiper_progress fill">
+            <div class="hassan_almalki_swiper_progress fill">
               <div class="my_pagination_in">
                 <span class="current">0</span>
                 <span class="pagination_progress"
@@ -270,7 +270,7 @@ export default {
     return {
       modules: [Navigation, Pagination],
       pagination: {
-        el: ".hassan_tm_swiper_progress",
+        el: ".hassan_almalki_swiper_progress",
         type: "custom", // progressbar
         renderCustom: function (swiper, current, total) {
           swiperSliderCustomSlider(current, total);

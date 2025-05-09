@@ -1,5 +1,5 @@
 <template>
-  <div class="hassan_tm_modalbox" :class="open ? 'opened' : ''">
+  <div class="hassan_almalki_modalbox" :class="open ? 'opened' : ''">
     <div class="box_inner">
       <div class="close">
         <a href="#" @click.prevent="close"><i class="fas fa-times"></i></a>
@@ -22,17 +22,17 @@ export default {
     };
   },
   mounted() {
-    let hassan_tm_hidden_content = document.querySelectorAll(
-      ".hassan_tm_hidden_content"
+    let hassan_almalki_hidden_content = document.querySelectorAll(
+      ".hassan_almalki_hidden_content"
     );
-    hassan_tm_hidden_content.forEach((element) => {
+    hassan_almalki_hidden_content.forEach((element) => {
       let parent = element.parentElement,
         a = parent.getElementsByTagName("a")[0];
       document.querySelectorAll(`.details a`).forEach((element_) => {
         element_.addEventListener("click", () => {
           let popup_details = element_
             .closest(".list_inner")
-            .getElementsByClassName("hassan_tm_hidden_content")[0]
+            .getElementsByClassName("hassan_almalki_hidden_content")[0]
             .getElementsByTagName("div")[0];
           this.element = popup_details;
           this.open = true;

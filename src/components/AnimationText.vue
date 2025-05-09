@@ -1,14 +1,13 @@
 <template>
   <span class="cd-headline rotate-1">
-    <span class="blc">Creative </span>
+    <span class="blc">{{ $t('home.intro') }}</span>
     <span class="cd-words-wrapper">
       <b
         :class="text == i ? 'is-visible' : 'is-hidden'"
         v-for="(skill, i) in skills"
         :key="i"
       >
-        {{ skill }}</b
-      >
+        {{ skill }}</b>
     </span>
   </span>
 </template>
@@ -18,9 +17,18 @@ export default {
   name: `AnimationText`,
   data() {
     return {
-      skills: ["Designer", "Developer", "Freelancer"],
       text: 0,
     };
+  },
+  computed: {
+    skills() {
+      return [
+        this.$t('home.titles.designer'),
+        this.$t('home.titles.systems_analyst'),
+        this.$t('home.titles.business_analyst'),
+        this.$t('home.titles.product_manager')
+      ];
+    }
   },
   mounted() {
     const interval = setInterval(() => {

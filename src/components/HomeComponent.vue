@@ -1,15 +1,15 @@
 <template>
-  <div class="hassan_tm_section animated" id="home">
+  <div class="hassan_almalki_section animated" id="home">
     <div class="section_inner">
-      <div class="hassan_tm_home">
-        <h3 class="name">David <span class="coloring">Parker</span></h3>
+      <div class="hassan_almalki_home">
+        <h3 class="name">{{ $t('home.firstName') }}<span class="coloring">{{ $t('home.lastName') }}</span></h3>
         <h3 class="job">
           <AnimationText />
         </h3>
-        <div class="hassan_tm_button transition_link">
-          <a href="#contact" @click="navFuntions.activeSection('contact')"
-            >Get in Touch</a
-          >
+        <div class="hassan_almalki_button transition_link">
+          <a href="#contact" @click="navFuntions.activeSection('contact')">
+            {{ $t('home.getInTouch') }}
+          </a>
         </div>
       </div>
     </div>

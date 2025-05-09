@@ -1,5 +1,5 @@
 <template>
-  <div class="hassan_tm_topbar">
+  <div class="hassan_almalki_topbar">
     <div class="topbar_inner">
       <div class="logo">
         <a href="#" @click="navFuntions.activeSection('home')"
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div
-    class="hassan_tm_mobile_menu"
+    class="hassan_almalki_mobile_menu"
     :class="navFuntions.mobileToggle ? 'opened' : ''"
   >
     <div class="inner">

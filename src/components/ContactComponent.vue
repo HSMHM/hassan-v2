@@ -1,8 +1,8 @@
 <template>
-  <div class="hassan_tm_section" id="contact">
+  <div class="hassan_almalki_section" id="contact">
     <div class="section_inner">
-      <div class="hassan_tm_contact">
-        <div class="hassan_tm_main_title">
+      <div class="hassan_almalki_contact">
+        <div class="hassan_almalki_main_title">
           <h3>Get in <span class="coloring">Touch</span></h3>
         </div>
         <div class="wrapper">
@@ -86,7 +86,7 @@
                 <div class="last">
                   <textarea id="message" placeholder="Message"></textarea>
                 </div>
-                <div class="hassan_tm_button">
+                <div class="hassan_almalki_button">
                   <a id="send_message" href="#">Send Message</a>
                 </div>
 

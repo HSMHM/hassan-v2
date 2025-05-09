@@ -1,7 +1,7 @@
 <template>
   <MobileHeaderComponent />
   <!-- Header -->
-  <div class="hassan_tm_header">
+  <div class="hassan_almalki_header">
     <div class="header_inner">
       <div class="logo">
         <a href="#" @click="navFuntions.activeSection('home')"

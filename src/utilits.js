@@ -107,14 +107,14 @@ export const hassanPreLoader = () => {
 
 // Active Section
 export const hassanSectionActive = (value) => {
-  const sections = document.querySelectorAll(".hassan_tm_section");
+  const sections = document.querySelectorAll(".hassan_almalki_section");
   const menuLists = document.querySelectorAll(".transition_link li");
   sections.forEach((section) => {
     let id = section.getAttribute("id");
     if (id == value) {
-      section.className = "hassan_tm_section active wow animated fadeInUp";
+      section.className = "hassan_almalki_section active wow animated fadeInUp";
     } else {
-      section.className = "hassan_tm_section hidden animated";
+      section.className = "hassan_almalki_section hidden animated";
     }
   });
 };
@@ -140,7 +140,7 @@ export const swiperSliderCustomSlider = (
   allCls
 ) => {
   var scale, translateX;
-  var progressDOM = document.querySelector(".hassan_tm_swiper_progress");
+  var progressDOM = document.querySelector(".hassan_almalki_swiper_progress");
   if (progressDOM.classList.contains("fill")) {
     translateX = "0px";
     scale = parseInt((current / total) * 100) / 100;

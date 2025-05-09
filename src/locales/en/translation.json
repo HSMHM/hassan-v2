@@ -1,61 +1,48 @@
 {
   "navigation": {
     "home": "Home",
-    "about": "About",
-    "portfolio": "Portfolio", 
+    "about": "Professional Summary",
+    "portfolio": "Portfolio",
     "news": "News",
     "contact": "Contact"
   },
   "home": {
-    "name": "Hassan Almalki",
+    "firstName": "Hassan",
+    "lastName": "Almalki",
+    "intro": "Innovation in",
     "titles": {
-      "designer": "Designer",
-      "developer": "Developer",
-      "product_manager": "Product Manager"
+      "designer": "Web Application Development",
+      "systems_analyst": "Systems Analysis",
+      "business_analyst": "Business Analysis",
+      "product_manager": "Digital Product Management"
     },
     "getInTouch": "Get in Touch"
   },
   "about": {
     "title": "About",
-    "name": "Hassan",
+    "firstName": "Hassan",
     "lastName": "Almalki",
-    "description": "My name is Hassan Almalki. I am a web developer and product manager, and I'm very passionate and dedicated to my work.",
+    "description": "Web application developer, technical product manager, and business analyst with over 8 years of experience in web application development, digital platforms, and systems analysis.\nWorked on designing technical solutions linked to business objectives and supporting digital transformation.\nLed multi-disciplinary technical teams, and participated in implementing projects within specific timelines and with high-quality outputs.\nCompleted requirements documentation and analysis, and built roadmaps for digital products.\nAlso contributed to the development of technical content through specialized lectures and training courses.",
     "learnMore": "Learn More",
-    "detail": {
-      "personal": {
-        "title": "Personal Info",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "birthday": "Birthday",
-        "address": "Address",
-        "phone": "Phone",
-        "email": "Email"
-      },
-      "languages": {
-        "title": "Language Skills",
-        "english": "English",
-        "arabic": "Arabic"
-      },
-      "education": {
-        "title": "Education Timeline"
-      },
-      "work": {
-        "title": "Working Timeline"
-      },
-      "partners": {
-        "title": "My Partners"
-      },
-      "clients": {
-        "title": "Clients Feedback"
-      },
-      "skills": {
-        "title": "Programming Skills",
-        "wordpress": "WordPress",
-        "javascript": "JavaScript",
-        "angular": "Angular"
-      }
-    }
+    "birthday": "15/05/1991",
+    "address": "Riyadh, Saudi Arabia",
+    "phone": "+966 596966667",
+    "downloadCv": "Download CV",
+    "summaryProfessional_1": "Professional",
+    "summaryProfessional_2": "Summary",
+    "languagesTitle": "Language Skills",
+    "english": "English",
+    "arabic": "Arabic",
+    "titleEducation": "Education Timeline",
+    "titleWork": "Working Timeline",
+    "titlePartners": "My Partners",
+    "titleClients": "Clients Feedback",
+    "titleSkills": "Programming Skills",
+    "wordpress": "WordPress",
+    "javascript": "JavaScript",
+    "angular": "Angular"
   },
+
   "portfolio": {
     "title": "Creative Portfolio",
     "details": "Details"

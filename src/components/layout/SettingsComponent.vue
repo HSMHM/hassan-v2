@@ -1,5 +1,5 @@
 <template>
-  <div class="hassan_tm_settings" :class="toggle ? 'opened' : ''">
+  <div class="hassan_almalki_settings" :class="toggle ? 'opened' : ''">
     <div class="icon" @click="toggle = !toggle">
       <img class="svg" src="img/setting.svg" alt="" />
       <a class="link" href="#"></a>
@@ -74,8 +74,8 @@ export default {
     magicCursorFun(value) {
       this.magicCursor = value;
       localStorage.setItem("hassan-cursor", value);
-      const hassan_tm_all_wrap = document.querySelector(".hassan_tm_all_wrap");
-      hassan_tm_all_wrap.setAttribute("data-magic-cursor", value);
+      const hassan_almalki_all_wrap = document.querySelector(".hassan_almalki_all_wrap");
+      hassan_almalki_all_wrap.setAttribute("data-magic-cursor", value);
     },
   },
   mounted() {
