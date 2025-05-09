@@ -6,12 +6,20 @@
           <h3>Creative <span class="coloring">Portfolio</span></h3>
         </div>
         <div class="portfolio_list gallery_zoom">
-          <swiper :loop="false" :slidesPerView="1" :spaceBetween="0" :loopAdditionalSlides="1" :autoplay="{
-            delay: 6000,
-          }" :navigation="{
+          <swiper
+            :loop="false"
+            :slidesPerView="1"
+            :spaceBetween="0"
+            :loopAdditionalSlides="1"
+            :autoplay="{
+              delay: 6000,
+            }"
+            :navigation="{
               nextEl: '.my_next',
               prevEl: '.my_prev',
-            }" :pagination="pagination" :breakpoints="{
+            }"
+            :pagination="pagination"
+            :breakpoints="{
               700: {
                 slidesPerView: 2,
                 spaceBetween: 20,
@@ -20,7 +28,11 @@
                 slidesPerView: 3,
                 spaceBetween: 30,
               },
-            }" @slideChange="onSlideChange" :modules="modules" class="swiper-container">
+            }"
+            @slideChange="onSlideChange"
+            :modules="modules"
+            class="swiper-container"
+          >
             <swiper-slide class="swiper-slide">
               <div class="list_inner">
                 <div class="image">
@@ -31,7 +43,10 @@
                   <h3>Sweet Fruit</h3>
                   <span>Vimeo</span>
                 </div>
-                <a class="hassan_tm_full_link popup-vimeo" href="//player.vimeo.com/video/321091335?autoplay=1"></a>
+                <a
+                  class="hassan_tm_full_link popup-vimeo"
+                  href="//player.vimeo.com/video/321091335?autoplay=1"
+                ></a>
               </div>
             </swiper-slide>
             <swiper-slide class="swiper-slide">
@@ -44,7 +59,10 @@
                   <h3>Good Present</h3>
                   <span>Youtube</span>
                 </div>
-                <a class="hassan_tm_full_link popup-youtube" href="//www.youtube.com/embed/toClS5fCudA?autoplay=1"></a>
+                <a
+                  class="hassan_tm_full_link popup-youtube"
+                  href="//www.youtube.com/embed/toClS5fCudA?autoplay=1"
+                ></a>
               </div>
             </swiper-slide>
             <swiper-slide class="swiper-slide">
@@ -57,8 +75,10 @@
                   <h3>Mockup Cream</h3>
                   <span>Soundcloud</span>
                 </div>
-                <a class="hassan_tm_full_link soundcloude_link mfp-iframe audio"
-                  href="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/471954807&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></a>
+                <a
+                  class="hassan_tm_full_link soundcloude_link mfp-iframe audio"
+                  href="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/471954807&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+                ></a>
               </div>
             </swiper-slide>
             <swiper-slide class="swiper-slide">
@@ -78,8 +98,11 @@
                   <div class="portfolio_popup_details">
                     <div class="top_image">
                       <img src="img/thumbs/4-2.jpg" alt="" />
-                      <div class="main" data-img-url="img/portfolio/4.jpg"
-                        style="background-image: url('img/portfolio/4.jpg')"></div>
+                      <div
+                        class="main"
+                        data-img-url="img/portfolio/4.jpg"
+                        style="background-image: url('img/portfolio/4.jpg')"
+                      ></div>
                     </div>
                     <div class="details">
                       <h3>Delicious Apple</h3>
@@ -108,8 +131,14 @@
                           <div class="list_inner">
                             <div class="image">
                               <img src="img/thumbs/4-2.jpg" alt="" />
-                              <div class="main" data-img-url="img/portfolio/7.jpg"></div>
-                              <a class="hassan_tm_full_link zoom" href="img/portfolio/7.jpg"></a>
+                              <div
+                                class="main"
+                                data-img-url="img/portfolio/7.jpg"
+                              ></div>
+                              <a
+                                class="hassan_tm_full_link zoom"
+                                href="img/portfolio/7.jpg"
+                              ></a>
                             </div>
                           </div>
                         </li>
@@ -117,8 +146,14 @@
                           <div class="list_inner">
                             <div class="image">
                               <img src="img/thumbs/4-2.jpg" alt="" />
-                              <div class="main" data-img-url="img/portfolio/8.jpg"></div>
-                              <a class="hassan_tm_full_link zoom" href="img/portfolio/8.jpg"></a>
+                              <div
+                                class="main"
+                                data-img-url="img/portfolio/8.jpg"
+                              ></div>
+                              <a
+                                class="hassan_tm_full_link zoom"
+                                href="img/portfolio/8.jpg"
+                              ></a>
                             </div>
                           </div>
                         </li>
@@ -126,8 +161,14 @@
                           <div class="list_inner">
                             <div class="image">
                               <img src="img/thumbs/4-2.jpg" alt="" />
-                              <div class="main" data-img-url="img/portfolio/9.jpg"></div>
-                              <a class="hassan_tm_full_link zoom" href="img/portfolio/9.jpg"></a>
+                              <div
+                                class="main"
+                                data-img-url="img/portfolio/9.jpg"
+                              ></div>
+                              <a
+                                class="hassan_tm_full_link zoom"
+                                href="img/portfolio/9.jpg"
+                              ></a>
                             </div>
                           </div>
                         </li>
@@ -148,7 +189,10 @@
                   <h3>Blue Lemon</h3>
                   <span>Image</span>
                 </div>
-                <a class="hassan_tm_full_link zoom" href="img/portfolio/5.jpg"></a>
+                <a
+                  class="hassan_tm_full_link zoom"
+                  href="img/portfolio/5.jpg"
+                ></a>
               </div>
             </swiper-slide>
             <swiper-slide class="swiper-slide">
@@ -161,29 +205,37 @@
                   <h3>Sweet Cheery</h3>
                   <span>Image</span>
                 </div>
-                <a class="hassan_tm_full_link zoom" href="img/portfolio/6.jpg"></a>
+                <a
+                  class="hassan_tm_full_link zoom"
+                  href="img/portfolio/6.jpg"
+                ></a>
               </div>
             </swiper-slide>
             <div class="hassan_tm_swiper_progress fill">
               <div class="my_pagination_in">
                 <span class="current">0</span>
-                <span class="pagination_progress"><span class="all"><span style="
+                <span class="pagination_progress"
+                  ><span class="all"
+                    ><span
+                      style="
                         transform: translate3d(0px, 0px, 0px) scaleX(0.75)
                           scaleY(1);
-                      "></span></span></span>
+                      "
+                    ></span></span
+                ></span>
                 <span class="total">04</span>
               </div>
               <div class="my_navigation">
                 <ul>
                   <li>
-                    <a class="my_prev" href="#">
-                      <i :class="isRtl ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"></i>
-                    </a>
+                    <a class="my_prev" href="#"
+                      ><i class="fas fa-chevron-left"></i
+                    ></a>
                   </li>
                   <li>
-                    <a class="my_next" href="#">
-                      <i :class="isRtl ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
-                    </a>
+                    <a class="my_next" href="#"
+                      ><i class="fas fa-chevron-right"></i
+                    ></a>
                   </li>
                 </ul>
               </div>
@@ -215,8 +267,6 @@ export default {
     },
   },
   setup() {
-    const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
-
     return {
       modules: [Navigation, Pagination],
       pagination: {
@@ -226,29 +276,7 @@ export default {
           swiperSliderCustomSlider(current, total);
         },
       },
-      navigation: {
-        nextEl: '.my_next',
-        prevEl: '.my_prev',
-      },
     };
-  },
-  data() {
-    return {
-      isRtl: document.documentElement.getAttribute('dir') === 'rtl',
-    };
-  },
-  watch: {
-    // Watch for changes in the direction attribute
-    isRtl(newVal) {
-      document.documentElement.setAttribute('dir', newVal ? 'rtl' : 'ltr');
-    },
-  },
-  mounted() {
-    // Update `isRtl` if the direction changes dynamically
-    const observer = new MutationObserver(() => {
-      this.isRtl = document.documentElement.getAttribute('dir') === 'rtl';
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
   },
 };
 </script>

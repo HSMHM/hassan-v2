@@ -20,8 +20,6 @@
       >
     </li>
   </ul>
-  <i class="fa-solid fa-house"></i> {{ $t('navigation.home') }}
-
 </template>
 
 <script>
