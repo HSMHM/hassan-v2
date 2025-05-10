@@ -3,7 +3,7 @@
     "home": "Home",
     "about": "Professional Summary",
     "portfolio": "Portfolio",
-    "news": "News",
+    "workshops": "Workshops",
     "contact": "Contact"
   },
   "home": {
@@ -22,7 +22,7 @@
     "title": "About",
     "firstName": "Hassan",
     "lastName": "Almalki",
-    "description": "Web application developer, technical product manager, and business analyst with over 8 years of experience in web application development, digital platforms, and systems analysis.\nWorked on designing technical solutions linked to business objectives and supporting digital transformation.\nLed multi-disciplinary technical teams, and participated in implementing projects within specific timelines and with high-quality outputs.\nCompleted requirements documentation and analysis, and built roadmaps for digital products.\nAlso contributed to the development of technical content through specialized lectures and training courses.",
+    "description": "Web application developer, technical product manager, and business analyst with over 8 years of experience in developing and analyzing digital platforms.\nWorked on designing technical solutions linked to business objectives and supporting digital transformation.\nLed multidisciplinary technical teams, and participated in implementing projects within specific timeframes and with high-quality deliverables.\nExpert in documenting and analyzing requirements, and building roadmaps for digital products.\nAlso contributed to the development of technical content through specialized lectures and training workshops.",
     "learnMore": "Learn More",
     "birthday": "15/05/1991",
     "address": "Riyadh, Saudi Arabia",
@@ -44,12 +44,235 @@
   },
 
   "portfolio": {
-    "title": "Creative Portfolio",
-    "details": "Details"
+    "title_1": "Innovations That",
+    "title_2": "Made an Impact",
+    "details": "Details",
+    "features": "Project Features",
+    "gallery": "Project Gallery",
+    "projects": {
+      "virtual_auction": {
+        "title": "Virtual Auction Platform",
+        "category": "Web Application",
+        "description": {
+          "p1": "An innovative solution that allows you to organize and share auctions easily online, giving you the opportunity to reach a wider audience without the need for physical presence.",
+          "p2": "The platform provides integrated tools for setting up auctions, managing bids, interacting with users in real time, and handling payments securely through connected gateways."
+        },
+        "features": {
+          "f1": "Integrated auction system using custom APIs.",
+          "f2": "Supports a global audience with scalable infrastructure.",
+          "f3": "Secure integration with payment gateways.",
+          "f4": "Real-time reports and analytics on sales and activity.",
+          "f5": "Live chat between sellers and buyers.",
+          "f6": "Multi-language support for wider reach.",
+          "f7": "Mobile-responsive design for all devices."
+        }
+      },
+      "ecommerce_platform": {
+        "title": "Modern E-Commerce",
+        "category": "Digital Platform",
+        "description": {
+          "p1": "Offers an advanced shopping experience powered by AI, making it easy to link shipments and track them accurately, along with automatic invoice issuance and tracking.",
+          "p2": "The platform combines personalized product recommendations, seamless shipping integration, and real-time data analysis to improve the user experience and operational efficiency."
+        },
+        "features": {
+          "f1": "Supports machine learning for personalized recommendations.",
+          "f2": "Integrates with shipping systems for accurate delivery tracking.",
+          "f3": "Auto-generates and tracks invoices in real time.",
+          "f4": "Uses AI to improve sales performance and decision-making.",
+          "f5": "Handles high-volume transactions via cloud architecture.",
+          "f6": "Ensures data security with advanced encryption.",
+          "f7": "Optimized for all devices with responsive design."
+        }
+      },
+      "beneficiary_services": {
+        "title": "Beneficiary Request and Service Management",
+        "category": "Charity Platform",
+        "description": {
+          "p1": "Specifically designed for charitable organizations, it aims to simplify request management and service delivery efficiently.",
+          "p2": "The platform provides advanced tools for tracking beneficiary requests, organizing them, and communicating seamlessly."
+        },
+        "features": {
+          "f1": "Automatically processes and categorizes requests by priority.",
+          "f2": "Tracks request status from submission to completion.",
+          "f3": "Provides detailed performance and service reports.",
+          "f4": "Integrates with email and SMS for communication.",
+          "f5": "Distributes resources with accurate data tracking.",
+          "f6": "Supports 24/7 availability for service continuity.",
+          "f7": "Dashboard for managing cases and service indicators."
+        }
+      },
+      "learning_platform": {
+        "title": "Multi-Disciplinary E-Learning Platform",
+        "category": "Educational Technology",
+        "description": {
+          "p1": "Provides a unique opportunity for institutions and trainers to join and easily offer their courses.",
+          "p2": "The platform allows linking courses to comprehensive trainer profiles, enabling trainees to know details about the trainer's experience."
+        },
+        "features": {
+          "f1": "Cloud-based system supporting scalable digital infrastructure.",
+          "f2": "Custom course creation with advanced editing tools.",
+          "f3": "Detailed trainer profiles showcasing credentials and expertise.",
+          "f4": "Analytics reports on performance and success rates.",
+          "f5": "Interactive learning with quizzes and simulations.",
+          "f6": "Integration with live webinars and video sessions.",
+          "f7": "Supports multilingual content for broader accessibility."
+        }
+      },
+      "hackathon_platform": {
+        "title": "Hackathon Management",
+        "category": "Event Management",
+        "description": {
+          "p1": "A comprehensive platform to manage innovation competitions and hackathons from start to finish.",
+          "p2": "The system enables participant registration, team formation, judging, scoring, and result announcements with ease."
+        },
+        "features": {
+          "f1": "Online registration and team matching system.",
+          "f2": "Judge panel dashboard with scoring tools.",
+          "f3": "Project submission management with evaluation criteria.",
+          "f4": "Live leaderboard to display scores in real time.",
+          "f5": "Integrated announcements and notifications system.",
+          "f6": "Participant portal with progress tracking.",
+          "f7": "Automated result generation and certification."
+        }
+      },
+      "support_system": {
+        "title": "Ticketing and Support System",
+        "category": "Customer Support",
+        "description": {
+          "p1": "A robust solution for managing technical and customer support requests across departments.",
+          "p2": "The platform streamlines the ticket lifecycle with automation, escalation paths, and reporting tools."
+        },
+        "features": {
+          "f1": "Multi-channel ticket submission (web, email, etc.).",
+          "f2": "Categorization and prioritization of support requests.",
+          "f3": "Internal notes and assignment to support agents.",
+          "f4": "Response time tracking and SLA monitoring.",
+          "f5": "Automated alerts and escalation workflows.",
+          "f6": "Performance and satisfaction reporting.",
+          "f7": "Knowledge base integration for quick solutions."
+        }
+      },
+      "archive_system": {
+        "title": "Archiving and Correspondence Management System",
+        "category": "Enterprise Tools",
+        "description": {
+          "p1": "An offline-ready system designed for managing incoming and outgoing correspondence with high data privacy.",
+          "p2": "The platform offers full control over documents, tracking, reporting, and instant backup—suitable for internal and secure government environments."
+        },
+        "features": {
+          "f1": "Fully functional without internet connection.",
+          "f2": "High-level data privacy and encryption.",
+          "f3": "Unified tracking of all correspondence across departments.",
+          "f4": "Instant reporting and filtering by status, date, or entity.",
+          "f5": "Smart search engine across all archived content.",
+          "f6": "Instant local backups for data recovery.",
+          "f7": "Expandable to include attachments and workflow routing."
+        }
+      }
+    }
   },
-  "news": {
-    "title": "Latest News",
-    "readMore": "Read More"
+  "workshops": {
+    "title_1": "Technical",
+    "title_2": "Enrichment",
+    "platform": "Presented by",
+    "about": "About the Workshop",
+    "index": "Topics Covered",
+    "watchVideo": "Watch the Workshop",
+    "videoTitle": "Workshop Video",
+    "items": {
+      "vue": {
+        "title": "Introduction to Vue.js Framework",
+        "platform": "Tuwaiq Academy",
+        "description": {
+          "p1": "This workshop introduces how to build and design modern web interfaces using the popular Vue.js framework.",
+          "p2": "You’ll explore its key features and build your first Vue-based application step by step."
+        },
+        "index": {
+          "i1": "Why choose Vue.js?",
+          "i2": "Project scaffolding using Vue CLI",
+          "i3": "Understanding file and folder structure",
+          "i4": "Building your first component",
+          "i5": "Using props, data, and computed properties",
+          "i6": "Handling loops and conditionals",
+          "i7": "Intro to single-file components (SFC)"
+        }
+      },
+      "resume": {
+        "title": "Build a Resume Website Connected to a Database",
+        "platform": "Google MENA",
+        "description": {
+          "p1": "This workshop walks you through building a personal website that displays your resume using modern HTML/CSS and JavaScript.",
+          "p2": "You’ll learn how to connect the site to a real-time database using Google Sheets, and how to update and manage your content efficiently."
+        },
+        "index": {
+          "i1": "Designing the resume layout and UI",
+          "i2": "Using Google Sheets as a live database",
+          "i3": "Fetching and displaying data with JavaScript",
+          "i4": "Creating an admin form for content updates",
+          "i5": "Deploying the website to the public"
+        }
+      },
+      "animations": {
+        "title": "Animations in Web Design",
+        "platform": "Digital Attaa",
+        "description": {
+          "p1": "This workshop explores how to use animations to enhance user experience in modern web interfaces.",
+          "p2": "Participants will learn how to implement scroll-based animations, transitions, and interactive effects using CSS and JavaScript libraries."
+        },
+        "index": {
+          "i1": "The importance of motion in UX",
+          "i2": "CSS transitions vs. keyframes",
+          "i3": "Using animation libraries like AOS and GSAP",
+          "i4": "Triggering animations on scroll",
+          "i5": "Performance considerations and best practices"
+        }
+      },
+      "prototypes": {
+        "title": "Prototyping for Web and App Design",
+        "platform": "Digital Attaa",
+        "description": {
+          "p1": "This workshop introduces tools and techniques for building effective UI/UX prototypes.",
+          "p2": "Attendees will learn how to turn wireframes into interactive prototypes using Figma and other modern tools."
+        },
+        "index": {
+          "i1": "Understanding the role of prototypes in the design process",
+          "i2": "From wireframe to interactive layout",
+          "i3": "Creating user flows and click-through models",
+          "i4": "Using Figma to simulate functionality",
+          "i5": "Getting feedback before development"
+        }
+      },
+      "digital_presence": {
+        "title": "Simplifying Your Digital Presence",
+        "platform": "TechTrans Webinar",
+        "description": {
+          "p1": "This workshop focuses on the essential tools and platforms that help individuals and businesses establish a strong digital presence.",
+          "p2": "You’ll learn how to build a basic brand online, manage content, and create landing pages without writing code."
+        },
+        "index": {
+          "i1": "What is digital presence and why it matters",
+          "i2": "Low-code and no-code tools overview",
+          "i3": "Building a landing page using Carrd and Notion",
+          "i4": "Integrating with forms and CRMs",
+          "i5": "Free tools for personal branding and visibility"
+        }
+      },
+      "digital_self_sufficiency": {
+        "title": "Digital Self-Sufficiency in the Workplace",
+        "platform": "TechTrans Webinar",
+        "description": {
+          "p1": "This workshop introduces strategies and tools to help teams and professionals reduce dependency on external services and build internal digital capabilities.",
+          "p2": "It focuses on collaborative platforms, automation, and knowledge sharing practices that enhance operational efficiency."
+        },
+        "index": {
+          "i1": "What is digital self-sufficiency?",
+          "i2": "Examples of internal tools vs external dependencies",
+          "i3": "Using Notion, Google Workspace, and other collaboration platforms",
+          "i4": "Automating repetitive tasks without developers",
+          "i5": "Building documentation and internal knowledge bases"
+        }
+      }
+    }
   },
   "contact": {
     "title": "Get in Touch",

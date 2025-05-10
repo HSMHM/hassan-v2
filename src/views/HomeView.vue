@@ -32,9 +32,9 @@
       <PortfolioComponent />
       <!-- /PORTFOLIO -->
 
-      <!-- NEWS -->
-      <NewsComponent />
-      <!-- /NEWS -->
+      <!-- WORKSHOPS -->
+      <WorkshopsComponent />
+      <!-- /WORKSHOPS -->
 
       <!-- CONTACT -->
       <ContactComponent />
@@ -59,7 +59,7 @@ import HomeComponent from "../components/HomeComponent.vue";
 import CursorComponent from "../components/layout/CursorComponent.vue";
 import HeaderComponent from "../components/layout/HeaderComponent.vue";
 // import SettingsComponent from "../components/layout/SettingsComponent.vue";
-import NewsComponent from "../components/NewsComponent.vue";
+import WorkshopsComponent from "../components/WorkshopsComponent.vue";
 import PortfolioComponent from "../components/PortfolioComponent.vue";
 import { dataImage, imgToSVG } from "../utilits";
 import { waves } from "../waves";
@@ -76,7 +76,7 @@ export default {
     HomeComponent,
     AboutComponent,
     PortfolioComponent,
-    NewsComponent,
+    WorkshopsComponent,
     ContactComponent,
     HeaderComponent,
     // SettingsComponent,

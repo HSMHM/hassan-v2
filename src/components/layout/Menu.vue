@@ -11,8 +11,8 @@
         >{{ $t('navigation.portfolio') }}</a
       >
     </li>
-    <li :class="navFuntions.activeNavCls('news')">
-      <a href="#news" @click="navFuntions.activeSection('news')">{{ $t('navigation.news') }}</a>
+    <li :class="navFuntions.activeNavCls('workshops')">
+      <a href="#workshops" @click="navFuntions.activeSection('workshops')">{{ $t('navigation.workshops') }}</a>
     </li>
     <li :class="navFuntions.activeNavCls('contact')">
       <a href="#contact" @click="navFuntions.activeSection('contact')"
