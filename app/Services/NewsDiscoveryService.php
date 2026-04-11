@@ -73,6 +73,48 @@ PROMPT;
         $data['source_type'] = $item['source_type'] ?? 'blog';
         $data['references'] = $item['references'] ?? [];
 
+        return $this->sanitize($data);
+    }
+
+    /**
+     * Strip dangerous tags from Claude-generated content before persisting.
+     * Plain-text fields get strip_tags; HTML content fields keep safe formatting
+     * tags only — no scripts, iframes, style, or event handlers.
+     */
+    private function sanitize(array $data): array
+    {
+        $plainFields = [
+            'title_ar', 'title_en', 'slug_ar', 'slug_en',
+            'excerpt_ar', 'excerpt_en',
+            'social_post_ar', 'social_post_en',
+            'meta_title_ar', 'meta_title_en',
+            'meta_description_ar', 'meta_description_en',
+        ];
+
+        foreach ($plainFields as $f) {
+            if (isset($data[$f]) && is_string($data[$f])) {
+                $data[$f] = trim(strip_tags($data[$f]));
+            }
+        }
+
+        $allowedHtml = '<p><br><h2><h3><h4><ul><ol><li><strong><em><b><i><a><blockquote><code><pre>';
+        foreach (['content_ar', 'content_en'] as $f) {
+            if (isset($data[$f]) && is_string($data[$f])) {
+                // Strip script/style/iframe tags entirely (contents too) before the allowlist pass
+                $clean = preg_replace('#<(script|style|iframe|object|embed|form)[^>]*>.*?</\1>#is', '', $data[$f]);
+                // Drop any remaining on* event handlers
+                $clean = preg_replace('#\son\w+\s*=\s*(["\'])[^"\']*\1#i', '', $clean);
+                $data[$f] = strip_tags($clean, $allowedHtml);
+            }
+        }
+
+        // Enforce social post length so Twitter/X never rejects the queue
+        foreach (['social_post_ar', 'social_post_en'] as $f) {
+            if (isset($data[$f]) && mb_strlen($data[$f]) > 280) {
+                $data[$f] = mb_substr($data[$f], 0, 277).'...';
+            }
+        }
+
         return $data;
     }
 }

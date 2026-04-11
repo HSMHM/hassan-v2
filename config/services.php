@@ -69,6 +69,7 @@ return [
         'token' => env('WHAPI_API_TOKEN'),
         'base_url' => env('WHAPI_BASE_URL', 'https://gate.whapi.cloud'),
         'owner_phone' => env('WHATSAPP_OWNER_PHONE'),
+        'webhook_secret' => env('WHAPI_WEBHOOK_SECRET'),
     ],
 
     'google_sheets' => [

@@ -1995,3 +1995,40 @@ a[href^="tel:"]:not(.contact-card) {
         text-decoration: underline;
     }
 }
+
+/* ==========================================================================
+   Error pages (404 / 500 / 403 / 503)
+   ========================================================================== */
+.error-page {
+    max-width: 640px;
+    margin-inline: auto;
+    text-align: center;
+    padding-block: clamp(3rem, 10vw, 6rem);
+}
+
+.error-page__code {
+    font-size: clamp(5rem, 18vw, 9rem);
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.02em;
+    margin-block-end: 1rem;
+}
+
+.error-page__heading {
+    color: #fff;
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 800;
+    margin: 0 0 0.75rem;
+}
+
+.error-page__text {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+}

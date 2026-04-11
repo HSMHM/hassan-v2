@@ -13,6 +13,11 @@ class WebhookController extends Controller
 {
     public function whatsapp(Request $request): JsonResponse
     {
+        $expectedSecret = (string) config('services.whapi.webhook_secret');
+        if ($expectedSecret === '' || ! hash_equals($expectedSecret, (string) $request->header('X-Webhook-Secret'))) {
+            abort(401);
+        }
+
         $messages = $request->input('messages', []);
 
         foreach ($messages as $message) {
