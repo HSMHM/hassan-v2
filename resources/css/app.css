@@ -1618,9 +1618,10 @@ a[href^="tel:"]:not(.contact-card) {
     display: inline-block;
 }
 
-/* Keep the number characters LTR inside the card while preserving the
-   parent RTL alignment (right-aligned in AR pages, left in EN pages) */
-.contact-card[href^="tel:"] .contact-card__value {
+/* Render the value with its natural direction (numbers read LTR) while
+   the card keeps the page's RTL alignment. Applies to all contact cards
+   so tel:, wa.me, etc. all render phone numbers correctly. */
+.contact-card__value {
     unicode-bidi: plaintext;
 }
 
