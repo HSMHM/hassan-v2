@@ -1,0 +1,1234 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament';
+@source '../../../../resources/views/filament';
+
+/* ==========================================================================
+   Hassan Almalki — Filament admin theme
+   Matches the front-end palette: #0b0b10 dark background, #a0a0a0 accent,
+   Almarai font, gradient hot-spots, no harsh borders.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
+
+:root,
+.dark {
+    --ha-bg: #0b0b10;
+    --ha-bg-elevated: #141420;
+    --ha-bg-hover: #1c1c2a;
+    --ha-text: #ffffff;
+    --ha-text-light: #a2a2a2;
+    --ha-text-muted: #6f6f6f;
+    --ha-accent: #a0a0a0;
+    --ha-border: rgba(255, 255, 255, 0.06);
+    --ha-border-strong: rgba(255, 255, 255, 0.12);
+}
+
+/* ---- Typography ---- */
+.fi-body,
+.fi {
+    font-family: 'Almarai', sans-serif !important;
+}
+
+/* ---- Page background with gradient (matches front-end .section) ---- */
+.fi-body {
+    background-color: var(--ha-bg) !important;
+    background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(160, 160, 160, 0.08) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%) !important;
+    background-attachment: fixed !important;
+    color: var(--ha-text-light) !important;
+}
+
+.fi-main {
+    background-color: transparent !important;
+}
+
+.fi-main-ctn {
+    background-color: transparent !important;
+}
+
+/* ---- Topbar ---- */
+.fi-topbar {
+    background-color: rgba(11, 11, 16, 0.9) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--ha-border) !important;
+}
+
+.fi-topbar nav {
+    background-color: transparent !important;
+}
+
+/* ---- Sidebar ---- */
+.fi-sidebar {
+    background-color: var(--ha-bg-elevated) !important;
+    border-right: 1px solid var(--ha-border) !important;
+}
+
+[dir='rtl'] .fi-sidebar {
+    border-right: none !important;
+    border-left: 1px solid var(--ha-border) !important;
+}
+
+.fi-sidebar-header {
+    background-color: var(--ha-bg-elevated) !important;
+    border-bottom: 1px solid var(--ha-border) !important;
+}
+
+.fi-sidebar-nav {
+    background-color: transparent !important;
+}
+
+.fi-sidebar-group-label {
+    color: var(--ha-text-muted) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.7rem;
+}
+
+.fi-sidebar-item-button {
+    color: var(--ha-text-light) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease;
+}
+
+.fi-sidebar-item-button:hover {
+    background-color: var(--ha-bg-hover) !important;
+    color: var(--ha-text) !important;
+}
+
+.fi-sidebar-item.fi-active .fi-sidebar-item-button {
+    background-color: rgba(160, 160, 160, 0.12) !important;
+    color: var(--ha-text) !important;
+    border-inline-start: 2px solid var(--ha-accent);
+}
+
+.fi-sidebar-item-icon {
+    color: var(--ha-text-muted) !important;
+}
+
+.fi-sidebar-item.fi-active .fi-sidebar-item-icon,
+.fi-sidebar-item-button:hover .fi-sidebar-item-icon {
+    color: var(--ha-accent) !important;
+}
+
+/* ---- Page header / breadcrumbs ---- */
+.fi-page-header {
+    background-color: transparent !important;
+}
+
+.fi-header-heading {
+    color: var(--ha-text) !important;
+    font-weight: 700;
+}
+
+.fi-breadcrumbs a,
+.fi-breadcrumbs span {
+    color: var(--ha-text-muted) !important;
+}
+
+.fi-breadcrumbs a:hover {
+    color: var(--ha-accent) !important;
+}
+
+/* ---- Sections / cards (resource forms, list pages) ---- */
+.fi-section,
+.fi-fo-section,
+.fi-ta {
+    background-color: var(--ha-bg-elevated) !important;
+    border: 1px solid var(--ha-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fi-section:hover,
+.fi-fo-section:hover {
+    border-color: var(--ha-border-strong) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+}
+
+.fi-section-header {
+    border-bottom: 1px solid var(--ha-border) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1rem 1.25rem !important;
+}
+
+.fi-section-header-heading {
+    color: var(--ha-text) !important;
+    font-family: 'Almarai', sans-serif !important;
+    font-weight: 700;
+}
+
+.fi-section-content {
+    background-color: transparent !important;
+}
+
+/* ---- Tabs (used in bilingual resources) ---- */
+.fi-tabs {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--ha-border) !important;
+}
+
+.fi-tabs-tab {
+    color: var(--ha-text-muted) !important;
+    background-color: transparent !important;
+    border-bottom: 2px solid transparent !important;
+    transition: all 0.2s ease;
+}
+
+.fi-tabs-tab:hover {
+    color: var(--ha-text-light) !important;
+}
+
+.fi-tabs-tab[aria-selected='true'] {
+    color: var(--ha-accent) !important;
+    border-bottom-color: var(--ha-accent) !important;
+}
+
+/* ---- Form inputs ---- */
+.fi-input,
+.fi-input-wrp,
+.fi-select-input,
+.fi-textarea {
+    background-color: var(--ha-bg) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+    color: var(--ha-text) !important;
+    border-radius: 8px !important;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.fi-input:focus,
+.fi-input-wrp:focus-within,
+.fi-textarea:focus {
+    border-color: var(--ha-accent) !important;
+    box-shadow: 0 0 0 3px rgba(160, 160, 160, 0.15) !important;
+    outline: none !important;
+}
+
+.fi-fo-field-wrp-label,
+.fi-fo-field-wrp label {
+    color: var(--ha-text) !important;
+    font-weight: 500;
+}
+
+/* ---- Buttons ---- */
+.fi-btn-color-primary {
+    background-color: var(--ha-text) !important;
+    color: var(--ha-bg) !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: all 0.2s ease;
+}
+
+.fi-btn-color-primary:hover {
+    background-color: var(--ha-accent) !important;
+    color: var(--ha-bg) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(160, 160, 160, 0.2) !important;
+}
+
+.fi-btn-color-primary:active {
+    transform: translateY(0);
+    box-shadow: none !important;
+}
+
+.fi-btn {
+    border-radius: 8px !important;
+    font-weight: 600;
+    font-family: 'Almarai', sans-serif !important;
+    transition: all 0.2s ease;
+}
+
+/* Secondary / gray buttons */
+.fi-btn-color-gray {
+    background-color: var(--ha-bg-hover) !important;
+    color: var(--ha-text-light) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+    border-radius: 8px !important;
+}
+
+.fi-btn-color-gray:hover {
+    background-color: rgba(160, 160, 160, 0.15) !important;
+    color: var(--ha-text) !important;
+    border-color: var(--ha-accent) !important;
+}
+
+/* Danger buttons */
+.fi-btn-color-danger,
+.fi-color-danger .fi-btn {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+    border: 1px solid rgba(239, 68, 68, 0.25) !important;
+    border-radius: 8px !important;
+}
+
+.fi-btn-color-danger:hover,
+.fi-color-danger .fi-btn:hover {
+    background-color: rgba(239, 68, 68, 0.25) !important;
+    color: #f87171 !important;
+    border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Success buttons */
+.fi-btn-color-success {
+    background-color: rgba(34, 197, 94, 0.15) !important;
+    color: #22c55e !important;
+    border: 1px solid rgba(34, 197, 94, 0.25) !important;
+    border-radius: 8px !important;
+}
+
+.fi-btn-color-success:hover {
+    background-color: rgba(34, 197, 94, 0.25) !important;
+    color: #4ade80 !important;
+}
+
+/* Warning buttons */
+.fi-btn-color-warning {
+    background-color: rgba(245, 158, 11, 0.15) !important;
+    color: #f59e0b !important;
+    border: 1px solid rgba(245, 158, 11, 0.25) !important;
+    border-radius: 8px !important;
+}
+
+.fi-btn-color-warning:hover {
+    background-color: rgba(245, 158, 11, 0.25) !important;
+    color: #fbbf24 !important;
+}
+
+/* Info buttons */
+.fi-btn-color-info {
+    background-color: rgba(56, 189, 248, 0.15) !important;
+    color: #38bdf8 !important;
+    border: 1px solid rgba(56, 189, 248, 0.25) !important;
+    border-radius: 8px !important;
+}
+
+.fi-btn-color-info:hover {
+    background-color: rgba(56, 189, 248, 0.25) !important;
+    color: #7dd3fc !important;
+}
+
+/* Icon buttons (action buttons in tables, headers) */
+.fi-icon-btn {
+    border-radius: 8px !important;
+    transition: all 0.2s ease;
+    color: var(--ha-text-muted) !important;
+}
+
+.fi-icon-btn:hover {
+    background-color: var(--ha-bg-hover) !important;
+    color: var(--ha-text) !important;
+}
+
+/* Table action buttons */
+.fi-ta-actions .fi-icon-btn,
+.fi-ta-row-actions .fi-icon-btn {
+    color: var(--ha-text-muted) !important;
+}
+
+.fi-ta-actions .fi-icon-btn:hover,
+.fi-ta-row-actions .fi-icon-btn:hover {
+    color: var(--ha-accent) !important;
+    background-color: rgba(160, 160, 160, 0.1) !important;
+}
+
+/* Link-style actions */
+.fi-link {
+    color: var(--ha-accent) !important;
+    transition: color 0.2s ease;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+.fi-link:hover {
+    color: var(--ha-text) !important;
+}
+
+/* ---- Tables ---- */
+.fi-ta-content {
+    background-color: var(--ha-bg-elevated) !important;
+}
+
+.fi-ta-header {
+    background-color: var(--ha-bg-hover) !important;
+    border-bottom: 1px solid var(--ha-border) !important;
+}
+
+.fi-ta-header-cell {
+    color: var(--ha-text-muted) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+}
+
+.fi-ta-row {
+    border-bottom: 1px solid var(--ha-border) !important;
+    transition: background-color 0.15s ease;
+}
+
+.fi-ta-row:hover {
+    background-color: var(--ha-bg-hover) !important;
+}
+
+.fi-ta-cell {
+    color: var(--ha-text-light) !important;
+}
+
+.fi-ta-text-item {
+    color: var(--ha-text-light) !important;
+}
+
+/* ---- Badges ---- */
+.fi-badge {
+    border-radius: 6px !important;
+    font-weight: 600;
+    font-family: 'Almarai', sans-serif !important;
+    letter-spacing: 0.01em;
+}
+
+.fi-badge-color-success {
+    background-color: rgba(34, 197, 94, 0.15) !important;
+    color: #22c55e !important;
+    border: 1px solid rgba(34, 197, 94, 0.2) !important;
+}
+
+.fi-badge-color-danger {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+}
+
+.fi-badge-color-warning {
+    background-color: rgba(245, 158, 11, 0.15) !important;
+    color: #f59e0b !important;
+    border: 1px solid rgba(245, 158, 11, 0.2) !important;
+}
+
+.fi-badge-color-info {
+    background-color: rgba(56, 189, 248, 0.15) !important;
+    color: #38bdf8 !important;
+    border: 1px solid rgba(56, 189, 248, 0.2) !important;
+}
+
+.fi-badge-color-gray {
+    background-color: rgba(160, 160, 160, 0.1) !important;
+    color: var(--ha-text-light) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+}
+
+.fi-badge-color-primary {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--ha-text) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+}
+
+/* ---- Modal / dropdown ---- */
+.fi-modal-window {
+    background-color: var(--ha-bg-elevated) !important;
+    border: 1px solid var(--ha-border) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+.fi-dropdown-panel {
+    background-color: var(--ha-bg-elevated) !important;
+    border: 1px solid var(--ha-border) !important;
+    border-radius: 10px !important;
+}
+
+/* ---- Stats widgets ---- */
+.fi-wi-stats-overview-stat {
+    background-color: var(--ha-bg-elevated) !important;
+    border: 1px solid var(--ha-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.25s ease;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    border-color: var(--ha-border-strong) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+.fi-wi-stats-overview-stat-value {
+    color: var(--ha-text) !important;
+    font-weight: 700;
+}
+
+.fi-wi-stats-overview-stat-label {
+    color: var(--ha-text-muted) !important;
+}
+
+/* ---- Login / auth pages ---- */
+.fi-simple-layout {
+    background-color: var(--ha-bg) !important;
+    background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(160, 160, 160, 0.1) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%) !important;
+}
+
+.fi-simple-main {
+    background-color: var(--ha-bg-elevated) !important;
+    border: 1px solid var(--ha-border) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ==========================================================================
+   RTL / LTR field overrides (preserve from earlier setup)
+   ========================================================================== */
+
+/* Force LTR for English input fields inside RTL layout */
+[dir='rtl'] input[name*='_en'],
+[dir='rtl'] textarea[name*='_en'] {
+    direction: ltr;
+    text-align: left;
+}
+
+/* Force RTL for Arabic input fields inside LTR layout */
+[dir='ltr'] input[name*='_ar'],
+[dir='ltr'] textarea[name*='_ar'] {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Slug fields always LTR */
+input[name*='slug'] {
+    direction: ltr;
+    text-align: left;
+}
+
+/* Brand logo (sidebar header text) */
+.fi-sidebar-header .fi-logo {
+    color: var(--ha-text) !important;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   Enhanced UI Components
+   ========================================================================== */
+
+/* ---- Pagination ---- */
+.fi-ta-pagination {
+    background-color: transparent !important;
+    border-top: 1px solid var(--ha-border) !important;
+}
+
+.fi-pagination-items .fi-pagination-item-btn {
+    background-color: transparent !important;
+    color: var(--ha-text-muted) !important;
+    border-radius: 8px !important;
+    font-family: 'Almarai', sans-serif !important;
+    transition: all 0.2s ease;
+}
+
+.fi-pagination-items .fi-pagination-item-btn:hover {
+    background-color: var(--ha-bg-hover) !important;
+    color: var(--ha-text) !important;
+}
+
+.fi-pagination-items .fi-pagination-item-btn.fi-active {
+    background-color: rgba(160, 160, 160, 0.15) !important;
+    color: var(--ha-text) !important;
+    border: 1px solid var(--ha-accent) !important;
+}
+
+.fi-ta-pagination-records-per-page select {
+    background-color: var(--ha-bg) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+    color: var(--ha-text-light) !important;
+    border-radius: 8px !important;
+}
+
+/* ---- Toggles / switches ---- */
+.fi-toggle-input {
+    transition: background-color 0.2s ease !important;
+}
+
+.fi-toggle-input:not(:checked) {
+    background-color: var(--ha-bg-hover) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+}
+
+.fi-toggle-input:checked {
+    background-color: var(--ha-accent) !important;
+    border-color: var(--ha-accent) !important;
+}
+
+/* ---- Checkboxes & Radios ---- */
+.fi-checkbox-input,
+.fi-radio-input {
+    background-color: var(--ha-bg) !important;
+    border: 1.5px solid var(--ha-border-strong) !important;
+    transition: all 0.2s ease;
+}
+
+.fi-checkbox-input:checked,
+.fi-radio-input:checked {
+    background-color: var(--ha-accent) !important;
+    border-color: var(--ha-accent) !important;
+}
+
+.fi-checkbox-input:hover,
+.fi-radio-input:hover {
+    border-color: var(--ha-accent) !important;
+}
+
+/* ---- Select / dropdown ---- */
+.fi-select-wrp {
+    background-color: var(--ha-bg) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+    border-radius: 8px !important;
+}
+
+.fi-select-option {
+    color: var(--ha-text-light) !important;
+    transition: background-color 0.15s ease;
+}
+
+.fi-select-option:hover,
+.fi-select-option[data-active] {
+    background-color: var(--ha-bg-hover) !important;
+    color: var(--ha-text) !important;
+}
+
+.fi-select-option[data-selected] {
+    background-color: rgba(160, 160, 160, 0.12) !important;
+    color: var(--ha-text) !important;
+}
+
+/* ---- Notifications / toasts ---- */
+.fi-notification {
+    background-color: var(--ha-bg-elevated) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5) !important;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+.fi-notification-title {
+    color: var(--ha-text) !important;
+    font-weight: 700;
+}
+
+.fi-notification-body {
+    color: var(--ha-text-light) !important;
+}
+
+.fi-notification-close-btn {
+    color: var(--ha-text-muted) !important;
+}
+
+.fi-notification-close-btn:hover {
+    color: var(--ha-text) !important;
+}
+
+/* ---- File Upload ---- */
+.fi-fo-file-upload {
+    background-color: var(--ha-bg) !important;
+    border: 2px dashed var(--ha-border-strong) !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease;
+}
+
+.fi-fo-file-upload:hover {
+    border-color: var(--ha-accent) !important;
+    background-color: rgba(160, 160, 160, 0.03) !important;
+}
+
+.filepond--root,
+.filepond--panel-root {
+    background-color: var(--ha-bg) !important;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+.filepond--drop-label {
+    color: var(--ha-text-muted) !important;
+}
+
+.filepond--label-action {
+    color: var(--ha-accent) !important;
+    text-decoration: underline !important;
+}
+
+/* ---- Empty state ---- */
+.fi-ta-empty-state {
+    color: var(--ha-text-muted) !important;
+}
+
+.fi-ta-empty-state-icon {
+    color: var(--ha-text-muted) !important;
+}
+
+.fi-ta-empty-state-heading {
+    color: var(--ha-text-light) !important;
+    font-family: 'Almarai', sans-serif !important;
+    font-weight: 700;
+}
+
+.fi-ta-empty-state-description {
+    color: var(--ha-text-muted) !important;
+}
+
+/* ---- Search inputs in tables ---- */
+.fi-ta-search-field input {
+    background-color: var(--ha-bg) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+    color: var(--ha-text) !important;
+    border-radius: 8px !important;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+.fi-ta-search-field input:focus {
+    border-color: var(--ha-accent) !important;
+    box-shadow: 0 0 0 3px rgba(160, 160, 160, 0.15) !important;
+}
+
+.fi-ta-search-field input::placeholder {
+    color: var(--ha-text-muted) !important;
+}
+
+/* ---- Filters in tables ---- */
+.fi-ta-filters {
+    background-color: var(--ha-bg-elevated) !important;
+    border: 1px solid var(--ha-border) !important;
+    border-radius: 12px !important;
+}
+
+/* ---- Info lists (view pages) ---- */
+.fi-in-entry-wrp {
+    border-bottom: 1px solid var(--ha-border) !important;
+}
+
+.fi-in-entry-wrp-label {
+    color: var(--ha-text-muted) !important;
+    font-weight: 600;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+.fi-in-text {
+    color: var(--ha-text) !important;
+}
+
+/* ---- Widgets ---- */
+.fi-wi {
+    background-color: var(--ha-bg-elevated) !important;
+    border: 1px solid var(--ha-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Stats widget enhanced */
+.fi-wi-stats-overview-stat {
+    transition: all 0.2s ease;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    border-color: var(--ha-border-strong) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+.fi-wi-stats-overview-stat-description {
+    color: var(--ha-text-muted) !important;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+/* ---- Rich Editor / WYSIWYG ---- */
+.fi-fo-rich-editor .tiptap,
+.ProseMirror {
+    background-color: var(--ha-bg) !important;
+    color: var(--ha-text) !important;
+    font-family: 'Almarai', sans-serif !important;
+    border-radius: 0 0 8px 8px !important;
+}
+
+.fi-fo-rich-editor .tiptap:focus,
+.ProseMirror:focus {
+    outline: none !important;
+}
+
+.fi-fo-rich-editor-toolbar {
+    background-color: var(--ha-bg-hover) !important;
+    border-bottom: 1px solid var(--ha-border) !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+.fi-fo-rich-editor-toolbar button {
+    color: var(--ha-text-muted) !important;
+}
+
+.fi-fo-rich-editor-toolbar button:hover,
+.fi-fo-rich-editor-toolbar button.is-active {
+    color: var(--ha-text) !important;
+    background-color: rgba(160, 160, 160, 0.1) !important;
+}
+
+/* ---- Action / header buttons ---- */
+.fi-page-header-actions .fi-btn,
+.fi-ta-header-toolbar .fi-btn {
+    font-family: 'Almarai', sans-serif !important;
+    font-weight: 600;
+}
+
+/* ---- Modal enhancements ---- */
+.fi-modal-window {
+    font-family: 'Almarai', sans-serif !important;
+}
+
+.fi-modal-heading {
+    color: var(--ha-text) !important;
+    font-weight: 700;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+.fi-modal-description {
+    color: var(--ha-text-light) !important;
+}
+
+.fi-modal-footer {
+    border-top: 1px solid var(--ha-border) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* ---- Dropdown items ---- */
+.fi-dropdown-list-item {
+    color: var(--ha-text-light) !important;
+    font-family: 'Almarai', sans-serif !important;
+    transition: all 0.15s ease;
+}
+
+.fi-dropdown-list-item:hover {
+    background-color: var(--ha-bg-hover) !important;
+    color: var(--ha-text) !important;
+}
+
+.fi-dropdown-header {
+    color: var(--ha-text) !important;
+    border-bottom: 1px solid var(--ha-border) !important;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+/* ---- Fieldset / card inside forms ---- */
+.fi-fieldset {
+    border: 1px solid var(--ha-border) !important;
+    border-radius: 12px !important;
+    background-color: rgba(255, 255, 255, 0.01) !important;
+}
+
+.fi-fieldset-label {
+    color: var(--ha-text) !important;
+    font-weight: 700;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+/* ---- Tags input ---- */
+.fi-tags-input-tag {
+    background-color: rgba(160, 160, 160, 0.12) !important;
+    color: var(--ha-text) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+    border-radius: 6px !important;
+}
+
+/* ---- Color picker ---- */
+.fi-color-picker-preview {
+    border: 2px solid var(--ha-border-strong) !important;
+    border-radius: 8px !important;
+}
+
+/* ---- Loading indicators ---- */
+.fi-loading-indicator {
+    color: var(--ha-accent) !important;
+}
+
+/* ---- Global text color fixes ---- */
+.fi-ta-col-wrp,
+.fi-fo-field-wrp-helper-text,
+.fi-fo-field-wrp-hint {
+    color: var(--ha-text-muted) !important;
+}
+
+/* ---- Placeholder text in all inputs ---- */
+.fi-input::placeholder,
+.fi-textarea::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: var(--ha-text-muted) !important;
+    opacity: 0.7;
+}
+
+/* ---- Scrollbar styling (WebKit) ---- */
+.fi-sidebar::-webkit-scrollbar,
+.fi-modal-window::-webkit-scrollbar,
+.fi-ta-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.fi-sidebar::-webkit-scrollbar-track,
+.fi-modal-window::-webkit-scrollbar-track,
+.fi-ta-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.fi-sidebar::-webkit-scrollbar-thumb,
+.fi-modal-window::-webkit-scrollbar-thumb,
+.fi-ta-content::-webkit-scrollbar-thumb {
+    background-color: var(--ha-border-strong);
+    border-radius: 3px;
+}
+
+.fi-sidebar::-webkit-scrollbar-thumb:hover,
+.fi-modal-window::-webkit-scrollbar-thumb:hover,
+.fi-ta-content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--ha-accent);
+}
+
+/* ==========================================================================
+   Dashboard Page Enhancements
+   ========================================================================== */
+
+/* Dashboard page heading */
+.fi-page-header .fi-header-heading {
+    font-size: 1.75rem;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+.fi-page-header .fi-header-subheading {
+    color: var(--ha-text-muted) !important;
+    font-size: 0.95rem;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+/* Stats overview grid — tighter gap */
+.fi-wi-stats-overview {
+    gap: 1rem !important;
+}
+
+.fi-wi-stats-overview-stat {
+    padding: 1.25rem !important;
+}
+
+.fi-wi-stats-overview-stat-value {
+    font-size: 1.75rem !important;
+    font-family: 'Almarai', sans-serif !important;
+}
+
+.fi-wi-stats-overview-stat-label {
+    font-family: 'Almarai', sans-serif !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.fi-wi-stats-overview-stat-description {
+    font-size: 0.75rem !important;
+}
+
+.fi-wi-stats-overview-stat-icon {
+    opacity: 0.7;
+}
+
+/* ---- Traffic Breakdown Cards ---- */
+.ha-breakdown-card {
+    background-color: var(--ha-bg-elevated);
+    border: 1px solid var(--ha-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ha-breakdown-card:hover {
+    border-color: var(--ha-border-strong);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.ha-breakdown-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--ha-border);
+}
+
+.ha-breakdown-header h3 {
+    color: var(--ha-text);
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: 'Almarai', sans-serif;
+    margin: 0;
+}
+
+.ha-breakdown-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--ha-accent);
+}
+
+.ha-breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.ha-breakdown-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.ha-breakdown-item-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ha-breakdown-name {
+    color: var(--ha-text-light);
+    font-size: 0.8rem;
+    font-family: 'Almarai', sans-serif;
+}
+
+.ha-breakdown-referer {
+    direction: ltr;
+    text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 170px;
+}
+
+.ha-breakdown-count {
+    color: var(--ha-text);
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: 'Almarai', sans-serif;
+}
+
+.ha-breakdown-bar {
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.06);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.ha-breakdown-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+}
+
+.ha-fill-info { background-color: #38bdf8; }
+.ha-fill-success { background-color: #22c55e; }
+.ha-fill-warning { background-color: #f59e0b; }
+.ha-fill-danger { background-color: #ef4444; }
+
+.ha-breakdown-pct {
+    color: var(--ha-text-muted);
+    font-size: 0.7rem;
+    font-family: 'Almarai', sans-serif;
+    text-align: end;
+}
+
+.ha-breakdown-empty {
+    color: var(--ha-text-muted);
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 1rem 0;
+    font-family: 'Almarai', sans-serif;
+}
+
+/* ---- Dashboard widget tables spacing ---- */
+.fi-wi .fi-ta {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.fi-wi .fi-ta-content {
+    border-radius: 12px !important;
+}
+
+/* ---- Widget heading ---- */
+.fi-wi-heading {
+    color: var(--ha-text) !important;
+    font-family: 'Almarai', sans-serif !important;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* ==========================================================================
+   Welcome Hero Widget
+   ========================================================================== */
+.ha-welcome-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    padding: 2rem 2.25rem;
+    background:
+        linear-gradient(135deg, rgba(160, 160, 160, 0.08) 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100%),
+        linear-gradient(180deg, #14141e 0%, #0b0b10 100%);
+    border: 1px solid var(--ha-border-strong);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.ha-welcome-hero__glow {
+    position: absolute;
+    inset-block-start: -120px;
+    inset-inline-end: -120px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(160, 160, 160, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+.ha-welcome-hero__content {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ha-welcome-hero__main {
+    flex: 1 1 320px;
+    min-width: 0;
+}
+
+.ha-welcome-hero__date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ha-text-muted);
+    font-size: 0.8rem;
+    font-family: 'Almarai', sans-serif;
+    font-weight: 500;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--ha-border);
+    margin-block-end: 0.9rem;
+    letter-spacing: 0.01em;
+}
+
+.ha-welcome-hero__date-icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    color: var(--ha-accent);
+}
+
+.ha-welcome-hero__title {
+    color: var(--ha-text);
+    font-family: 'Almarai', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    line-height: 1.2;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.ha-welcome-hero__wave {
+    display: inline-block;
+    animation: ha-wave 2.5s ease-in-out infinite;
+    transform-origin: 70% 70%;
+}
+
+@keyframes ha-wave {
+    0%, 60%, 100% { transform: rotate(0deg); }
+    10%, 30% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    40% { transform: rotate(14deg); }
+    50% { transform: rotate(-4deg); }
+}
+
+.ha-welcome-hero__subtitle {
+    color: var(--ha-text-light);
+    font-family: 'Almarai', sans-serif;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.ha-welcome-hero__quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.ha-welcome-hero__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--ha-border-strong);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    min-width: 150px;
+}
+
+.ha-welcome-hero__chip:hover {
+    transform: translateY(-2px);
+    border-color: var(--ha-accent);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.ha-welcome-hero__chip-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+    padding: 0.35rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.ha-welcome-hero__chip--danger .ha-welcome-hero__chip-icon {
+    color: #f87171;
+    background: rgba(239, 68, 68, 0.15);
+}
+
+.ha-welcome-hero__chip--success .ha-welcome-hero__chip-icon {
+    color: #4ade80;
+    background: rgba(34, 197, 94, 0.15);
+}
+
+.ha-welcome-hero__chip--warning .ha-welcome-hero__chip-icon {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.15);
+}
+
+.ha-welcome-hero__chip-value {
+    color: var(--ha-text);
+    font-family: 'Almarai', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    line-height: 1.1;
+}
+
+.ha-welcome-hero__chip-label {
+    color: var(--ha-text-muted);
+    font-family: 'Almarai', sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-block-start: 0.15rem;
+}
+
+/* Hide the default dashboard page header — the hero replaces it */
+.fi-dashboard-page > .fi-header {
+    display: none;
+}
+
+/* Slightly increase vertical rhythm between widgets on dashboard */
+.fi-dashboard-page .fi-wi,
+.fi-dashboard-page .fi-wi-stats-overview {
+    margin-block-end: 0;
+}
+

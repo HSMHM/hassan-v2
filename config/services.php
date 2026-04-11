@@ -1,0 +1,90 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Third Party Services
+    |--------------------------------------------------------------------------
+    |
+    | This file is for storing the credentials for third party services such
+    | as Mailgun, Postmark, AWS and more. This file provides the de facto
+    | location for this type of information, allowing packages to have
+    | a conventional file to locate the various service credentials.
+    |
+    */
+
+    'postmark' => [
+        'key' => env('POSTMARK_API_KEY'),
+    ],
+
+    'resend' => [
+        'key' => env('RESEND_API_KEY'),
+    ],
+
+    'ses' => [
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    ],
+
+    'anthropic' => [
+        'api_key' => env('ANTHROPIC_API_KEY'),
+        'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-4-6-20250514'),
+        'max_tokens' => (int) env('ANTHROPIC_MAX_TOKENS', 4096),
+        'base_url' => 'https://api.anthropic.com/v1',
+    ],
+
+    'twitter' => [
+        'api_key' => env('TWITTER_API_KEY'),
+        'api_secret' => env('TWITTER_API_SECRET'),
+        'access_token' => env('TWITTER_ACCESS_TOKEN'),
+        'access_token_secret' => env('TWITTER_ACCESS_TOKEN_SECRET'),
+        'bearer_token' => env('TWITTER_BEARER_TOKEN'),
+    ],
+
+    'instagram' => [
+        'app_id' => env('INSTAGRAM_APP_ID'),
+        'app_secret' => env('INSTAGRAM_APP_SECRET'),
+        'access_token' => env('INSTAGRAM_ACCESS_TOKEN'),
+        'account_id' => env('INSTAGRAM_ACCOUNT_ID'),
+    ],
+
+    'linkedin' => [
+        'client_id' => env('LINKEDIN_CLIENT_ID'),
+        'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
+        'access_token' => env('LINKEDIN_ACCESS_TOKEN'),
+        'person_urn' => env('LINKEDIN_PERSON_URN'),
+    ],
+
+    'snapchat' => [
+        'client_id' => env('SNAPCHAT_CLIENT_ID'),
+        'client_secret' => env('SNAPCHAT_CLIENT_SECRET'),
+        'access_token' => env('SNAPCHAT_ACCESS_TOKEN'),
+        'organization_id' => env('SNAPCHAT_ORGANIZATION_ID'),
+        'profile_id' => env('SNAPCHAT_PROFILE_ID'),
+    ],
+
+    'whapi' => [
+        'token' => env('WHAPI_API_TOKEN'),
+        'base_url' => env('WHAPI_BASE_URL', 'https://gate.whapi.cloud'),
+        'owner_phone' => env('WHATSAPP_OWNER_PHONE'),
+    ],
+
+    'google_sheets' => [
+        'webhook_url' => env('GOOGLE_SHEETS_WEBHOOK_URL'),
+        'secret' => env('GOOGLE_SHEETS_SECRET'),
+    ],
+
+    'indexnow' => [
+        'key' => env('INDEXNOW_KEY'),
+    ],
+
+    'slack' => [
+        'notifications' => [
+            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
+            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+        ],
+    ],
+
+];

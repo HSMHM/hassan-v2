@@ -1,0 +1,407 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "Professional Summary",
+    "portfolio": "Portfolio",
+    "workshops": "Workshops",
+    "articles": "Articles",
+    "contact": "Contact Me",
+    "proposals": "Technical & Financial Proposals"
+  },
+  "home": {
+    "firstName": "Hassan",
+    "lastName": "Almalki",
+    "intro": "Innovation in",
+    "titles": {
+      "designer": "Web Application Development",
+      "systems_analyst": "Systems Analysis",
+      "business_analyst": "Business Analysis",
+      "product_manager": "Digital Product Management"
+    },
+    "getInTouch": "Get in Touch",
+    "explore": "Explore"
+  },
+  "about": {
+    "title": "About",
+    "firstName": "Hassan",
+    "lastName": "Almalki",
+    "description": "Web application developer, technical product manager, and business analyst with over 8 years of experience in developing and analyzing digital platforms.\nWorked on designing technical solutions linked to business objectives and supporting digital transformation.\nLed multidisciplinary technical teams, and participated in implementing projects within specific timeframes and with high-quality deliverables.\nExpert in documenting and analyzing requirements, and building roadmaps for digital products.\nAlso contributed to the development of technical content through specialized lectures and training workshops.",
+    "learnMore": "Learn More",
+    "birthday": "15/05/1991",
+    "address": "Riyadh, Saudi Arabia",
+    "phone": "+966 596966667",
+    "email": "hassan@almalki.sa",
+    "profession": "Web App Developer & Product Manager",
+    "downloadCv": "Download CV",
+    "summaryProfessional_1": "Professional",
+    "summaryProfessional_2": "Summary",
+    "languagesTitle": "Language Skills",
+    "english": "English",
+    "arabic": "Arabic",
+    "titleEducation": "Education Timeline",
+    "titleWork": "Working Timeline",
+    "titlePartners": "My Partners",
+    "titleClients": "Clients Feedback",
+    "titleSkills": "Programming Skills",
+    "wordpress": "WordPress",
+    "javascript": "JavaScript",
+    "angular": "Angular"
+  },
+
+  "portfolio": {
+    "title_1": "Innovations That",
+    "title_2": "Made an Impact",
+    "details": "Details",
+    "features": "Project Features",
+    "gallery": "Project Gallery",
+    "projects": {
+      "virtual_auction": {
+        "title": "Virtual Auction Platform",
+        "category": "Web Application",
+        "description": {
+          "p1": "An innovative solution that allows you to organize and share auctions easily online, giving you the opportunity to reach a wider audience without the need for physical presence.",
+          "p2": "The platform provides integrated tools for setting up auctions, managing bids, interacting with users in real time, and handling payments securely through connected gateways."
+        },
+        "features": {
+          "f1": "Integrated auction system using custom APIs.",
+          "f2": "Supports a global audience with scalable infrastructure.",
+          "f3": "Secure integration with payment gateways.",
+          "f4": "Real-time reports and analytics on sales and activity.",
+          "f5": "Live chat between sellers and buyers.",
+          "f6": "Multi-language support for wider reach.",
+          "f7": "Mobile-responsive design for all devices."
+        }
+      },
+      "ecommerce_platform": {
+        "title": "Modern E-Commerce",
+        "category": "Digital Platform",
+        "description": {
+          "p1": "Offers an advanced shopping experience powered by AI, making it easy to link shipments and track them accurately, along with automatic invoice issuance and tracking.",
+          "p2": "The platform combines personalized product recommendations, seamless shipping integration, and real-time data analysis to improve the user experience and operational efficiency."
+        },
+        "features": {
+          "f1": "Supports machine learning for personalized recommendations.",
+          "f2": "Integrates with shipping systems for accurate delivery tracking.",
+          "f3": "Auto-generates and tracks invoices in real time.",
+          "f4": "Uses AI to improve sales performance and decision-making.",
+          "f5": "Handles high-volume transactions via cloud architecture.",
+          "f6": "Ensures data security with advanced encryption.",
+          "f7": "Optimized for all devices with responsive design."
+        }
+      },
+      "beneficiary_services": {
+        "title": "Beneficiary Request and Service Management",
+        "category": "Charity Platform",
+        "description": {
+          "p1": "Specifically designed for charitable organizations, it aims to simplify request management and service delivery efficiently.",
+          "p2": "The platform provides advanced tools for tracking beneficiary requests, organizing them, and communicating seamlessly."
+        },
+        "features": {
+          "f1": "Automatically processes and categorizes requests by priority.",
+          "f2": "Tracks request status from submission to completion.",
+          "f3": "Provides detailed performance and service reports.",
+          "f4": "Integrates with email and SMS for communication.",
+          "f5": "Distributes resources with accurate data tracking.",
+          "f6": "Supports 24/7 availability for service continuity.",
+          "f7": "Dashboard for managing cases and service indicators."
+        }
+      },
+      "learning_platform": {
+        "title": "Multi-Disciplinary E-Learning Platform",
+        "category": "Educational Technology",
+        "description": {
+          "p1": "Provides a unique opportunity for institutions and trainers to join and easily offer their courses.",
+          "p2": "The platform allows linking courses to comprehensive trainer profiles, enabling trainees to know details about the trainer's experience."
+        },
+        "features": {
+          "f1": "Cloud-based system supporting scalable digital infrastructure.",
+          "f2": "Custom course creation with advanced editing tools.",
+          "f3": "Detailed trainer profiles showcasing credentials and expertise.",
+          "f4": "Analytics reports on performance and success rates.",
+          "f5": "Interactive learning with quizzes and simulations.",
+          "f6": "Integration with live webinars and video sessions.",
+          "f7": "Supports multilingual content for broader accessibility."
+        }
+      },
+      "hackathon_platform": {
+        "title": "Hackathon Management",
+        "category": "Event Management",
+        "description": {
+          "p1": "A comprehensive platform to manage innovation competitions and hackathons from start to finish.",
+          "p2": "The system enables participant registration, team formation, judging, scoring, and result announcements with ease."
+        },
+        "features": {
+          "f1": "Online registration and team matching system.",
+          "f2": "Judge panel dashboard with scoring tools.",
+          "f3": "Project submission management with evaluation criteria.",
+          "f4": "Live leaderboard to display scores in real time.",
+          "f5": "Integrated announcements and notifications system.",
+          "f6": "Participant portal with progress tracking.",
+          "f7": "Automated result generation and certification."
+        }
+      },
+      "support_system": {
+        "title": "Ticketing and Support System",
+        "category": "Customer Support",
+        "description": {
+          "p1": "A robust solution for managing technical and customer support requests across departments.",
+          "p2": "The platform streamlines the ticket lifecycle with automation, escalation paths, and reporting tools."
+        },
+        "features": {
+          "f1": "Multi-channel ticket submission (web, email, etc.).",
+          "f2": "Categorization and prioritization of support requests.",
+          "f3": "Internal notes and assignment to support agents.",
+          "f4": "Response time tracking and SLA monitoring.",
+          "f5": "Automated alerts and escalation workflows.",
+          "f6": "Performance and satisfaction reporting.",
+          "f7": "Knowledge base integration for quick solutions."
+        }
+      },
+      "archive_system": {
+        "title": "Archiving and Correspondence Management System",
+        "category": "Enterprise Tools",
+        "description": {
+          "p1": "An offline-ready system designed for managing incoming and outgoing correspondence with high data privacy.",
+          "p2": "The platform offers full control over documents, tracking, reporting, and instant backup—suitable for internal and secure government environments."
+        },
+        "features": {
+          "f1": "Fully functional without internet connection.",
+          "f2": "High-level data privacy and encryption.",
+          "f3": "Unified tracking of all correspondence across departments.",
+          "f4": "Instant reporting and filtering by status, date, or entity.",
+          "f5": "Smart search engine across all archived content.",
+          "f6": "Instant local backups for data recovery.",
+          "f7": "Expandable to include attachments and workflow routing."
+        }
+      }
+    }
+  },
+  "workshops": {
+    "title_1": "Technical",
+    "title_2": "Enrichment",
+    "platform": "Presented by",
+    "about": "About the Workshop",
+    "index": "Topics Covered",
+    "watchVideo": "Watch the Workshop",
+    "videoTitle": "Workshop Video",
+    "items": {
+      "vue": {
+        "title": "Introduction to Vue.js Framework",
+        "platform": "Tuwaiq Academy",
+        "description": {
+          "p1": "This workshop introduces how to build and design modern web interfaces using the popular Vue.js framework.",
+          "p2": "You’ll explore its key features and build your first Vue-based application step by step."
+        },
+        "index": {
+          "i1": "Why choose Vue.js?",
+          "i2": "Project scaffolding using Vue CLI",
+          "i3": "Understanding file and folder structure",
+          "i4": "Building your first component",
+          "i5": "Using props, data, and computed properties",
+          "i6": "Handling loops and conditionals",
+          "i7": "Intro to single-file components (SFC)"
+        }
+      },
+      "resume": {
+        "title": "Build a Resume Website Connected to a Database",
+        "platform": "Google MENA",
+        "description": {
+          "p1": "This workshop walks you through building a personal website that displays your resume using modern HTML/CSS and JavaScript.",
+          "p2": "You’ll learn how to connect the site to a real-time database using Google Sheets, and how to update and manage your content efficiently."
+        },
+        "index": {
+          "i1": "Designing the resume layout and UI",
+          "i2": "Using Google Sheets as a live database",
+          "i3": "Fetching and displaying data with JavaScript",
+          "i4": "Creating an admin form for content updates",
+          "i5": "Deploying the website to the public"
+        }
+      },
+      "animations": {
+        "title": "Animations in Web Design",
+        "platform": "Digital Attaa",
+        "description": {
+          "p1": "This workshop explores how to use animations to enhance user experience in modern web interfaces.",
+          "p2": "Participants will learn how to implement scroll-based animations, transitions, and interactive effects using CSS and JavaScript libraries."
+        },
+        "index": {
+          "i1": "The importance of motion in UX",
+          "i2": "CSS transitions vs. keyframes",
+          "i3": "Using animation libraries like AOS and GSAP",
+          "i4": "Triggering animations on scroll",
+          "i5": "Performance considerations and best practices"
+        }
+      },
+      "prototypes": {
+        "title": "Prototyping for Web and App Design",
+        "platform": "Digital Attaa",
+        "description": {
+          "p1": "This workshop introduces tools and techniques for building effective UI/UX prototypes.",
+          "p2": "Attendees will learn how to turn wireframes into interactive prototypes using Figma and other modern tools."
+        },
+        "index": {
+          "i1": "Understanding the role of prototypes in the design process",
+          "i2": "From wireframe to interactive layout",
+          "i3": "Creating user flows and click-through models",
+          "i4": "Using Figma to simulate functionality",
+          "i5": "Getting feedback before development"
+        }
+      },
+      "digital_presence": {
+        "title": "Simplifying Your Digital Presence",
+        "platform": "TechTrans Webinar",
+        "description": {
+          "p1": "This workshop focuses on the essential tools and platforms that help individuals and businesses establish a strong digital presence.",
+          "p2": "You’ll learn how to build a basic brand online, manage content, and create landing pages without writing code."
+        },
+        "index": {
+          "i1": "What is digital presence and why it matters",
+          "i2": "Low-code and no-code tools overview",
+          "i3": "Building a landing page using Carrd and Notion",
+          "i4": "Integrating with forms and CRMs",
+          "i5": "Free tools for personal branding and visibility"
+        }
+      },
+      "digital_self_sufficiency": {
+        "title": "Digital Self-Sufficiency in the Workplace",
+        "platform": "TechTrans Webinar",
+        "description": {
+          "p1": "This workshop introduces strategies and tools to help teams and professionals reduce dependency on external services and build internal digital capabilities.",
+          "p2": "It focuses on collaborative platforms, automation, and knowledge sharing practices that enhance operational efficiency."
+        },
+        "index": {
+          "i1": "What is digital self-sufficiency?",
+          "i2": "Examples of internal tools vs external dependencies",
+          "i3": "Using Notion, Google Workspace, and other collaboration platforms",
+          "i4": "Automating repetitive tasks without developers",
+          "i5": "Building documentation and internal knowledge bases"
+        }
+      }
+    }
+  },
+  "contact": {
+    "title_1": "Contact",
+    "title_2": "Me",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "twitter": "X Platform",
+    "linkedin": "LinkedIn",
+    "snapchat": "Snapchat",
+    "form": {
+      "title": "Send Your Inquiry",
+      "name": "Name",
+      "email": "Email",
+      "mobile": "Mobile",
+      "optional": "optional",
+      "message": "Message",
+      "send": "Send",
+      "sending": "Sending...",
+      "success": "Your message has been received, I will contact you soon.",
+      "error": "Please Fill Required Fields",
+      "serverError": "An error occurred while sending the message. Please try again later.",
+      "required": "This field is required",
+      "invalid": "invalid email address",
+      "recaptchaError": "Please complete the reCAPTCHA"
+    }
+  },
+  "settings": {
+    "colors": "Unlimited Colors",
+    "cursor": "Magic Cursor",
+    "show": "Show",
+    "hide": "Hide"
+  },
+  "languageSwitcher": {
+    "english": "English",
+    "arabic": "عربي",
+    "switchToLtr": "Switch to English",
+    "switchToRtl": "Switch to Arabic"
+  },
+  "articles": {
+    "title_1": "Technical",
+    "title_2": "Articles",
+    "references": "References",
+    "share": "Share",
+    "about": "About the article",
+    "linkCopied": "Link copied!",
+    "seoTitleSuffix": "Hassan Almalki's Articles",
+    "items": {
+      "claude_ai": {
+        "title": "Claude — A Beginner-Friendly AI Tool for Developers",
+        "date": "May 23, 2025",
+        "content": {
+          "p1": "Claude is an AI assistant developed by Anthropic to help beginner developers write better code, learn faster, and feel more confident. Unlike basic code-completion tools, Claude acts like a teammate that understands your codebase, explains concepts, and suggests practical solutions tailored to your context.",
+          "p2": "One of the most exciting features is Claude Code — a command-line interface that lets you interact with Claude from your terminal. For instance, you can ask it to explain what a specific function does, fix a syntax error, or generate a Git commit message. This turns your terminal into a learning and productivity tool, even if you're just starting out with basic CLI usage.",
+          "p3": "Claude also supports CLAUDE.md — a special file where you can define your project rules or preferences. Claude reads this file and automatically follows your conventions. It's a simple yet powerful way to keep your coding habits consistent, especially when working on group projects or team collaborations.",
+          "p4": "What makes Claude especially helpful for beginners is its ability to explain programming topics like loops, arrays, functions, Git, testing, or APIs. For example, you can ask: \"What's the difference between for and while loops?\" or \"What is a promise in JavaScript?\" and it will give clear explanations with examples and suggestions.",
+          "p5": "Whether you're learning web development or data science, Claude can be your personal tutor. Instead of switching between tutorials and Stack Overflow, you can get live, contextual help right inside your coding environment. That makes it a perfect AI companion for every new developer starting their journey.",
+          "p6": "Getting started with Claude is straightforward. First, visit claude.ai and create a free Anthropic account using your email or Google/Microsoft account. Once registered, you can immediately start chatting with Claude through the web interface without any installation. For beginners, this is the easiest entry point — simply type your programming questions into the chat window and get immediate answers.",
+          "p7": "For those ready to integrate Claude into their workflow, install the Claude command-line tool. Open your terminal and run 'npm install -g claude-cli' if you have Node.js installed, or download the appropriate package for your operating system from Anthropic's developer portal. After installation, authenticate by running 'claude auth login' and following the prompts to connect your account.",
+          "p8": "Using Claude for coding help is intuitive. Try starting with questions like 'How do I read a JSON file in Python?' or 'Debug this function for me: [paste your code]'. You can also use commands like 'claude explain file.js' to get a detailed breakdown of any code file, or 'claude suggest' to get recommendations for improving your code. The more context you provide, the more helpful Claude's responses will be.",
+          "p9": "For team projects, create a CLAUDE.md file in your repository root with statements like 'Always use camelCase for variable names' or 'Include detailed comments for complex functions'. Claude will remember these preferences when you interact with it. You can also use 'claude init' in your project folder to generate a starter CLAUDE.md template with common coding standards.",
+          "p10": "As you grow more comfortable, explore Claude's advanced features like code generation ('claude generate component button--primary'), automated testing ('claude test function calculateTotal'), or even pair programming sessions ('claude pair'). These capabilities transform Claude from a simple Q&A tool into a collaborative development partner that adapts to your growing skills."
+        }
+      },
+      "local_first": {
+        "title": "Local-First Web Apps — Building for Offline First",
+        "date": "May 23, 2025",
+        "content": {
+          "p1": "Traditional web apps assume that users are always online — but that’s not always true. Local-first apps store and process data directly on the user’s device before syncing it to the cloud. This allows users to keep using the app even when the internet is slow or unavailable, and sync everything later.",
+          "p2": "Technologies like IndexedDB allow developers to store complex data such as objects and files in the browser. CRDTs (Conflict-Free Replicated Data Types) help avoid sync conflicts, while Service Workers enable apps to load and work offline by caching pages and resources.",
+          "p3": "This architecture is ideal for users in remote or rural areas, commuters with unstable mobile networks, or professionals working in environments without guaranteed internet. It also boosts user privacy, since data stays on the device until a secure sync is needed.",
+          "p4": "Libraries like PouchDB make it easy to implement local-first behavior with syncing support, while Yjs enables real-time collaboration that works even offline. These tools power apps like Notion, Figma, and offline note editors.",
+          "p5": "If you're building a modern progressive web app (PWA), consider using a local-first approach. Start by saving user inputs locally and building a background sync queue. The result? A fast, resilient, and user-friendly experience that works wherever the user is."
+        }
+      },
+      "prompt_engineering": {
+        "title": "Prompt Engineering — The Developer Skill of the Decade",
+        "date": "May 23, 2025",
+        "content": {
+          "p1": "Prompt engineering is the ability to craft precise, structured inputs that guide AI tools like Claude or ChatGPT to give high-quality results. It’s not about magic words — it’s about clarity, context, and intent. The more clearly you instruct the AI, the more useful and correct its response becomes.",
+          "p2": "AI doesn’t guess what you want — it responds based on how you ask. Instead of saying: 'Build me a website', say: 'Create an HTML page with a blue header and two sections: About and Contact.' This reduces misunderstanding and improves output accuracy. This is called setting context and expectations.",
+          "p3": "Effective techniques include few-shot prompting (showing examples), chain-of-thought prompting (asking the AI to reason step-by-step), and structured constraints. For example: 'Explain each line of this function, then suggest improvements.' These methods turn AI into a collaborative tool rather than just a code generator.",
+          "p4": "Prompt engineering is now a core skill in modern dev teams. Whether writing documentation, test cases, or planning features — AI tools save time if you guide them correctly. Bad prompts lead to wrong answers, so clarity is critical. Learning this skill means fewer bugs and better team communication.",
+          "p5": "If you’re a beginner or an experienced developer, practice writing prompts and reviewing the responses. Was the AI accurate? Did it miss something? Use every mistake as feedback to improve. In a world where AI is becoming standard, prompt engineering is the communication language between humans and machines."
+        }
+      }
+    }
+  },
+  "proposal": {
+    "accessProposal": "Access Proposal",
+    "enterCredentials": "Please enter your proposal ID and password",
+    "enterProposalId": "Enter proposal ID",
+    "enterPassword": "Enter password",
+    "viewProposal": "View Proposal",
+    "logout": "Logout",
+    "accessDenied": "Access denied. Please log in to view this proposal.",
+    "goToLogin": "Go to Login",
+    "passwordPrompt": "Please enter the password to view this proposal",
+    "passwordPlaceholder": "Password",
+    "password": "Password",
+    "submitPassword": "Submit",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "incorrectPassword": "Incorrect password. Please try again.",
+    "notFound": "Proposal not found",
+    "loading": "Loading...",
+    "privateProposal": "Private Proposal",
+    "proposalId": "Proposal ID",
+    "customer": "Customer",
+    "print": "Print",
+    "downloadPdf": "Download PDF",
+    "aboutMe": "About Me",
+    "myProjects": "My Projects",
+    "backToHome": "Back to Home",
+    "unit": "Unit",
+    "item": "Item",
+    "description": "Description",
+    "value": "Value",
+    "currencySAR": "SAR",
+    "contactInfo": "Contact Information",
+    "phone": "Phone",
+    "email": "Email",
+    "twitter": "X Platform",
+    "startDate": "Proposal Start Date",
+    "endDate": "Proposal End Date"
+  }
+}
+

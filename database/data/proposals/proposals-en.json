@@ -1,0 +1,368 @@
+{
+    "proposals": [
+        {
+            "id": "H25_1011_Q5",
+            "password": "96321",
+            "customerName": "Perfume Technology Factory",
+            "title": "Technical and Financial Proposal",
+            "description": "Technical and financial proposal to provide technical support for 3 e-commerce stores set up on Salla platform.",
+            "startDate": "20/11/2025",
+            "endDate": "20/12/2025",
+            "introduction": {
+                "title": "Introduction",
+                "content": [
+                    "I am pleased to present this technical and financial proposal to provide technical support for 3 e-commerce stores that have been set up on the Salla platform.",
+                    "This proposal includes comprehensive details about the technical work and services that will be provided to the stores.",
+                    "We are committed to providing innovative technical solutions that align with global best practices and meet your requirements with precision and high professionalism."
+                ]
+            },
+            "itemsTableTitle": "Items and Services Table",
+            "items": [
+                {
+                    "item": "Design and Brand Identity Implementation",
+                    "description": "Implementing designs that align with the visual identity and employing them correctly within the stores",
+                    "unit": "Monthly",
+                    "value": "Not specified"
+                },
+                {
+                    "item": "User Experience Enhancement",
+                    "description": "Implementing improvements in store interfaces to ensure ease of use and clarity of elements for customers",
+                    "unit": "Monthly",
+                    "value": "Not specified"
+                },
+                {
+                    "item": "Quick Technical Support",
+                    "description": "Providing technical support to address urgent technical issues and communicate with Salla support when needed",
+                    "unit": "Monthly",
+                    "value": "Not specified"
+                },
+                {
+                    "item": "Product Review",
+                    "description": "Reviewing products and ensuring their content effectiveness and appearance in search engines",
+                    "unit": "Monthly",
+                    "value": "Not specified"
+                },
+                {
+                    "item": "Store Performance Improvement Suggestions",
+                    "description": "Providing technical recommendations to help improve store performance and increase operational efficiency",
+                    "unit": "Monthly",
+                    "value": "Not specified"
+                },
+                {
+                    "item": "Monthly Reports",
+                    "description": "Issuing a monthly performance report including store status, completed work, and technical notes",
+                    "unit": "Monthly",
+                    "value": "Not specified"
+                }
+            ],
+            "totalLabel": "Total",
+            "totalValue": "Not specified",
+            "itemsOverviewTitle": "Item Details",
+            "itemsOverview": [
+                {
+                    "title": "Design and Brand Identity Implementation",
+                    "details": [
+                        "Implementing designs compatible with the approved visual identity.",
+                        "Employing identity elements within store pages professionally and consistently.",
+                        "Adjusting colors and fonts to reflect the brand identity.",
+                        "Addressing any design conflicts to ensure a consistent experience."
+                    ]
+                },
+                {
+                    "title": "User Experience Enhancement",
+                    "details": [
+                        "Improving the clarity of elements within store pages to facilitate content access.",
+                        "Rearranging elements when needed to improve ease of use.",
+                        "Improving navigation between pages, sections, and products.",
+                        "Addressing issues related to user experience smoothness.",
+                        "Ensuring interface compatibility with different devices."
+                    ]
+                },
+                {
+                    "title": "Quick Technical Support",
+                    "details": [
+                        "Providing quick technical support to resolve technical failures within stores.",
+                        "Handling issues related to settings, integrations, or files.",
+                        "Communicating with Salla platform support to resolve platform-related issues.",
+                        "Following up on issues until resolved and documenting procedures."
+                    ]
+                },
+                {
+                    "title": "Product Review",
+                    "details": [
+                        "Reviewing product pages to ensure content quality and accuracy.",
+                        "Verifying availability of all necessary information for customers.",
+                        "Ensuring product compliance with basic SEO standards.",
+                        "Reviewing categories and tags and ensuring products are linked correctly."
+                    ]
+                },
+                {
+                    "title": "Store Performance Improvement Suggestions",
+                    "details": [
+                        "Studying the store's technical status and identifying improvement points.",
+                        "Providing recommendations to increase browsing speed and store stability.",
+                        "Suggesting technical modifications that contribute to increasing operational efficiency.",
+                        "Providing advice regarding settings and content organization.",
+                        "Suggestions based on operational experience within the Salla platform."
+                    ]
+                },
+                {
+                    "title": "Monthly Reports",
+                    "details": [
+                        "Issuing a comprehensive monthly report on completed work.",
+                        "Presenting technical cases that have been handled.",
+                        "Providing technical recommendations to improve overall performance.",
+                        "Documenting issues and solutions that have been implemented."
+                    ]
+                }
+            ],
+            "notesTitle": "Notes",
+            "notes": [
+                {
+                    "text": "A 7% commission is calculated based on the monthly sales, and the due amounts are settled quarterly.",
+                    "subNotes": [
+                        "The commission is calculated based on the net actual sales after deducting returned orders.",
+                        "The developer issues an official financial invoice for the due amounts at the end of each quarterly period."
+                    ]
+                },
+                {
+                    "text": "Main platform contents cannot be modified if they violate Salla platform policies",
+                    "subNotes": [
+                        "No work that conflicts with the main platform policies will be executed.",
+                        "Modifications that exceed permissions or require editing internal codes are rejected."
+                    ]
+                },
+                {
+                    "text": "Technical support does not include paying any costs related to service providers or add-ons",
+                    "subNotes": [
+                        "Such as payment gateways.",
+                        "SMS systems.",
+                        "App store add-ons.",
+                        "Third-party services."
+                    ]
+                },
+                {
+                    "text": "Technical support services are provided by a developer holding a freelance license",
+                    "subNote": "All work is executed according to official technical activity regulations"
+                },
+                {
+                    "text": "Technical support does not include content management, product addition, or image design",
+                    "subNotes": [
+                        "Adding or uploading products.",
+                        "Designing or editing images.",
+                        "Writing or drafting text content."
+                    ]
+                },
+                {
+                    "text": "Client Obligations",
+                    "subNotes": [
+                        "Providing necessary permissions and data to perform tasks.",
+                        "Providing the developer with content, visual identity, and required materials.",
+                        "Complying with Salla platform limits and permitted permissions within the system.",
+                        "Providing Salla Pro package when needed for advanced customizations.",
+                        "Responding to inquiries and approvals within a reasonable time.",
+                        "Reviewing work within the specified period and providing feedback.",
+                        "Commitment to content accuracy and commercial regulations."
+                    ]
+                },
+                {
+                    "text": "Developer Obligations",
+                    "subNotes": [
+                        "Executing work within the limits allowed by the Salla platform.",
+                        "Delivering work with required quality and according to the agreed schedule.",
+                        "Maintaining confidentiality of store data.",
+                        "Providing technical support to address apparent errors.",
+                        "Not responsible for failures resulting from Salla updates or payment and shipping issues."
+                    ]
+                },
+                {
+                    "text": "Mutual Obligations Between Both Parties",
+                    "subNotes": [
+                        "Adopting clear communication channels such as WhatsApp or email.",
+                        "Documenting any additional request and approving it before execution.",
+                        "Delivering work through the platform or via detailed report."
+                    ]
+                },
+                {
+                    "text": "Technical support services will commence after the proposal is approved and the service agreement provided by the developer is signed.",
+                    "subNote": "No tasks will be carried out before completing the signing process."
+                }
+            ]
+        },
+        {
+            "id": "12345",
+            "password": "Demo@2024!",
+            "customerName": "Tech Examples Company",
+            "title": "Technical and Financial Proposal - Website Development",
+            "description": "A comprehensive technical and financial proposal for developing a professional website that meets your digital business needs",
+            "introduction": {
+                "title": "Introduction",
+                "content": [
+                    "I am pleased to present this technical and financial proposal for developing a professional website that reflects your company's identity and achieves your digital goals.",
+                    "This proposal includes comprehensive details about technical phases, design, development, and technical support, in addition to competitive prices and implementation timelines.",
+                    "We are committed to providing innovative technical solutions that align with global best practices and meet your requirements with precision and high professionalism."
+                ]
+            },
+            "itemsTableTitle": "Items and Pricing Table",
+            "items": [
+                {
+                    "item": "Design and Interfaces",
+                    "description": "Professional UI/UX design",
+                    "unit": "Page",
+                    "value": "5,000"
+                },
+                {
+                    "item": "Frontend Development",
+                    "description": "Website development using Vue.js and HTML/CSS",
+                    "unit": "Package",
+                    "value": "12,000"
+                },
+                {
+                    "item": "Backend Development",
+                    "description": "Building API and databases",
+                    "unit": "Package",
+                    "value": "15,000"
+                },
+                {
+                    "item": "Admin Dashboard",
+                    "description": "Developing a comprehensive dashboard for content management",
+                    "unit": "System",
+                    "value": "8,000"
+                },
+                {
+                    "item": "SEO Optimization",
+                    "description": "Optimizing the website for search engines and adding meta tags",
+                    "unit": "Package",
+                    "value": "3,000"
+                },
+                {
+                    "item": "Hosting and Domain (1 Year)",
+                    "description": "Cloud hosting + free domain",
+                    "unit": "Annual",
+                    "value": "2,500"
+                },
+                {
+                    "item": "Technical Support (3 Months)",
+                    "description": "Free technical support for 3 months after launch",
+                    "unit": "Package",
+                    "value": "Free"
+                }
+            ],
+            "totalLabel": "Total",
+            "totalValue": "45,500 SAR",
+            "itemsOverviewTitle": "Item Details",
+            "itemsOverview": [
+                {
+                    "title": "Design and Interfaces",
+                    "details": [
+                        "Studying brand identity and analyzing competitors",
+                        "Designing website pages professionally and responsive to all devices",
+                        "Designing a smooth and easy-to-use user experience (UX)",
+                        "Delivering prototypes (Mockups) and final designs in multiple formats",
+                        "Conducting reviews and modifications based on your feedback (up to 3 review rounds)"
+                    ]
+                },
+                {
+                    "title": "Frontend Development",
+                    "details": [
+                        "Developing the website using Vue.js 3 and the latest web technologies",
+                        "Building interactive and fast-responsive interfaces",
+                        "Full compatibility with all browsers and mobile devices",
+                        "Applying modern web standards (HTML5, CSS3, ES6+)",
+                        "Performance optimization and loading speed improvement",
+                        "Support for both Arabic and English with smooth switching"
+                    ]
+                },
+                {
+                    "title": "Backend Development",
+                    "details": [
+                        "Building a secure and scalable API using Node.js and Express",
+                        "Designing a professional database (MongoDB or MySQL as needed)",
+                        "Implementing security and protection standards (Authentication & Authorization)",
+                        "Creating a user and permissions management system",
+                        "Developing email services and notifications",
+                        "Comprehensive documentation for all API endpoints"
+                    ]
+                },
+                {
+                    "title": "Admin Dashboard",
+                    "details": [
+                        "Developing an easy-to-use dashboard for website content management",
+                        "Adding, editing, and deleting pages and sections easily",
+                        "User and permissions management",
+                        "Uploading images and files with direct preview",
+                        "Comprehensive statistics and reports on website performance",
+                        "Arabic/English interface based on admin's choice"
+                    ]
+                },
+                {
+                    "title": "SEO Optimization",
+                    "details": [
+                        "Optimizing website structure for search engines (Google, Bing)",
+                        "Adding meta tags and open graph tags for all pages",
+                        "Creating XML sitemap",
+                        "Adding appropriate robots.txt file",
+                        "Improving loading speed and website performance",
+                        "Applying technical SEO best practices",
+                        "Supporting schema.org for structured data"
+                    ]
+                },
+                {
+                    "title": "Hosting and Domain",
+                    "details": [
+                        "Professional cloud hosting with 99.9% uptime guarantee",
+                        "Free domain for one year (.com, .sa, or others)",
+                        "Free SSL certificate to secure the website",
+                        "Daily automatic backups",
+                        "24/7 technical support from hosting provider"
+                    ]
+                },
+                {
+                    "title": "Technical Support",
+                    "details": [
+                        "Free technical support for 3 months after website launch",
+                        "Quick fixing of errors and technical issues",
+                        "Assistance in using the control panel",
+                        "Regular security updates",
+                        "Technical consultations via email or phone",
+                        "Possibility to extend technical support at competitive prices"
+                    ]
+                }
+            ],
+            "notesTitle": "Notes",
+            "notes": [
+                {
+                    "text": "All mentioned prices are in Saudi Riyals and do not include VAT",
+                    "subNote": "15% VAT will be added to the final invoice as per Saudi tax regulations"
+                },
+                {
+                    "text": "The implementation period is estimated at 6-8 weeks from the project start date",
+                    "subNotes": [
+                        "Week 1-2: Design and wireframes",
+                        "Week 3-5: Frontend and backend development",
+                        "Week 6-7: Testing and quality assurance",
+                        "Week 8: Deployment and training"
+                    ]
+                },
+                {
+                    "text": "Final delivery includes full source code and comprehensive documentation",
+                    "subNotes": [
+                        "Complete source code with comments",
+                        "Technical architecture documentation",
+                        "API documentation with examples",
+                        "User manual and admin guide",
+                        "Deployment and maintenance guide"
+                    ]
+                },
+                {
+                    "text": "A 50% down payment is required before starting work, and the remaining 50% upon delivery",
+                    "subNote": "Payment can be made via bank transfer or other agreed-upon methods"
+                },
+                {
+                    "text": "This proposal is valid for 30 days from the date of issue",
+                    "subNote": "After the validity period, prices and terms are subject to review and adjustment"
+                }
+            ]
+        }
+    ]
+}

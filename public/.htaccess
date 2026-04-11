@@ -1,0 +1,106 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# ============================================================
+# Compression — gzip text/html/css/js/json/svg/xml
+# ============================================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE application/xml application/rss+xml
+</IfModule>
+
+# ============================================================
+# Pre-compressed .gz and .br assets (from vite-plugin-compression2)
+# Serve them directly when the browser accepts the encoding.
+# ============================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Brotli
+    RewriteCond %{HTTP:Accept-Encoding} br
+    RewriteCond %{REQUEST_FILENAME}.br -f
+    RewriteRule ^(.*)$ $1.br [L,QSA]
+
+    # Gzip fallback
+    RewriteCond %{HTTP:Accept-Encoding} gzip
+    RewriteCond %{REQUEST_FILENAME}.gz -f
+    RewriteRule ^(.*)$ $1.gz [L,QSA]
+</IfModule>
+
+<FilesMatch "\.js\.br$">
+    AddType application/javascript .br
+    Header set Content-Encoding br
+</FilesMatch>
+<FilesMatch "\.js\.gz$">
+    AddType application/javascript .gz
+    Header set Content-Encoding gzip
+</FilesMatch>
+<FilesMatch "\.css\.br$">
+    AddType text/css .br
+    Header set Content-Encoding br
+</FilesMatch>
+<FilesMatch "\.css\.gz$">
+    AddType text/css .gz
+    Header set Content-Encoding gzip
+</FilesMatch>
+
+# ============================================================
+# Far-future cache headers for hashed build assets + images + fonts
+# ============================================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Hashed build assets — cache forever
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+
+    # Images
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+
+    # Fonts
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Immutable hash-named build assets
+    <FilesMatch "\.(?:css|js|woff2|woff|ttf|eot|jpe?g|png|gif|webp|avif|svg|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>

@@ -1,0 +1,39 @@
+.phpunit.result.cache
+.phpactor.json
+.phpunit.cache
+.DS_Store
+Thumbs.db
+*.log
+
+# Editors / IDEs
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+.claude
+
+# Env
+.env
+.env.backup
+.env.development
+.env.production
+
+# Composer / Node
+/vendor
+/node_modules
+/auth.json
+_ide_helper.php
+
+# Build / Cache
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+dist
+.vite-ssg-temp
+
+# Project notes
+ai_tasks
+deploy_output.txt
