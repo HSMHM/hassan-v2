@@ -1610,11 +1610,18 @@ p { margin-block: 0.75rem; }
     font-size: 1rem;
 }
 
-/* Phone numbers are always LTR regardless of page direction */
-a[href^="tel:"] {
+/* Phone numbers are always LTR regardless of page direction.
+   Scoped so it doesn't break layout when the entire card is a <a tel:> */
+a[href^="tel:"]:not(.contact-card) {
     direction: ltr;
     unicode-bidi: embed;
     display: inline-block;
+}
+
+/* Keep the number characters LTR inside the card while preserving the
+   parent RTL alignment (right-aligned in AR pages, left in EN pages) */
+.contact-card[href^="tel:"] .contact-card__value {
+    unicode-bidi: plaintext;
 }
 
 .workshop__meta-icon i {
