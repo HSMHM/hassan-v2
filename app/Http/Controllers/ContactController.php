@@ -55,18 +55,28 @@ class ContactController extends Controller
             'locale' => $locale,
         ]);
 
-        Mail::to('hassan@almlaki.sa')
-            ->queue(new ContactFormSubmission([
-                ...$validated,
-                'ip_address' => $request->ip(),
-                'locale' => $locale,
-            ]));
+        $adminEmail = site_setting('email', 'hassan@almalki.sa');
 
-        Mail::to($validated['email'])
-            ->queue(new ContactFormConfirmation([
-                ...$validated,
-                'locale' => $locale,
-            ]));
+        try {
+            Mail::to($adminEmail)
+                ->sendNow(new ContactFormSubmission([
+                    ...$validated,
+                    'ip_address' => $request->ip(),
+                    'locale' => $locale,
+                ]));
+        } catch (\Throwable $e) {
+            Log::error('Admin contact notification failed: '.$e->getMessage());
+        }
+
+        try {
+            Mail::to($validated['email'])
+                ->sendNow(new ContactFormConfirmation([
+                    ...$validated,
+                    'locale' => $locale,
+                ]));
+        } catch (\Throwable $e) {
+            Log::error('Sender confirmation failed: '.$e->getMessage());
+        }
 
         $this->logToGoogleSheets($validated);
 
