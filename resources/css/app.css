@@ -1928,8 +1928,14 @@ a[href^="tel:"]:not(.contact-card) {
     }
 
     .header__nav-list,
-    .header__lang {
+    .header__nav .header__lang {
         display: none;
+    }
+
+    /* Mobile menu language switcher — match the link style */
+    .mobile-menu .header__lang {
+        display: inline-block;
+        margin-block-start: 0.5rem;
     }
 
     .header__hamburger {
