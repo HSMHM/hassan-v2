@@ -72,6 +72,11 @@ return [
         'webhook_secret' => env('WHAPI_WEBHOOK_SECRET'),
     ],
 
+    'turnstile' => [
+        'site_key' => env('TURNSTILE_SITE_KEY'),
+        'secret_key' => env('TURNSTILE_SECRET_KEY'),
+    ],
+
     'google_sheets' => [
         'webhook_url' => env('GOOGLE_SHEETS_WEBHOOK_URL'),
         'secret' => env('GOOGLE_SHEETS_SECRET'),

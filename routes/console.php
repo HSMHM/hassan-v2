@@ -20,3 +20,7 @@ if (env('NEWS_DISCOVERY_ENABLED', false)) {
 Schedule::call(fn () => app(InstagramService::class)->refreshToken())
     ->monthly()
     ->name('instagram:refresh-token');
+
+// Monthly backup + cleanup (spatie/laravel-backup)
+Schedule::command('backup:clean')->monthlyOn(1, '01:00')->name('backup:clean');
+Schedule::command('backup:run')->monthlyOn(1, '02:00')->name('backup:run');

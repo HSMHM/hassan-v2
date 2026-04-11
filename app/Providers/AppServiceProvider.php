@@ -2,9 +2,16 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendAdminLoginAlert;
+use App\Models\Article;
+use App\Models\Portfolio;
+use App\Models\Workshop;
+use App\Observers\ContentObserver;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +25,14 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Admin login security alert
+        Event::listen(Login::class, SendAdminLoginAlert::class);
+
+        // Content creation notifications
+        Article::observe(ContentObserver::class);
+        Workshop::observe(ContentObserver::class);
+        Portfolio::observe(ContentObserver::class);
+
         RateLimiter::for('contact', function (Request $request) {
             return Limit::perHour(5)->by($request->ip())->response(function () {
                 return back()->withErrors([

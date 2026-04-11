@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
+use App\Mail\ContactFormConfirmation;
 use App\Mail\ContactFormSubmission;
 use App\Models\ContactMessage;
 use App\Services\SeoService;
@@ -54,10 +55,16 @@ class ContactController extends Controller
             'locale' => $locale,
         ]);
 
-        Mail::to(config('mail.from.address'))
+        Mail::to('hassan@almlaki.sa')
             ->queue(new ContactFormSubmission([
                 ...$validated,
                 'ip_address' => $request->ip(),
+                'locale' => $locale,
+            ]));
+
+        Mail::to($validated['email'])
+            ->queue(new ContactFormConfirmation([
+                ...$validated,
                 'locale' => $locale,
             ]));
 

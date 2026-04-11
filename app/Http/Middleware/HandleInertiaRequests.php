@@ -70,6 +70,7 @@ class HandleInertiaRequests extends Middleware
                 'skills' => $pick($isAr ? 'skills_ar' : 'skills_en'),
                 'languages' => $pick($isAr ? 'languages_ar' : 'languages_en'),
             ],
+            'turnstile_site_key' => config('services.turnstile.site_key'),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

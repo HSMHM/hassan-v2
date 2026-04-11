@@ -41,11 +41,12 @@ class SecurityHeaders
         $response->headers->set(
             'Content-Security-Policy',
             "default-src 'self'; ".
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://kit.fontawesome.com https://ka-f.fontawesome.com; ".
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://kit.fontawesome.com https://ka-f.fontawesome.com https://challenges.cloudflare.com; ".
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://ka-f.fontawesome.com; ".
             "font-src 'self' data: https://fonts.gstatic.com https://ka-f.fontawesome.com; ".
             "img-src 'self' data: blob: https:; ".
-            "connect-src 'self' https://ka-f.fontawesome.com; ".
+            "connect-src 'self' https://ka-f.fontawesome.com https://challenges.cloudflare.com; ".
+            "frame-src https://challenges.cloudflare.com; ".
             "frame-ancestors 'self'; ".
             "base-uri 'self'; ".
             "form-action 'self'"

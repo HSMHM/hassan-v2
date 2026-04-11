@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import ContactCard from '@/Components/ContactCard.vue';
@@ -35,13 +35,76 @@ const form = useForm({
     mobile: '',
     message: '',
     website: '',
+    cf_turnstile_response: '',
+});
+
+const turnstileSiteKey = computed(() => page.props.turnstile_site_key || '');
+const turnstileContainer = ref(null);
+let turnstileWidgetId = null;
+
+function loadTurnstileScript() {
+    if (typeof window === 'undefined') return;
+    if (window.turnstile || document.getElementById('cf-turnstile-script')) return;
+    const s = document.createElement('script');
+    s.id = 'cf-turnstile-script';
+    s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+}
+
+function renderTurnstile() {
+    if (! turnstileSiteKey.value || ! turnstileContainer.value || ! window.turnstile) return;
+    turnstileWidgetId = window.turnstile.render(turnstileContainer.value, {
+        sitekey: turnstileSiteKey.value,
+        theme: 'dark',
+        language: locale.value === 'ar' ? 'ar' : 'en',
+        callback: (token) => {
+            form.cf_turnstile_response = token;
+        },
+        'expired-callback': () => {
+            form.cf_turnstile_response = '';
+        },
+        'error-callback': () => {
+            form.cf_turnstile_response = '';
+        },
+    });
+}
+
+onMounted(() => {
+    if (! turnstileSiteKey.value) return;
+    loadTurnstileScript();
+    const poll = setInterval(() => {
+        if (window.turnstile) {
+            clearInterval(poll);
+            renderTurnstile();
+        }
+    }, 120);
+    setTimeout(() => clearInterval(poll), 10000);
+});
+
+onBeforeUnmount(() => {
+    if (turnstileWidgetId !== null && window.turnstile?.remove) {
+        window.turnstile.remove(turnstileWidgetId);
+    }
 });
 
 const submit = () => {
     const url = locale.value === 'en' ? '/en/contact' : '/contact';
     form.post(url, {
         preserveScroll: true,
-        onSuccess: () => form.reset(),
+        onSuccess: () => {
+            form.reset();
+            if (turnstileWidgetId !== null && window.turnstile?.reset) {
+                window.turnstile.reset(turnstileWidgetId);
+            }
+        },
+        onError: () => {
+            if (turnstileWidgetId !== null && window.turnstile?.reset) {
+                window.turnstile.reset(turnstileWidgetId);
+                form.cf_turnstile_response = '';
+            }
+        },
     });
 };
 </script>
@@ -180,6 +243,13 @@ const submit = () => {
                                 autocomplete="off"
                                 aria-hidden="true"
                             />
+
+                            <div v-if="turnstileSiteKey" class="form-group">
+                                <div ref="turnstileContainer" class="cf-turnstile"></div>
+                                <span v-if="form.errors.cf_turnstile_response" class="form-error">
+                                    {{ form.errors.cf_turnstile_response }}
+                                </span>
+                            </div>
 
                             <button
                                 type="submit"

@@ -473,9 +473,116 @@
 
 .fi-simple-main {
     background-color: var(--ha-bg-elevated) !important;
-    border: 1px solid var(--ha-border) !important;
+    border: 1px solid var(--ha-border-strong) !important;
     border-radius: 16px !important;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Login card — all text white */
+.fi-simple-main,
+.fi-simple-main * {
+    color: var(--ha-text) !important;
+}
+
+.fi-simple-main .fi-fo-field-wrp-label,
+.fi-simple-main .fi-fo-field-wrp label,
+.fi-simple-main label {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.fi-simple-main h1,
+.fi-simple-main h2,
+.fi-simple-main .fi-simple-header-heading {
+    color: #ffffff !important;
+    font-family: 'Almarai', sans-serif !important;
+    font-weight: 800;
+}
+
+.fi-simple-main .fi-simple-header-subheading,
+.fi-simple-main p {
+    color: var(--ha-text-light) !important;
+}
+
+/* Login form inputs */
+.fi-simple-main .fi-input,
+.fi-simple-main .fi-input-wrp,
+.fi-simple-main input[type="email"],
+.fi-simple-main input[type="password"],
+.fi-simple-main input[type="text"] {
+    background-color: var(--ha-bg) !important;
+    border: 1px solid var(--ha-border-strong) !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+}
+
+.fi-simple-main .fi-input:focus,
+.fi-simple-main .fi-input-wrp:focus-within,
+.fi-simple-main input:focus {
+    border-color: var(--ha-accent) !important;
+    box-shadow: 0 0 0 3px rgba(160, 160, 160, 0.15) !important;
+    outline: none !important;
+}
+
+.fi-simple-main input::placeholder {
+    color: var(--ha-text-muted) !important;
+    opacity: 0.7;
+}
+
+/* Login button */
+.fi-simple-main .fi-btn {
+    background-color: #ffffff !important;
+    color: var(--ha-bg) !important;
+    border-radius: 8px !important;
+    font-weight: 700;
+    font-family: 'Almarai', sans-serif !important;
+    transition: all 0.2s ease;
+}
+
+.fi-simple-main .fi-btn:hover {
+    background-color: var(--ha-accent) !important;
+    color: var(--ha-bg) !important;
+    transform: translateY(-1px);
+}
+
+/* Checkbox / remember me */
+.fi-simple-main .fi-checkbox-input {
+    background-color: var(--ha-bg) !important;
+    border-color: var(--ha-border-strong) !important;
+}
+
+.fi-simple-main .fi-checkbox-input:checked {
+    background-color: var(--ha-accent) !important;
+    border-color: var(--ha-accent) !important;
+}
+
+/* Links inside login card */
+.fi-simple-main a {
+    color: var(--ha-accent) !important;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.fi-simple-main a:hover {
+    color: #ffffff !important;
+}
+
+/* Logo area in login */
+.fi-simple-layout .fi-logo {
+    color: #ffffff !important;
+    font-family: 'Almarai', sans-serif !important;
+    font-weight: 800;
+}
+
+/* Input icons (e.g. eye icon for password toggle) */
+.fi-simple-main .fi-input-wrp-suffix,
+.fi-simple-main .fi-input-wrp-prefix,
+.fi-simple-main .fi-icon-btn {
+    color: var(--ha-text-muted) !important;
+}
+
+.fi-simple-main .fi-icon-btn:hover {
+    color: #ffffff !important;
 }
 
 /* ==========================================================================

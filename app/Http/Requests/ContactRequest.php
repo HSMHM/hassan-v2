@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\TurnstileToken;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
@@ -18,6 +19,7 @@ class ContactRequest extends FormRequest
             'email' => ['required', 'email:rfc,dns', 'max:255'],
             'mobile' => ['nullable', 'string', 'regex:/^[\d\+\-\(\)\s]{7,20}$/'],
             'message' => ['required', 'string', 'min:10', 'max:5000'],
+            'cf_turnstile_response' => ['nullable', 'string', new TurnstileToken],
         ];
     }
 
