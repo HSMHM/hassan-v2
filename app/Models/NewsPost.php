@@ -44,4 +44,9 @@ class NewsPost extends Model
     {
         return $query->where('status', 'published');
     }
+
+    public function safeContent(string $locale): string
+    {
+        return clean_html($locale === 'en' ? $this->content_en : $this->content_ar);
+    }
 }

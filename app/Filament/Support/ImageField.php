@@ -26,6 +26,10 @@ class ImageField
             ->image()
             ->imageEditor()
             ->maxSize(5120)
+            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+            ->imageResizeMode('cover')
+            ->imageResizeTargetWidth(1200)
+            ->imageResizeTargetHeight(630)
             ->imagePreviewHeight('180')
             ->visibility('public')
             // DB ← Filament: prepend /uploads/ so the stored path is an absolute public URL

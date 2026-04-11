@@ -43,9 +43,16 @@ class ArticleController extends Controller
             ->take(3)
             ->get();
 
+        // Purify HTML content before it reaches the browser (XSS defense for
+        // Claude-generated news and any other HTML-bearing fields).
+        $articlePayload = array_merge($article->toArray(), [
+            'content_ar' => $article->safeContent('ar'),
+            'content_en' => $article->safeContent('en'),
+        ]);
+
         return Inertia::render('Articles/Show', [
             'meta' => SeoService::forArticle($article, $locale),
-            'article' => $article,
+            'article' => $articlePayload,
             'reading_time' => reading_time(
                 $locale === 'en' ? $article->content_en : $article->content_ar,
                 $locale

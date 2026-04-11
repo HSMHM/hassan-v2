@@ -1,11 +1,19 @@
 <?php
 
 use App\Models\SiteSetting;
+use App\Support\ContentCleaner;
 
 if (! function_exists('site_setting')) {
     function site_setting(string $key, $default = null): ?string
     {
         return SiteSetting::get($key, $default);
+    }
+}
+
+if (! function_exists('clean_html')) {
+    function clean_html(?string $dirty): string
+    {
+        return ContentCleaner::clean($dirty);
     }
 }
 

@@ -47,4 +47,9 @@ class Article extends Model
     {
         return $locale === 'en' ? $this->slug_en : $this->slug_ar;
     }
+
+    public function safeContent(string $locale): string
+    {
+        return clean_html($locale === 'en' ? $this->content_en : $this->content_ar);
+    }
 }

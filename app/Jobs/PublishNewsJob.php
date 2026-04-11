@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\NewsPost;
+use App\Services\OgImageService;
 use App\Services\SocialPublishService;
 use App\Services\WhatsAppService;
 use Illuminate\Bus\Queueable;
@@ -26,7 +27,7 @@ class PublishNewsJob implements ShouldQueue
         private array $platforms = ['twitter', 'instagram', 'linkedin', 'snapchat', 'whatsapp'],
     ) {}
 
-    public function handle(SocialPublishService $publisher, WhatsAppService $wa): void
+    public function handle(SocialPublishService $publisher, WhatsAppService $wa, OgImageService $og): void
     {
         $post = NewsPost::findOrFail($this->postId);
 
@@ -35,6 +36,25 @@ class PublishNewsJob implements ShouldQueue
         }
 
         $post->update(['status' => 'publishing']);
+
+        // Auto-generate the horizontal OG image if missing.
+        // The vertical story image is generated on-demand inside SocialPublishService.
+        if (! $post->og_image) {
+            try {
+                $ogPath = $og->generateOg(
+                    $post->title_ar,
+                    $post->source_title ?: 'almalki.sa',
+                    $post->id
+                );
+                $post->update(['og_image' => $ogPath]);
+                $post->refresh();
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('OG image generation failed', [
+                    'post_id' => $post->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
 
         $results = $publisher->publish($post, $this->platforms);
 
