@@ -16,7 +16,7 @@ class TrackPageVisit
         // Only track GET requests to HTML pages, skip assets/api/admin
         if (
             $request->isMethod('GET') &&
-            !$request->is('admin*', 'api*', 'livewire*', 'sitemap*', 'robots*') &&
+            !$request->is('cpanel*', 'admin*', 'api*', 'livewire*', 'sitemap*', 'robots*') &&
             !$request->ajax() &&
             $response->getStatusCode() === 200
         ) {

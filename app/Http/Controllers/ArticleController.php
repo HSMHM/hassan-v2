@@ -46,6 +46,10 @@ class ArticleController extends Controller
         return Inertia::render('Articles/Show', [
             'meta' => SeoService::forArticle($article, $locale),
             'article' => $article,
+            'reading_time' => reading_time(
+                $locale === 'en' ? $article->content_en : $article->content_ar,
+                $locale
+            ),
             'related' => $related,
             'breadcrumbs' => [
                 ['label' => $locale === 'ar' ? 'الرئيسية' : 'Home', 'url' => $locale === 'ar' ? '/' : '/en'],

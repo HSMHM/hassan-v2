@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Mail\NewContentPublished;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 
 class ContentObserver
@@ -18,7 +19,31 @@ class ContentObserver
 
         $contentType = $typeMap[get_class($model)] ?? 'content';
 
-        Mail::to('hassan@almlaki.sa')
+        Mail::to('hassan@almalki.sa')
             ->queue(new NewContentPublished($model, $contentType));
+
+        $this->flushContentCache();
+    }
+
+    public function updated(Model $model): void
+    {
+        $this->flushContentCache();
+    }
+
+    public function deleted(Model $model): void
+    {
+        $this->flushContentCache();
+    }
+
+    private function flushContentCache(): void
+    {
+        foreach (['ar', 'en'] as $locale) {
+            Cache::forget("home_articles_{$locale}");
+            Cache::forget("home_portfolios_{$locale}");
+            Cache::forget("home_workshops_{$locale}");
+            Cache::forget("list_articles_{$locale}_page_1");
+            Cache::forget("list_portfolios_{$locale}_page_1");
+            Cache::forget("list_workshops_{$locale}_page_1");
+        }
     }
 }

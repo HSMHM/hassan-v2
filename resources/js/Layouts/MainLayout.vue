@@ -5,6 +5,7 @@ import Header from '@/Components/Layout/Header.vue';
 import Footer from '@/Components/Layout/Footer.vue';
 import Breadcrumb from '@/Components/Layout/Breadcrumb.vue';
 import Waves from '@/Components/Layout/Waves.vue';
+import CookieConsent from '@/Components/CookieConsent.vue';
 
 const props = defineProps({
     meta: { type: Object, default: () => ({}) },
@@ -69,6 +70,13 @@ const jsonLdString = computed(() => {
             />
         </template>
 
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            :title="locale === 'ar' ? 'خلاصة المقالات' : 'Articles Feed'"
+            :href="locale === 'ar' ? '/feed' : '/en/feed'"
+        />
+
         <component v-if="jsonLdString" :is="'script'" type="application/ld+json" v-html="jsonLdString" />
     </Head>
 
@@ -80,4 +88,5 @@ const jsonLdString = computed(() => {
         <slot />
     </main>
     <Footer />
+    <CookieConsent />
 </template>

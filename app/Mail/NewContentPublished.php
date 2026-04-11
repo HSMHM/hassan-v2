@@ -51,7 +51,7 @@ class NewContentPublished extends Mailable implements ShouldQueue
             'portfolio' => 'portfolios',
         ];
         $resourceSlug = $resourceMap[$this->contentType] ?? $this->contentType;
-        $adminUrl = config('app.url') . "/admin/{$resourceSlug}/{$model->id}/edit";
+        $adminUrl = config('app.url') . "/cpanel/{$resourceSlug}/{$model->id}/edit";
 
         if ($cover && ! str_starts_with($cover, 'http')) {
             $cover = config('app.url') . $cover;

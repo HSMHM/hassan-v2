@@ -3,7 +3,9 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\SitemapController;
@@ -14,21 +16,29 @@ use Illuminate\Support\Facades\Route;
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 Route::get('/robots.txt', [SitemapController::class, 'robots']);
 
+// RSS feeds
+Route::get('/feed', [FeedController::class, 'articles'])->name('feed.ar');
+Route::get('/en/feed', [FeedController::class, 'articles'])->name('feed.en');
+
 // Filament admin locale switcher
-Route::get('/admin/locale/{locale}', function (string $locale) {
+Route::get('/cpanel/locale/{locale}', function (string $locale) {
     if (in_array($locale, ['ar', 'en'], true)) {
         session(['filament_locale' => $locale]);
         cookie()->queue('filament_locale', $locale, 60 * 24 * 365);
     }
 
-    return redirect('/admin');
+    return redirect('/cpanel');
 })->name('filament.admin.locale');
+
+// Legacy redirect — anyone bookmarking /admin goes to /cpanel
+Route::get('/admin/{any?}', fn () => redirect('/cpanel'))->where('any', '.*');
 
 // Arabic (default, no prefix)
 Route::get('/', [HomeController::class, 'index'])->name('home.ar');
 Route::get('/about', [AboutController::class, 'index'])->name('about.ar');
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.ar');
 Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show.ar');
+Route::get('/search', [SearchController::class, 'index'])->name('search.ar');
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.ar');
 Route::get('/portfolio/{slug}', [PortfolioController::class, 'show'])->name('portfolio.show.ar');
 Route::get('/workshops', [WorkshopController::class, 'index'])->name('workshops.ar');
@@ -52,6 +62,7 @@ Route::prefix('en')->group(function () {
     Route::get('/about', [AboutController::class, 'index'])->name('about.en');
     Route::get('/articles', [ArticleController::class, 'index'])->name('articles.en');
     Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show.en');
+    Route::get('/search', [SearchController::class, 'index'])->name('search.en');
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.en');
     Route::get('/portfolio/{slug}', [PortfolioController::class, 'show'])->name('portfolio.show.en');
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('workshops.en');

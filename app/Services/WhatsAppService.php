@@ -54,6 +54,27 @@ class WhatsAppService
 
     public function sendNewsForApproval(NewsPost $post): void
     {
+        $msg = $this->buildApprovalMessage($post);
+
+        try {
+            $this->sendMessage($msg);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('WhatsApp send failed, falling back to email', [
+                'post_id' => $post->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            \Illuminate\Support\Facades\Mail::raw($msg, function ($m) {
+                $m->to('hassan@almalki.sa')
+                    ->subject('📰 خبر جديد بانتظار موافقتك');
+            });
+        }
+
+        $post->update(['sent_to_whatsapp_at' => now(), 'status' => 'pending']);
+    }
+
+    private function buildApprovalMessage(NewsPost $post): string
+    {
         $msg = "🔔 *خبر جديد عن Claude AI*\n\n";
         $msg .= "📌 *{$post->title_ar}*\n{$post->excerpt_ar}\n\n";
         $msg .= "---\n📌 *{$post->title_en}*\n{$post->excerpt_en}\n\n";
@@ -68,7 +89,6 @@ class WhatsAppService
         $msg .= "🐦📸 *publish x ig* → تويتر + انستقرام\n";
         $msg .= "\n🆔 #{$post->id}";
 
-        $this->sendMessage($msg);
-        $post->update(['sent_to_whatsapp_at' => now(), 'status' => 'pending']);
+        return $msg;
     }
 }

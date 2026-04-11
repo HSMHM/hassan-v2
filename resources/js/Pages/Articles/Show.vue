@@ -9,6 +9,7 @@ import ShareButtons from '@/Components/ShareButtons.vue';
 const props = defineProps({
     meta: Object,
     article: Object,
+    reading_time: String,
     related: Array,
     breadcrumbs: Array,
 });
@@ -23,7 +24,9 @@ const content = computed(() => (isAr.value ? props.article.content_ar : props.ar
 const cover = computed(() => (isAr.value ? props.article.cover_image : (props.article.cover_image_en || props.article.cover_image)));
 
 const extras = computed(() => props.article.extras || {});
-const readingTime = computed(() => extras.value[isAr.value ? 'reading_time_ar' : 'reading_time_en']);
+const readingTime = computed(() =>
+    extras.value[isAr.value ? 'reading_time_ar' : 'reading_time_en'] || props.reading_time
+);
 const takeaways = computed(() => extras.value[isAr.value ? 'takeaways_ar' : 'takeaways_en'] ?? []);
 const tags = computed(() => extras.value[isAr.value ? 'tags_ar' : 'tags_en'] ?? []);
 const references = computed(() => extras.value.references ?? []);
