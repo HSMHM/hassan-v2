@@ -38,12 +38,9 @@ class ContentObserver
     private function flushContentCache(): void
     {
         foreach (['ar', 'en'] as $locale) {
-            Cache::forget("home_articles_{$locale}");
-            Cache::forget("home_portfolios_{$locale}");
-            Cache::forget("home_workshops_{$locale}");
-            Cache::forget("list_articles_{$locale}_page_1");
-            Cache::forget("list_portfolios_{$locale}_page_1");
-            Cache::forget("list_workshops_{$locale}_page_1");
+            Cache::forget("home_articles_{$locale}_v2");
+            Cache::forget("home_portfolios_{$locale}_v2");
+            Cache::forget("home_workshops_{$locale}_v2");
         }
     }
 }

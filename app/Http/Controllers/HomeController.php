@@ -16,14 +16,16 @@ class HomeController extends Controller
     {
         $locale = app()->getLocale();
 
-        $articles = Cache::remember("home_articles_{$locale}", 3600, fn () =>
-            Article::published()->latest('published_at')->take(6)->get()
+        // Cache the arrays, not the Eloquent collections, so Inertia always
+        // serializes to a JS array even if the cache driver changes format.
+        $articles = Cache::remember("home_articles_{$locale}_v2", 3600, fn () =>
+            Article::published()->latest('published_at')->take(6)->get()->toArray()
         );
-        $portfolios = Cache::remember("home_portfolios_{$locale}", 3600, fn () =>
-            Portfolio::published()->orderBy('sort_order')->take(6)->get()
+        $portfolios = Cache::remember("home_portfolios_{$locale}_v2", 3600, fn () =>
+            Portfolio::published()->orderBy('sort_order')->take(6)->get()->toArray()
         );
-        $workshops = Cache::remember("home_workshops_{$locale}", 3600, fn () =>
-            Workshop::published()->orderByDesc('event_date')->take(6)->get()
+        $workshops = Cache::remember("home_workshops_{$locale}_v2", 3600, fn () =>
+            Workshop::published()->orderByDesc('event_date')->take(6)->get()->toArray()
         );
 
         return Inertia::render('Home/Index', [

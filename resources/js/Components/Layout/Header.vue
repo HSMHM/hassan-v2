@@ -78,13 +78,6 @@ const homeHref = computed(() => `${prefix.value}/`);
                         </Link>
                     </li>
                 </ul>
-                <Link
-                    :href="locale === 'ar' ? '/search' : '/en/search'"
-                    class="header__search"
-                    :aria-label="locale === 'ar' ? 'البحث' : 'Search'"
-                >
-                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-                </Link>
                 <LanguageSwitcher />
             </nav>
 
