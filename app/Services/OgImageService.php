@@ -15,7 +15,7 @@ class OgImageService
     public function __construct()
     {
         $this->manager = new ImageManager(new Driver);
-        $this->fontPath = storage_path('app/fonts/Cairo.ttf');
+        $this->fontPath = resource_path('fonts/Cairo.ttf');
     }
 
     /**
