@@ -36,17 +36,16 @@ class OgImageService
             return;
         }
 
-        $logo = $this->manager->read($this->logoPath);
+        $logo = $this->manager->decodePath($this->logoPath);
 
         // Scale logo to desired height, keep aspect ratio
-        $ratio = $height / $logo->height();
-        $logo->resize((int) ($logo->width() * $ratio), $height);
+        $logo->scale(height: $height);
 
         // Center the logo
         $x = $centerX - (int) ($logo->width() / 2);
         $y = $centerY - (int) ($logo->height() / 2);
 
-        $image->place($logo, 'top-left', $x, $y);
+        $image->insert($logo, $x, $y);
     }
 
     /**

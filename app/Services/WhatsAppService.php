@@ -14,7 +14,7 @@ class WhatsAppService
     public function __construct()
     {
         $this->token = config('services.whapi.token');
-        $this->baseUrl = config('services.whapi.base_url');
+        $this->baseUrl = rtrim(config('services.whapi.base_url'), '/');
     }
 
     /**
