@@ -22,6 +22,11 @@ class WebhookController extends Controller
         $messages = $request->input('messages', []);
 
         foreach ($messages as $message) {
+            // Skip messages sent BY the system (from_me = true) to prevent loops
+            if (! empty($message['from_me'])) {
+                continue;
+            }
+
             $from = $message['from'] ?? '';
             $text = trim($message['text']['body'] ?? '');
 
@@ -47,8 +52,7 @@ class WebhookController extends Controller
         }
 
         if (! $post) {
-            $wa->sendMessage('⚠️ لا يوجد خبر بانتظار الموافقة.');
-
+            // Silently ignore — don't waste Whapi tokens replying to every random message
             return;
         }
 
