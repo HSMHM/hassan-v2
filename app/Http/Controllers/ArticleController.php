@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\NewsPost;
 use App\Services\SeoService;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,7 +25,7 @@ class ArticleController extends Controller
                 'مقالات تقنية حول تطوير الويب والذكاء الاصطناعي وإدارة المنتجات الرقمية.',
                 'Technical articles on web development, AI, and digital product management.'
             ),
-            'articles' => Article::published()->latest('published_at')->paginate(12),
+            'articles' => $this->paginatedArticles(),
             'breadcrumbs' => [
                 ['label' => $locale === 'ar' ? 'الرئيسية' : 'Home', 'url' => $locale === 'ar' ? '/' : '/en'],
                 ['label' => $locale === 'ar' ? 'المقالات' : 'Articles'],
@@ -68,5 +69,23 @@ class ArticleController extends Controller
                 ['label' => $article->title($locale)],
             ],
         ]);
+    }
+
+    private function paginatedArticles(int $perPage = 12): LengthAwarePaginator
+    {
+        $currentPage = request()->integer('page', 1);
+
+        $all = Article::published()->get()
+            ->concat(NewsPost::whereIn('status', ['published', 'partial'])->get())
+            ->sortByDesc('published_at')
+            ->values();
+
+        return new LengthAwarePaginator(
+            $all->forPage($currentPage, $perPage)->values(),
+            $all->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url()]
+        );
     }
 }
