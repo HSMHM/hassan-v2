@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             SiteSettingsSeeder::class,
             ProposalSeeder::class,
             ContentSeeder::class,
+            PageSeeder::class,
         ]);
     }
 }
