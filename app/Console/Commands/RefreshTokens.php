@@ -32,10 +32,7 @@ class RefreshTokens extends Command
                 continue;
             }
 
-            PlatformToken::updateOrCreate(
-                ['platform' => $p],
-                ['access_token' => $newToken, 'expires_at' => now()->addDays(60)]
-            );
+            PlatformToken::saveToken($p, $newToken, null, now()->addDays(60));
 
             $this->info("  → stored new token for {$p}");
         }
