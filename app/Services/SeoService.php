@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Article;
+use App\Models\NewsPost;
 use App\Models\Portfolio;
 use App\Models\Workshop;
 use Illuminate\Support\Facades\URL;
@@ -126,7 +127,7 @@ class SeoService
         return $meta;
     }
 
-    public static function forArticle(Article $article, string $locale): array
+    public static function forArticle(Article|NewsPost $article, string $locale): array
     {
         $meta = self::base($locale, "articles/{$article->slug_ar}", [], "articles/{$article->slug_en}");
         $title = $locale === 'ar' ? ($article->meta_title_ar ?: $article->title_ar) : ($article->meta_title_en ?: $article->title_en);
@@ -136,7 +137,7 @@ class SeoService
         $meta['og']['title'] = $title;
         $meta['og']['description'] = $desc;
         $meta['og']['type'] = 'article';
-        $cover = $locale === 'ar' ? $article->cover_image : ($article->cover_image_en ?: $article->cover_image);
+        $cover = $article->coverImage($locale);
         if ($cover && ($absolute = self::absoluteUrl($cover))) {
             $meta['og']['image'] = $absolute;
             $meta['twitter']['image'] = $absolute;

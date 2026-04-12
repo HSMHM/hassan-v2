@@ -45,6 +45,21 @@ class NewsPost extends Model
         return $query->where('status', 'published');
     }
 
+    public function title(string $locale): string
+    {
+        return $locale === 'en' ? $this->title_en : $this->title_ar;
+    }
+
+    public function slug(string $locale): string
+    {
+        return $locale === 'en' ? $this->slug_en : $this->slug_ar;
+    }
+
+    public function coverImage(string $locale): ?string
+    {
+        return $this->og_image ?: $this->cover_image;
+    }
+
     public function safeContent(string $locale): string
     {
         return clean_html($locale === 'en' ? $this->content_en : $this->content_ar);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\NewsPost;
 use App\Services\SeoService;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -35,10 +36,13 @@ class ArticleController extends Controller
     {
         $locale = app()->getLocale();
         $column = $locale === 'en' ? 'slug_en' : 'slug_ar';
-        $article = Article::published()->where($column, $slug)->firstOr(fn () => throw new NotFoundHttpException);
+
+        $article = Article::published()->where($column, $slug)->first()
+            ?? NewsPost::where($column, $slug)->whereIn('status', ['published', 'partial'])->first()
+            ?? throw new NotFoundHttpException;
 
         $related = Article::published()
-            ->where('id', '!=', $article->id)
+            ->where('id', '!=', $article instanceof Article ? $article->id : 0)
             ->latest('published_at')
             ->take(3)
             ->get();
