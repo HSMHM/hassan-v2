@@ -13,12 +13,15 @@ class OgImageService
 
     private string $fontPath;
 
+    private string $logoPath;
+
     private Arabic $arabic;
 
     public function __construct()
     {
         $this->manager = new ImageManager(new Driver);
         $this->fontPath = resource_path('fonts/Cairo.ttf');
+        $this->logoPath = public_path('img/logo/logo.png');
         $this->arabic = new Arabic;
     }
 
@@ -27,20 +30,34 @@ class OgImageService
         return $this->arabic->utf8Glyphs($text);
     }
 
+    private function placeLogo($image, int $centerX, int $centerY, int $height): void
+    {
+        if (! file_exists($this->logoPath)) {
+            return;
+        }
+
+        $logo = $this->manager->read($this->logoPath);
+
+        // Scale logo to desired height, keep aspect ratio
+        $ratio = $height / $logo->height();
+        $logo->resize((int) ($logo->width() * $ratio), $height);
+
+        // Center the logo
+        $x = $centerX - (int) ($logo->width() / 2);
+        $y = $centerY - (int) ($logo->height() / 2);
+
+        $image->place($logo, 'top-left', $x, $y);
+    }
+
     /**
      * Generate the horizontal 1200x630 Open Graph / Instagram card.
-     * Returns a public-relative path like /uploads/og/123-og.jpg.
      */
     public function generateOg(string $title, ?string $subtitle, int|string $id): string
     {
         $image = $this->manager->createImage(1200, 630)->fill('121212');
 
-        $image->text($this->shapeArabic('Hassan Almalki  |  حسان المالكي'), 600, 85, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(22);
-            $font->color('757575');
-            $font->align('center', 'center');
-        });
+        // Logo at top center
+        $this->placeLogo($image, 600, 75, 50);
 
         $wrapped = wordwrap($title, 35, "\n", true);
         $image->text($this->shapeArabic($wrapped), 600, 315, function (FontFactory $font) {
@@ -52,7 +69,7 @@ class OgImageService
         });
 
         if ($subtitle) {
-            $image->text($this->shapeArabic($subtitle), 600, 540, function (FontFactory $font) {
+            $image->text($this->shapeArabic($subtitle), 600, 520, function (FontFactory $font) {
                 $font->filename($this->fontPath);
                 $font->size(20);
                 $font->color('a0a0a0');
@@ -60,7 +77,52 @@ class OgImageService
             });
         }
 
+        $image->text('almalki.sa', 600, 590, function (FontFactory $font) {
+            $font->filename($this->fontPath);
+            $font->size(16);
+            $font->color('555555');
+            $font->align('center', 'center');
+        });
+
         return $this->saveImage($image, "{$id}-og.jpg");
+    }
+
+    /**
+     * Generate the English version of the OG image (1200x630).
+     */
+    public function generateOgEn(string $title, ?string $subtitle, int|string $id): string
+    {
+        $image = $this->manager->createImage(1200, 630)->fill('121212');
+
+        // Logo at top center
+        $this->placeLogo($image, 600, 75, 50);
+
+        $wrapped = wordwrap($title, 40, "\n", true);
+        $image->text($wrapped, 600, 315, function (FontFactory $font) {
+            $font->filename($this->fontPath);
+            $font->size(42);
+            $font->color('ffffff');
+            $font->align('center', 'center');
+            $font->lineHeight(1.5);
+        });
+
+        if ($subtitle) {
+            $image->text($subtitle, 600, 520, function (FontFactory $font) {
+                $font->filename($this->fontPath);
+                $font->size(20);
+                $font->color('a0a0a0');
+                $font->align('center', 'center');
+            });
+        }
+
+        $image->text('almalki.sa', 600, 590, function (FontFactory $font) {
+            $font->filename($this->fontPath);
+            $font->size(16);
+            $font->color('555555');
+            $font->align('center', 'center');
+        });
+
+        return $this->saveImage($image, "{$id}-og-en.jpg");
     }
 
     /**
@@ -70,15 +132,19 @@ class OgImageService
     {
         $image = $this->manager->createImage(1080, 1920)->fill('121212');
 
-        $image->text('Hassan Almalki', 540, 180, function (FontFactory $font) {
+        // Logo at top center
+        $this->placeLogo($image, 540, 170, 60);
+
+        // "تم اضافة خبر بعنوان :" above the title
+        $image->text($this->shapeArabic('تم إضافة خبر بعنوان :'), 540, 750, function (FontFactory $font) {
             $font->filename($this->fontPath);
-            $font->size(34);
-            $font->color('757575');
+            $font->size(28);
+            $font->color('a0a0a0');
             $font->align('center', 'center');
         });
 
         $wrapped = wordwrap($title, 22, "\n", true);
-        $image->text($this->shapeArabic($wrapped), 540, 900, function (FontFactory $font) {
+        $image->text($this->shapeArabic($wrapped), 540, 920, function (FontFactory $font) {
             $font->filename($this->fontPath);
             $font->size(56);
             $font->color('ffffff');
@@ -86,10 +152,18 @@ class OgImageService
             $font->lineHeight(1.5);
         });
 
-        $image->text($this->shapeArabic($subtitle ?: 'almalki.sa'), 540, 1780, function (FontFactory $font) {
+        // "في موقعي" below the title
+        $image->text($this->shapeArabic('في موقعي'), 540, 1100, function (FontFactory $font) {
             $font->filename($this->fontPath);
-            $font->size(30);
+            $font->size(28);
             $font->color('a0a0a0');
+            $font->align('center', 'center');
+        });
+
+        $image->text('almalki.sa', 540, 1780, function (FontFactory $font) {
+            $font->filename($this->fontPath);
+            $font->size(24);
+            $font->color('555555');
             $font->align('center', 'center');
         });
 
@@ -103,19 +177,8 @@ class OgImageService
     {
         $image = $this->manager->createImage(1200, 630)->fill('121212');
 
-        $image->text($this->shapeArabic('حسان المالكي'), 600, 240, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(72);
-            $font->color('ffffff');
-            $font->align('center', 'center');
-        });
-
-        $image->text('Hassan Almalki', 600, 335, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(38);
-            $font->color('a0a0a0');
-            $font->align('center', 'center');
-        });
+        // Logo centered
+        $this->placeLogo($image, 600, 250, 80);
 
         $image->text($this->shapeArabic('مطور تطبيقات ويب ومدير منتجات تقنية'), 600, 430, function (FontFactory $font) {
             $font->filename($this->fontPath);

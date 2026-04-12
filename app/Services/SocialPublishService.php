@@ -37,9 +37,13 @@ class SocialPublishService
             : null;
 
         if (in_array('twitter', $platforms, true)) {
-            $results['twitter_ar'] = $this->tryPublish('Twitter AR', fn () => $this->twitter->tweet($socialAr));
+            $results['twitter_ar'] = $ogImage
+                ? $this->tryPublish('Twitter AR', fn () => $this->twitter->tweetWithImage($socialAr, $ogImage))
+                : $this->tryPublish('Twitter AR', fn () => $this->twitter->tweet($socialAr));
             sleep(5);
-            $results['twitter_en'] = $this->tryPublish('Twitter EN', fn () => $this->twitter->tweet($socialEn));
+            $results['twitter_en'] = $ogImage
+                ? $this->tryPublish('Twitter EN', fn () => $this->twitter->tweetWithImage($socialEn, $ogImage))
+                : $this->tryPublish('Twitter EN', fn () => $this->twitter->tweet($socialEn));
             sleep(5);
         }
 
@@ -52,18 +56,21 @@ class SocialPublishService
         }
 
         if (in_array('linkedin', $platforms, true)) {
-            $results['linkedin_ar'] = $this->tryPublish('LinkedIn AR', fn () => $this->linkedin->sharePost($socialAr, $post->getArticleUrl('ar'), $post->title_ar));
+            $liTextAr = "{$post->title_ar}\n\n{$post->excerpt_ar}\n\n📖 {$post->getArticleUrl('ar')}";
+            $liTextEn = "{$post->title_en}\n\n{$post->excerpt_en}\n\n📖 {$post->getArticleUrl('en')}";
+
+            $results['linkedin_ar'] = $this->tryPublish('LinkedIn AR', fn () => $this->linkedin->sharePost($liTextAr, $post->getArticleUrl('ar'), $post->title_ar, $ogImage));
             sleep(5);
-            $results['linkedin_en'] = $this->tryPublish('LinkedIn EN', fn () => $this->linkedin->sharePost($socialEn, $post->getArticleUrl('en'), $post->title_en));
+            $results['linkedin_en'] = $this->tryPublish('LinkedIn EN', fn () => $this->linkedin->sharePost($liTextEn, $post->getArticleUrl('en'), $post->title_en, $ogImage));
             sleep(5);
         }
 
         if (in_array('snapchat', $platforms, true)) {
-            // Snapchat stories require 9:16. Generate a fresh vertical story image.
+            // Snapchat stories require 9:16 vertical image.
             try {
                 $storyPath = $this->og->generateStory($post->title_ar, 'almalki.sa', $post->id);
                 $storyUrl = rtrim(config('app.url'), '/').$storyPath;
-                $results['snapchat'] = $this->tryPublish('Snapchat', fn () => $this->snapchat->postStory($storyUrl, $post->title_ar));
+                $results['snapchat'] = $this->tryPublish('Snapchat', fn () => $this->snapchat->postStory($storyUrl));
             } catch (\Throwable $e) {
                 Log::warning('Snapchat story image failed', ['error' => $e->getMessage()]);
                 $results['snapchat'] = ['status' => 'skipped', 'reason' => 'Story image failed'];
@@ -72,8 +79,10 @@ class SocialPublishService
         }
 
         if (in_array('whatsapp', $platforms, true)) {
-            $statusText = "📢 {$post->title_ar}\n\n{$post->excerpt_ar}\n\n📖 {$post->getArticleUrl('ar')}";
-            $results['whatsapp_status'] = $this->tryPublish('WhatsApp Status', fn () => $this->whatsapp->postTextStatus($statusText));
+            $caption = "📖 {$post->getArticleUrl('ar')}";
+            $results['whatsapp_status'] = $ogImage
+                ? $this->tryPublish('WhatsApp Status', fn () => $this->whatsapp->postImageStatus($ogImage, $caption))
+                : $this->tryPublish('WhatsApp Status', fn () => $this->whatsapp->postTextStatus($caption));
         }
 
         $results['website'] = [

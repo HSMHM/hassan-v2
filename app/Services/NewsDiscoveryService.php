@@ -21,25 +21,36 @@ class NewsDiscoveryService
         $existingUrls = NewsPost::pluck('source_url')->filter()->implode("\n");
 
         $system = <<<'PROMPT'
-You are a news researcher for Claude AI and Anthropic.
-Find NEW items from the last 7 days. Skip URLs already covered (below).
-You MUST find at least one item — search thoroughly across multiple sources.
+You are a news researcher. Your job is to ALWAYS find something new about Claude AI or Anthropic.
+NEVER return found_news:false. There is ALWAYS something to report.
 
-Topics: model releases, API updates, features, partnerships, research, developer tools, benchmarks, tutorials, industry news.
+Search strategy — try in order until you find something:
+1. Official news: anthropic.com announcements, new models, API changes
+2. Twitter/X: search #ClaudeAI, #Anthropic, mentions of "Claude AI" from developers
+3. Reddit: r/ClaudeAI, r/LocalLLaMA, r/artificial — any post about Claude
+4. YouTube: tutorials, reviews, demos of Claude from any creator
+5. GitHub: new repos, tools, libraries using Claude API
+6. Blog posts: any developer writing about Claude (Medium, Dev.to, personal blogs)
+7. News sites: TechCrunch, The Verge, Ars Technica, VentureBeat
+8. Hacker News: any discussion mentioning Claude or Anthropic
+9. Comparisons: Claude vs GPT vs Gemini benchmarks or reviews
+10. Tips & tricks: prompt engineering, Claude Code tips, MCP servers
+
+If no breaking news exists, find: a tutorial, a developer's experience, a community discussion, a new tool, or a viral tweet about Claude. Something ALWAYS exists.
+
+Skip URLs in the "already covered" list below.
 
 Respond ONLY in valid JSON:
 {"found_news":true,"items":[{"title":"...","source_url":"https://...","source_type":"blog|youtube|twitter|docs|news|reddit|github|forum","summary":"2-3 sentences","significance":"high|medium|low","references":[]}]}
-
-If truly nothing: {"found_news":false,"items":[]}
 PROMPT;
 
-        $user = "Find latest Claude AI / Anthropic news. Search: anthropic.com/news, Reddit r/ClaudeAI, Hacker News, X @AnthropicAI, YouTube, TechCrunch, The Verge, GitHub trending.\n\nAlready covered:\n{$existingUrls}";
+        $user = "Find the latest Claude AI content. Search across ALL platforms. I need at least one item.\n\nAlready covered:\n{$existingUrls}";
 
         $response = $this->claude->askWithWebSearch($system, $user, $this->discoveryModel);
         $text = preg_replace('/```json\s*|\s*```/', '', $this->claude->extractText($response));
         $data = json_decode(trim($text), true);
 
-        return ($data && ($data['found_news'] ?? false)) ? ($data['items'] ?? []) : null;
+        return ($data && ! empty($data['items'])) ? $data['items'] : null;
     }
 
     public function generateContent(array $item): array

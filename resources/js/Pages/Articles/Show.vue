@@ -21,7 +21,12 @@ const isAr = computed(() => locale.value === 'ar');
 const title = computed(() => (isAr.value ? props.article.title_ar : props.article.title_en));
 const excerpt = computed(() => (isAr.value ? props.article.excerpt_ar : props.article.excerpt_en));
 const content = computed(() => (isAr.value ? props.article.content_ar : props.article.content_en));
-const cover = computed(() => (isAr.value ? props.article.cover_image : (props.article.cover_image_en || props.article.cover_image)));
+const cover = computed(() => {
+    if (isAr.value) {
+        return props.article.og_image || props.article.cover_image;
+    }
+    return props.article.og_image_en || props.article.cover_image_en || props.article.og_image || props.article.cover_image;
+});
 
 const extras = computed(() => props.article.extras || {});
 const readingTime = computed(() =>

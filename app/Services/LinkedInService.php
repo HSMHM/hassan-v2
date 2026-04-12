@@ -17,15 +17,34 @@ class LinkedInService
         $this->personUrn = config('services.linkedin.person_urn');
     }
 
-    public function sharePost(string $text, ?string $articleUrl = null, ?string $articleTitle = null): array
+    public function sharePost(string $text, ?string $articleUrl = null, ?string $articleTitle = null, ?string $imageUrl = null): array
     {
+        $mediaCategory = 'NONE';
+        $media = [];
+
+        if ($imageUrl) {
+            $mediaCategory = 'IMAGE';
+            $media[] = [
+                'status' => 'READY',
+                'originalUrl' => $imageUrl,
+                'title' => ['text' => $articleTitle ?? ''],
+            ];
+        } elseif ($articleUrl) {
+            $mediaCategory = 'ARTICLE';
+            $media[] = [
+                'status' => 'READY',
+                'originalUrl' => $articleUrl,
+                'title' => ['text' => $articleTitle ?? ''],
+            ];
+        }
+
         $payload = [
             'author' => $this->personUrn,
             'lifecycleState' => 'PUBLISHED',
             'specificContent' => [
                 'com.linkedin.ugc.ShareContent' => [
                     'shareCommentary' => ['text' => $text],
-                    'shareMediaCategory' => $articleUrl ? 'ARTICLE' : 'NONE',
+                    'shareMediaCategory' => $mediaCategory,
                 ],
             ],
             'visibility' => [
@@ -33,14 +52,8 @@ class LinkedInService
             ],
         ];
 
-        if ($articleUrl) {
-            $payload['specificContent']['com.linkedin.ugc.ShareContent']['media'] = [
-                [
-                    'status' => 'READY',
-                    'originalUrl' => $articleUrl,
-                    'title' => ['text' => $articleTitle ?? ''],
-                ],
-            ];
+        if ($media) {
+            $payload['specificContent']['com.linkedin.ugc.ShareContent']['media'] = $media;
         }
 
         $response = Http::withHeaders([

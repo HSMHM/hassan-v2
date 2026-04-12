@@ -38,23 +38,35 @@ class PublishNewsJob implements ShouldQueue
 
         $post->update(['status' => 'publishing']);
 
+        $og = app(OgImageService::class);
+
         if (! $post->og_image) {
             try {
-                $og = app(OgImageService::class);
                 $ogPath = $og->generateOg(
                     $post->title_ar,
                     $post->source_title ?? 'almalki.sa',
                     $post->id
                 );
                 $post->update(['og_image' => $ogPath]);
-                $post->refresh();
             } catch (\Throwable $e) {
-                Log::warning('OG image generation failed', [
-                    'post_id' => $post->id,
-                    'error' => $e->getMessage(),
-                ]);
+                Log::warning('OG image (AR) generation failed', ['error' => $e->getMessage()]);
             }
         }
+
+        if (! $post->og_image_en) {
+            try {
+                $ogEnPath = $og->generateOgEn(
+                    $post->title_en,
+                    $post->source_title ?? 'almalki.sa',
+                    $post->id
+                );
+                $post->update(['og_image_en' => $ogEnPath]);
+            } catch (\Throwable $e) {
+                Log::warning('OG image (EN) generation failed', ['error' => $e->getMessage()]);
+            }
+        }
+
+        $post->refresh();
 
         $results = $publisher->publish($post, $this->platforms);
 

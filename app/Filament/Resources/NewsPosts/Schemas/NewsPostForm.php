@@ -133,7 +133,8 @@ class NewsPostForm
                         ->required()
                         ->disabled(),
                     TextInput::make('cover_image')->label($isAr() ? 'صورة الغلاف' : 'Cover Image'),
-                    TextInput::make('og_image')->label('OG Image'),
+                    TextInput::make('og_image')->label('OG Image (AR)'),
+                    TextInput::make('og_image_en')->label('OG Image (EN)'),
                     DateTimePicker::make('published_at')->label($isAr() ? 'تاريخ النشر' : 'Published At'),
                     DateTimePicker::make('approved_at')->label($isAr() ? 'تاريخ الموافقة' : 'Approved At'),
                 ])

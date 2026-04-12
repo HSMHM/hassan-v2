@@ -27,13 +27,8 @@ class SnapchatService
         $response = Http::withHeaders([
             'Authorization' => "Bearer {$this->accessToken}",
             'Content-Type' => 'application/json',
-        ])->post("https://adsapi.snapchat.com/v1/organizations/{$this->organizationId}/public_profiles/{$this->profileId}/stories", [
-            'stories' => [
-                [
-                    'media_id' => $mediaId,
-                    'caption' => $caption,
-                ],
-            ],
+        ])->post("https://businessapi.snapchat.com/v1/public_profiles/{$this->profileId}/stories", [
+            'media_id' => $mediaId,
         ]);
 
         if (! $response->successful()) {
