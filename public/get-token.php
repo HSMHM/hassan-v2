@@ -19,16 +19,16 @@ if (isset($_GET['code'])) {
     $data = json_decode($r1, true);
     echo "<h2>Short-lived:</h2><pre>$r1</pre>";
     
-    // Step 2: Exchange for long-lived token (POST not GET)
+// Step 2: POST (Meta changed from GET to POST despite docs saying GET)
     if (isset($data['access_token'])) {
         $ch2 = curl_init('https://graph.instagram.com/access_token');
         curl_setopt($ch2, CURLOPT_POST, true);
         curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch2, CURLOPT_POSTFIELDS, http_build_query([
+        curl_setopt($ch2, CURLOPT_POSTFIELDS, [
             'grant_type'    => 'ig_exchange_token',
             'client_secret' => $secret,
             'access_token'  => $data['access_token'],
-        ]));
+        ]);
         $r2 = curl_exec($ch2);
         curl_close($ch2);
         
