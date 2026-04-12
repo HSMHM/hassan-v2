@@ -8,7 +8,7 @@ if (isset($_GET['code'])) {
     // Use array = multipart/form-data (like -F in curl)
     curl_setopt($ch, CURLOPT_POSTFIELDS, [
         'client_id'     => '1328943562382309',
-        'client_secret' => '034bccf05019b5c967c7cd40464d4a23',
+        'client_secret' => '2f1a345657457b5521ea18e1b900da98',
         'grant_type'    => 'authorization_code',
         'redirect_uri'  => 'https://almalki.sa/get-token.php',
         'code'          => $code,
