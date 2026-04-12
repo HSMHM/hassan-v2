@@ -46,38 +46,47 @@ class OgImageService
     }
 
     /**
-     * Horizontal 1200x630 — Twitter + LinkedIn.
+     * Build an image with: logo + title + almalki.sa
      */
-    public function generateOg(string $title, ?string $subtitle, int|string $id): string
+    private function buildImage(int $w, int $h, string $title, bool $isArabic, array $positions): string
     {
-        $image = $this->manager->createImage(1200, 630)->fill('121212');
+        $image = $this->manager->createImage($w, $h)->fill('121212');
 
-        $this->placeLogo($image, 600, 80, 50);
+        // Logo
+        $this->placeLogo($image, $positions['logoX'], $positions['logoY'], $positions['logoH']);
 
-        $wrapped = wordwrap($title, 35, "\n", true);
-        $image->text($this->shapeArabic($wrapped), 600, 310, function (FontFactory $font) {
+        // Title
+        $wrapped = wordwrap($title, $positions['titleWrap'], "\n", true);
+        $displayTitle = $isArabic ? $this->shapeArabic($wrapped) : $wrapped;
+        $image->text($displayTitle, $positions['titleX'], $positions['titleY'], function (FontFactory $font) use ($positions) {
             $font->filename($this->fontPath);
-            $font->size(44);
+            $font->size($positions['titleSize']);
             $font->color('ffffff');
             $font->align('center', 'center');
-            $font->lineHeight(1.8);
+            $font->lineHeight(2.0);
         });
 
-        if ($subtitle) {
-            $image->text($this->shapeArabic($subtitle), 600, 510, function (FontFactory $font) {
-                $font->filename($this->fontPath);
-                $font->size(20);
-                $font->color('a0a0a0');
-                $font->align('center', 'center');
-            });
-        }
-
-        $image->text('almalki.sa', 600, 580, function (FontFactory $font) {
+        // Domain
+        $image->text('almalki.sa', $positions['domainX'], $positions['domainY'], function (FontFactory $font) use ($positions) {
             $font->filename($this->fontPath);
-            $font->size(22);
+            $font->size($positions['domainSize']);
             $font->color('666666');
             $font->align('center', 'center');
         });
+
+        return $image;
+    }
+
+    /**
+     * Horizontal 1200x630 Arabic — Twitter.
+     */
+    public function generateOg(string $title, ?string $subtitle, int|string $id): string
+    {
+        $image = $this->buildImage(1200, 630, $title, true, [
+            'logoX' => 600, 'logoY' => 90, 'logoH' => 50,
+            'titleX' => 600, 'titleY' => 310, 'titleWrap' => 30, 'titleSize' => 44,
+            'domainX' => 600, 'domainY' => 580, 'domainSize' => 24,
+        ]);
 
         return $this->saveImage($image, "{$id}-og.jpg");
     }
@@ -87,71 +96,25 @@ class OgImageService
      */
     public function generateOgEn(string $title, ?string $subtitle, int|string $id): string
     {
-        $image = $this->manager->createImage(1200, 630)->fill('121212');
-
-        $this->placeLogo($image, 600, 80, 50);
-
-        $wrapped = wordwrap($title, 40, "\n", true);
-        $image->text($wrapped, 600, 310, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(42);
-            $font->color('ffffff');
-            $font->align('center', 'center');
-            $font->lineHeight(1.8);
-        });
-
-        if ($subtitle) {
-            $image->text($subtitle, 600, 510, function (FontFactory $font) {
-                $font->filename($this->fontPath);
-                $font->size(20);
-                $font->color('a0a0a0');
-                $font->align('center', 'center');
-            });
-        }
-
-        $image->text('almalki.sa', 600, 580, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(22);
-            $font->color('666666');
-            $font->align('center', 'center');
-        });
+        $image = $this->buildImage(1200, 630, $title, false, [
+            'logoX' => 600, 'logoY' => 90, 'logoH' => 50,
+            'titleX' => 600, 'titleY' => 310, 'titleWrap' => 35, 'titleSize' => 42,
+            'domainX' => 600, 'domainY' => 580, 'domainSize' => 24,
+        ]);
 
         return $this->saveImage($image, "{$id}-og-en.jpg");
     }
 
     /**
-     * Tall 1080x1350 (4:5) — Instagram + WhatsApp + Website.
+     * Tall 1080x1350 (4:5) Arabic — Instagram + WhatsApp + Website AR.
      */
     public function generateTall(string $title, ?string $subtitle, int|string $id): string
     {
-        $image = $this->manager->createImage(1080, 1350)->fill('121212');
-
-        $this->placeLogo($image, 540, 150, 65);
-
-        $wrapped = wordwrap($title, 24, "\n", true);
-        $image->text($this->shapeArabic($wrapped), 540, 620, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(52);
-            $font->color('ffffff');
-            $font->align('center', 'center');
-            $font->lineHeight(2.0);
-        });
-
-        if ($subtitle) {
-            $image->text($this->shapeArabic($subtitle), 540, 1050, function (FontFactory $font) {
-                $font->filename($this->fontPath);
-                $font->size(22);
-                $font->color('a0a0a0');
-                $font->align('center', 'center');
-            });
-        }
-
-        $image->text('almalki.sa', 540, 1280, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(26);
-            $font->color('666666');
-            $font->align('center', 'center');
-        });
+        $image = $this->buildImage(1080, 1350, $title, true, [
+            'logoX' => 540, 'logoY' => 180, 'logoH' => 65,
+            'titleX' => 540, 'titleY' => 620, 'titleWrap' => 22, 'titleSize' => 52,
+            'domainX' => 540, 'domainY' => 1270, 'domainSize' => 28,
+        ]);
 
         return $this->saveImage($image, "{$id}-tall.jpg");
     }
@@ -161,34 +124,11 @@ class OgImageService
      */
     public function generateTallEn(string $title, ?string $subtitle, int|string $id): string
     {
-        $image = $this->manager->createImage(1080, 1350)->fill('121212');
-
-        $this->placeLogo($image, 540, 150, 65);
-
-        $wrapped = wordwrap($title, 28, "\n", true);
-        $image->text($wrapped, 540, 620, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(48);
-            $font->color('ffffff');
-            $font->align('center', 'center');
-            $font->lineHeight(2.0);
-        });
-
-        if ($subtitle) {
-            $image->text($subtitle, 540, 1050, function (FontFactory $font) {
-                $font->filename($this->fontPath);
-                $font->size(22);
-                $font->color('a0a0a0');
-                $font->align('center', 'center');
-            });
-        }
-
-        $image->text('almalki.sa', 540, 1280, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(26);
-            $font->color('666666');
-            $font->align('center', 'center');
-        });
+        $image = $this->buildImage(1080, 1350, $title, false, [
+            'logoX' => 540, 'logoY' => 180, 'logoH' => 65,
+            'titleX' => 540, 'titleY' => 620, 'titleWrap' => 26, 'titleSize' => 48,
+            'domainX' => 540, 'domainY' => 1270, 'domainSize' => 28,
+        ]);
 
         return $this->saveImage($image, "{$id}-tall-en.jpg");
     }
@@ -200,7 +140,7 @@ class OgImageService
     {
         $image = $this->manager->createImage(1080, 1920)->fill('121212');
 
-        $this->placeLogo($image, 540, 200, 70);
+        $this->placeLogo($image, 540, 220, 70);
 
         $image->text($this->shapeArabic('تم إضافة خبر بعنوان :'), 540, 750, function (FontFactory $font) {
             $font->filename($this->fontPath);
@@ -209,10 +149,10 @@ class OgImageService
             $font->align('center', 'center');
         });
 
-        $wrapped = wordwrap($title, 20, "\n", true);
+        $wrapped = wordwrap($title, 18, "\n", true);
         $image->text($this->shapeArabic($wrapped), 540, 960, function (FontFactory $font) {
             $font->filename($this->fontPath);
-            $font->size(54);
+            $font->size(52);
             $font->color('ffffff');
             $font->align('center', 'center');
             $font->lineHeight(2.0);

@@ -25,8 +25,8 @@ class WhatsAppService
         $response = Http::withHeaders([
             'Authorization' => "Bearer {$this->token}",
             'Content-Type' => 'application/json',
-        ])->post("{$this->baseUrl}/stories/text", [
-            'body' => $text,
+        ])->post("{$this->baseUrl}/stories/send/text", [
+            'caption' => $text,
         ]);
 
         if (! $response->successful()) {
@@ -44,7 +44,7 @@ class WhatsAppService
         $response = Http::withHeaders([
             'Authorization' => "Bearer {$this->token}",
             'Content-Type' => 'application/json',
-        ])->post("{$this->baseUrl}/stories/media", [
+        ])->post("{$this->baseUrl}/stories/send/media", [
             'media' => ['link' => $imageUrl],
             'caption' => $caption,
         ]);
