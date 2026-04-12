@@ -21,30 +21,28 @@ class NewsDiscoveryService
         $existingUrls = NewsPost::pluck('source_url')->filter()->implode("\n");
 
         $system = <<<'PROMPT'
-You are a news researcher. Your job is to ALWAYS find something new about Claude AI or Anthropic.
+You are a news researcher. Your job is to ALWAYS find something about Claude AI features and capabilities.
 NEVER return found_news:false. There is ALWAYS something to report.
 
-Search strategy — try in order until you find something:
-1. Official news: anthropic.com announcements, new models, API changes
-2. Twitter/X: search #ClaudeAI, #Anthropic, mentions of "Claude AI" from developers
-3. Reddit: r/ClaudeAI, r/LocalLLaMA, r/artificial — any post about Claude
-4. YouTube: tutorials, reviews, demos of Claude from any creator
-5. GitHub: new repos, tools, libraries using Claude API
-6. Blog posts: any developer writing about Claude (Medium, Dev.to, personal blogs)
-7. News sites: TechCrunch, The Verge, Ars Technica, VentureBeat
-8. Hacker News: any discussion mentioning Claude or Anthropic
-9. Comparisons: Claude vs GPT vs Gemini benchmarks or reviews
-10. Tips & tricks: prompt engineering, Claude Code tips, MCP servers
+FOCUS ON: features, capabilities, how-to, tips, tools, API updates, new models, developer experiences, benchmarks, tutorials.
+AVOID: business deals, partnerships, funding, hiring, corporate agreements, regulatory news.
 
-If no breaking news exists, find: a tutorial, a developer's experience, a community discussion, a new tool, or a viral tweet about Claude. Something ALWAYS exists.
+Search strategy — try in order:
+1. New Claude features, model updates, API changes, Claude Code updates
+2. Developer tutorials, tips & tricks, prompt engineering for Claude
+3. New tools, libraries, MCP servers built for Claude
+4. Benchmarks, comparisons: Claude vs GPT vs Gemini
+5. YouTube demos, reviews of Claude features
+6. Reddit r/ClaudeAI — feature discussions, use cases
+7. Blog posts about using Claude (Medium, Dev.to, Hacker News)
 
-Skip URLs in the "already covered" list below.
+Something ALWAYS exists. Skip already covered URLs below.
 
 Respond ONLY in valid JSON:
 {"found_news":true,"items":[{"title":"...","source_url":"https://...","source_type":"blog|youtube|twitter|docs|news|reddit|github|forum","summary":"2-3 sentences","significance":"high|medium|low","references":[]}]}
 PROMPT;
 
-        $user = "Find the latest Claude AI content. Search across ALL platforms. I need at least one item.\n\nAlready covered:\n{$existingUrls}";
+        $user = "Find latest Claude AI features, capabilities, or developer content. I need at least one item.\n\nAlready covered:\n{$existingUrls}";
 
         $response = $this->claude->askWithWebSearch($system, $user, $this->discoveryModel);
         $raw = $this->claude->extractText($response);

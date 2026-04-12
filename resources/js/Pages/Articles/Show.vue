@@ -23,9 +23,9 @@ const excerpt = computed(() => (isAr.value ? props.article.excerpt_ar : props.ar
 const content = computed(() => (isAr.value ? props.article.content_ar : props.article.content_en));
 const cover = computed(() => {
     if (isAr.value) {
-        return props.article.og_image || props.article.cover_image;
+        return props.article.tall_image || props.article.og_image || props.article.cover_image;
     }
-    return props.article.og_image_en || props.article.cover_image_en || props.article.og_image || props.article.cover_image;
+    return props.article.tall_image_en || props.article.og_image_en || props.article.cover_image_en || props.article.og_image || props.article.cover_image;
 });
 
 const extras = computed(() => props.article.extras || {});

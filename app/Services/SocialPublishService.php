@@ -19,38 +19,19 @@ class SocialPublishService
     public function publish(NewsPost $post, array $platforms): array
     {
         $results = [];
+        $baseUrl = rtrim(config('app.url'), '/');
 
         $socialAr = str_replace('[ARTICLE_URL_AR]', $post->getArticleUrl('ar'), $post->social_post_ar);
         $socialEn = str_replace('[ARTICLE_URL_EN]', $post->getArticleUrl('en'), $post->social_post_en);
 
-        // Generate OG images if missing
-        if (! $post->og_image) {
-            try {
-                $ogPath = $this->og->generateOg($post->title_ar, $post->source_title ?: 'almalki.sa', $post->id);
-                $post->update(['og_image' => $ogPath]);
-            } catch (\Throwable $e) {
-                Log::warning('OG image (AR) generation failed', ['error' => $e->getMessage()]);
-            }
-        }
+        // Generate all image formats
+        $this->ensureImages($post);
 
-        if (! $post->og_image_en) {
-            try {
-                $ogEnPath = $this->og->generateOgEn($post->title_en, $post->source_title ?: 'almalki.sa', $post->id);
-                $post->update(['og_image_en' => $ogEnPath]);
-            } catch (\Throwable $e) {
-                Log::warning('OG image (EN) generation failed', ['error' => $e->getMessage()]);
-            }
-        }
+        $ogImageAr = $post->og_image ? $baseUrl.$post->og_image : null;
+        $ogImageEn = $post->og_image_en ? $baseUrl.$post->og_image_en : $ogImageAr;
+        $tallImage = $post->tall_image ? $baseUrl.$post->tall_image : $ogImageAr;
 
-        $ogImageAr = $post->og_image
-            ? (str_starts_with($post->og_image, 'http') ? $post->og_image : rtrim(config('app.url'), '/').$post->og_image)
-            : null;
-
-        $ogImageEn = $post->og_image_en
-            ? (str_starts_with($post->og_image_en, 'http') ? $post->og_image_en : rtrim(config('app.url'), '/').$post->og_image_en)
-            : $ogImageAr;
-
-        // Twitter — Arabic only + image
+        // Twitter — Arabic only + horizontal image
         if (in_array('twitter', $platforms, true)) {
             $results['twitter'] = $ogImageAr
                 ? $this->tryPublish('Twitter', fn () => $this->twitter->tweetWithImage($socialAr, $ogImageAr))
@@ -58,16 +39,17 @@ class SocialPublishService
             sleep(5);
         }
 
-        // Instagram — Arabic + English caption + Arabic image
+        // Instagram — tall image + Arabic+English caption
         if (in_array('instagram', $platforms, true)) {
             $igCaption = "{$socialAr}\n\n---\n\n{$socialEn}";
-            $results['instagram'] = $ogImageAr
-                ? $this->tryPublish('Instagram', fn () => $this->instagram->postImage($ogImageAr, $igCaption))
-                : ['status' => 'skipped', 'reason' => 'OG image generation failed'];
+            $igImage = $tallImage ?? $ogImageAr;
+            $results['instagram'] = $igImage
+                ? $this->tryPublish('Instagram', fn () => $this->instagram->postImage($igImage, $igCaption))
+                : ['status' => 'skipped', 'reason' => 'Image generation failed'];
             sleep(5);
         }
 
-        // LinkedIn — English only + English image
+        // LinkedIn — English only + horizontal English image
         if (in_array('linkedin', $platforms, true)) {
             $liText = "{$post->title_en}\n\n{$post->excerpt_en}\n\n📖 {$post->getArticleUrl('en')}";
             $results['linkedin'] = $this->tryPublish('LinkedIn', fn () => $this->linkedin->sharePost($liText, $post->getArticleUrl('en'), $post->title_en, $ogImageEn));
@@ -78,7 +60,7 @@ class SocialPublishService
         if (in_array('snapchat', $platforms, true)) {
             try {
                 $storyPath = $this->og->generateStory($post->title_ar, 'almalki.sa', $post->id);
-                $storyUrl = rtrim(config('app.url'), '/').$storyPath;
+                $storyUrl = $baseUrl.$storyPath;
                 $results['snapchat'] = $this->tryPublish('Snapchat', fn () => $this->snapchat->postStory($storyUrl));
             } catch (\Throwable $e) {
                 Log::warning('Snapchat story image failed', ['error' => $e->getMessage()]);
@@ -87,11 +69,12 @@ class SocialPublishService
             sleep(5);
         }
 
-        // WhatsApp Status — Arabic image + link
+        // WhatsApp Status — tall image + link
         if (in_array('whatsapp', $platforms, true)) {
             $caption = "📖 {$post->getArticleUrl('ar')}";
-            $results['whatsapp_status'] = $ogImageAr
-                ? $this->tryPublish('WhatsApp Status', fn () => $this->whatsapp->postImageStatus($ogImageAr, $caption))
+            $waImage = $tallImage ?? $ogImageAr;
+            $results['whatsapp_status'] = $waImage
+                ? $this->tryPublish('WhatsApp Status', fn () => $this->whatsapp->postImageStatus($waImage, $caption))
                 : $this->tryPublish('WhatsApp Status', fn () => $this->whatsapp->postTextStatus($caption));
         }
 
@@ -103,6 +86,45 @@ class SocialPublishService
         ];
 
         return $results;
+    }
+
+    private function ensureImages(NewsPost $post): void
+    {
+        $subtitle = $post->source_title ?: 'almalki.sa';
+
+        if (! $post->og_image) {
+            try {
+                $post->update(['og_image' => $this->og->generateOg($post->title_ar, $subtitle, $post->id)]);
+            } catch (\Throwable $e) {
+                Log::warning('OG image (AR) failed', ['error' => $e->getMessage()]);
+            }
+        }
+
+        if (! $post->og_image_en) {
+            try {
+                $post->update(['og_image_en' => $this->og->generateOgEn($post->title_en, $subtitle, $post->id)]);
+            } catch (\Throwable $e) {
+                Log::warning('OG image (EN) failed', ['error' => $e->getMessage()]);
+            }
+        }
+
+        if (! $post->tall_image) {
+            try {
+                $post->update(['tall_image' => $this->og->generateTall($post->title_ar, $subtitle, $post->id)]);
+            } catch (\Throwable $e) {
+                Log::warning('Tall image failed', ['error' => $e->getMessage()]);
+            }
+        }
+
+        if (! $post->tall_image_en) {
+            try {
+                $post->update(['tall_image_en' => $this->og->generateTallEn($post->title_en, $subtitle, $post->id)]);
+            } catch (\Throwable $e) {
+                Log::warning('Tall image (EN) failed', ['error' => $e->getMessage()]);
+            }
+        }
+
+        $post->refresh();
     }
 
     private function tryPublish(string $name, callable $action): array
