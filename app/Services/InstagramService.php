@@ -20,7 +20,7 @@ class InstagramService
     public function postImage(string $imageUrl, string $caption): array
     {
         $containerResponse = Http::post(
-            "https://graph.facebook.com/v21.0/{$this->accountId}/media",
+            "https://graph.instagram.com/v21.0/{$this->accountId}/media",
             [
                 'image_url' => $imageUrl,
                 'caption' => $caption,
@@ -37,7 +37,7 @@ class InstagramService
         $this->waitForContainer($containerId);
 
         $publishResponse = Http::post(
-            "https://graph.facebook.com/v21.0/{$this->accountId}/media_publish",
+            "https://graph.instagram.com/v21.0/{$this->accountId}/media_publish",
             [
                 'creation_id' => $containerId,
                 'access_token' => $this->accessToken,
@@ -57,7 +57,7 @@ class InstagramService
             sleep(3);
 
             $status = Http::get(
-                "https://graph.facebook.com/v21.0/{$containerId}",
+                "https://graph.instagram.com/v21.0/{$containerId}",
                 [
                     'fields' => 'status_code',
                     'access_token' => $this->accessToken,
@@ -79,11 +79,9 @@ class InstagramService
 
     public function refreshToken(): ?string
     {
-        $response = Http::get('https://graph.facebook.com/v21.0/oauth/access_token', [
-            'grant_type' => 'fb_exchange_token',
-            'client_id' => config('services.instagram.app_id'),
-            'client_secret' => config('services.instagram.app_secret'),
-            'fb_exchange_token' => $this->accessToken,
+        $response = Http::get('https://graph.instagram.com/refresh_access_token', [
+            'grant_type' => 'ig_refresh_token',
+            'access_token' => $this->accessToken,
         ]);
 
         if ($response->successful()) {
