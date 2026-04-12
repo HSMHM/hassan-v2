@@ -34,6 +34,8 @@ if (isset($_GET['code'])) {
         
         echo "<h2>Long-lived:</h2><pre>$r2</pre>";
         echo "<h2>User ID:</h2><pre>{$data['user_id']}</pre>";
+    } else {
+        echo 'Error fetching short-lived token.';
     }
 } else {
     echo 'No code';
