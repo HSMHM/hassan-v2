@@ -48,23 +48,30 @@ class OgImageService
     /**
      * Build an image with: logo + title + almalki.sa
      */
-    private function buildImage(int $w, int $h, string $title, bool $isArabic, array $positions): string
+    private function buildImage(int $w, int $h, string $title, bool $isArabic, array $positions)
     {
         $image = $this->manager->createImage($w, $h)->fill('121212');
 
         // Logo
         $this->placeLogo($image, $positions['logoX'], $positions['logoY'], $positions['logoH']);
 
-        // Title
+        // Title — render each line separately for proper line spacing
         $wrapped = wordwrap($title, $positions['titleWrap'], "\n", true);
-        $displayTitle = $isArabic ? $this->shapeArabic($wrapped) : $wrapped;
-        $image->text($displayTitle, $positions['titleX'], $positions['titleY'], function (FontFactory $font) use ($positions) {
-            $font->filename($this->fontPath);
-            $font->size($positions['titleSize']);
-            $font->color('ffffff');
-            $font->align('center', 'center');
-            $font->lineHeight(2.0);
-        });
+        $lines = explode("\n", $wrapped);
+        $lineSpacing = (int) ($positions['titleSize'] * 2.2);
+        $totalHeight = count($lines) * $lineSpacing;
+        $startY = $positions['titleY'] - (int) ($totalHeight / 2) + (int) ($lineSpacing / 2);
+
+        foreach ($lines as $i => $line) {
+            $displayLine = $isArabic ? $this->shapeArabic(trim($line)) : trim($line);
+            $y = $startY + ($i * $lineSpacing);
+            $image->text($displayLine, $positions['titleX'], $y, function (FontFactory $font) use ($positions) {
+                $font->filename($this->fontPath);
+                $font->size($positions['titleSize']);
+                $font->color('ffffff');
+                $font->align('center', 'center');
+            });
+        }
 
         // Domain
         $image->text('almalki.sa', $positions['domainX'], $positions['domainY'], function (FontFactory $font) use ($positions) {
@@ -150,13 +157,20 @@ class OgImageService
         });
 
         $wrapped = wordwrap($title, 18, "\n", true);
-        $image->text($this->shapeArabic($wrapped), 540, 960, function (FontFactory $font) {
-            $font->filename($this->fontPath);
-            $font->size(52);
-            $font->color('ffffff');
-            $font->align('center', 'center');
-            $font->lineHeight(2.0);
-        });
+        $lines = explode("\n", $wrapped);
+        $lineSpacing = (int) (52 * 2.2);
+        $totalHeight = count($lines) * $lineSpacing;
+        $startY = 960 - (int) ($totalHeight / 2) + (int) ($lineSpacing / 2);
+
+        foreach ($lines as $i => $line) {
+            $y = $startY + ($i * $lineSpacing);
+            $image->text($this->shapeArabic(trim($line)), 540, $y, function (FontFactory $font) {
+                $font->filename($this->fontPath);
+                $font->size(52);
+                $font->color('ffffff');
+                $font->align('center', 'center');
+            });
+        }
 
         $image->text($this->shapeArabic('في موقعي'), 540, 1200, function (FontFactory $font) {
             $font->filename($this->fontPath);
