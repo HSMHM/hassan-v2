@@ -56,7 +56,7 @@ Route::post('/proposals/verify', [ProposalController::class, 'verify'])
 Route::get('/proposals/{proposalId}', [ProposalController::class, 'show'])
     ->middleware('proposal.auth')
     ->name('proposals.show');
-Route::get('/p/{slug}', [PageController::class, 'show'])->name('pages.show.ar');
+Route::get('/{slug}', [PageController::class, 'show'])->name('pages.show.ar');
 
 // English
 Route::prefix('en')->group(function () {
@@ -81,5 +81,5 @@ Route::prefix('en')->group(function () {
     Route::get('/proposals/{proposalId}', [ProposalController::class, 'show'])
         ->middleware('proposal.auth')
         ->name('proposals.show.en');
-    Route::get('/p/{slug}', [PageController::class, 'show'])->name('pages.show.en');
+    Route::get('/{slug}', [PageController::class, 'show'])->name('pages.show.en');
 });
