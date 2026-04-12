@@ -6,7 +6,15 @@ use App\Models\NewsPost;
 
 class NewsDiscoveryService
 {
-    public function __construct(private ClaudeService $claude) {}
+    private string $discoveryModel;
+
+    private string $contentModel;
+
+    public function __construct(private ClaudeService $claude)
+    {
+        $this->discoveryModel = config('services.anthropic.discovery_model', 'claude-haiku-4-5-20251001');
+        $this->contentModel = config('services.anthropic.content_model', 'claude-haiku-4-5-20251001');
+    }
 
     public function discoverNews(): ?array
     {
@@ -57,7 +65,7 @@ Already covered:
 {$existingUrls}
 USER;
 
-        $response = $this->claude->askWithWebSearch($system, $user);
+        $response = $this->claude->askWithWebSearch($system, $user, $this->discoveryModel);
         $text = preg_replace('/```json\s*|\s*```/', '', $this->claude->extractText($response));
         $data = json_decode(trim($text), true);
 
@@ -91,7 +99,7 @@ PROMPT;
 
         $user = "Title: {$item['title']}\nSource: {$item['source_url']}\nSummary: {$item['summary']}\nRefs: ".json_encode($item['references'] ?? []);
 
-        $response = $this->claude->ask($system, $user);
+        $response = $this->claude->ask($system, $user, $this->contentModel);
         $text = preg_replace('/```json\s*|\s*```/', '', $this->claude->extractText($response));
         $data = json_decode(trim($text), true);
 

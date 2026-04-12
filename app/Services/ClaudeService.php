@@ -23,14 +23,14 @@ class ClaudeService
         $this->maxTokens = config('services.anthropic.max_tokens');
     }
 
-    public function ask(string $system, string $user): array
+    public function ask(string $system, string $user, ?string $model = null): array
     {
         $response = Http::withHeaders([
             'x-api-key' => $this->apiKey,
             'anthropic-version' => '2023-06-01',
             'Content-Type' => 'application/json',
         ])->timeout(120)->post("{$this->baseUrl}/messages", [
-            'model' => $this->model,
+            'model' => $model ?? $this->model,
             'max_tokens' => $this->maxTokens,
             'system' => $system,
             'messages' => [['role' => 'user', 'content' => $user]],
@@ -44,14 +44,14 @@ class ClaudeService
         return $response->json();
     }
 
-    public function askWithWebSearch(string $system, string $user): array
+    public function askWithWebSearch(string $system, string $user, ?string $model = null): array
     {
         $response = Http::withHeaders([
             'x-api-key' => $this->apiKey,
             'anthropic-version' => '2023-06-01',
             'Content-Type' => 'application/json',
         ])->timeout(120)->post("{$this->baseUrl}/messages", [
-            'model' => $this->model,
+            'model' => $model ?? $this->model,
             'max_tokens' => $this->maxTokens,
             'system' => $system,
             'messages' => [['role' => 'user', 'content' => $user]],

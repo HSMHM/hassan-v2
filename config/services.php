@@ -30,9 +30,11 @@ return [
 
     'anthropic' => [
         'api_key' => env('ANTHROPIC_API_KEY'),
-        'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-4-6-20250514'),
+        'model' => env('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001'),
         'max_tokens' => (int) env('ANTHROPIC_MAX_TOKENS', 4096),
         'base_url' => 'https://api.anthropic.com/v1',
+        'discovery_model' => env('ANTHROPIC_DISCOVERY_MODEL', 'claude-haiku-4-5-20251001'),
+        'content_model' => env('ANTHROPIC_CONTENT_MODEL', 'claude-haiku-4-5-20251001'),
     ],
 
     'twitter' => [
