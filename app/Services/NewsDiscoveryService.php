@@ -47,7 +47,17 @@ PROMPT;
         $user = "Find the latest Claude AI content. Search across ALL platforms. I need at least one item.\n\nAlready covered:\n{$existingUrls}";
 
         $response = $this->claude->askWithWebSearch($system, $user, $this->discoveryModel);
-        $text = preg_replace('/```json\s*|\s*```/', '', $this->claude->extractText($response));
+        $raw = $this->claude->extractText($response);
+
+        // Extract JSON from response — handle text before/after JSON block
+        if (preg_match('/```json\s*(.*?)\s*```/s', $raw, $m)) {
+            $text = $m[1];
+        } elseif (preg_match('/(\{.*"items".*\})/s', $raw, $m)) {
+            $text = $m[1];
+        } else {
+            $text = $raw;
+        }
+
         $data = json_decode(trim($text), true);
 
         return ($data && ! empty($data['items'])) ? $data['items'] : null;
@@ -81,7 +91,16 @@ PROMPT;
         $user = "Title: {$item['title']}\nSource: {$item['source_url']}\nSummary: {$item['summary']}\nRefs: ".json_encode($item['references'] ?? []);
 
         $response = $this->claude->ask($system, $user, $this->contentModel);
-        $text = preg_replace('/```json\s*|\s*```/', '', $this->claude->extractText($response));
+        $raw = $this->claude->extractText($response);
+
+        if (preg_match('/```json\s*(.*?)\s*```/s', $raw, $m)) {
+            $text = $m[1];
+        } elseif (preg_match('/(\{.*"title_ar".*\})/s', $raw, $m)) {
+            $text = $m[1];
+        } else {
+            $text = $raw;
+        }
+
         $data = json_decode(trim($text), true);
 
         if (! $data || ! isset($data['title_ar'])) {
