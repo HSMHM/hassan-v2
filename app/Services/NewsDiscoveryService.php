@@ -13,18 +13,49 @@ class NewsDiscoveryService
         $existingUrls = NewsPost::pluck('source_url')->filter()->implode("\n");
 
         $system = <<<'PROMPT'
-You are a news researcher for Claude AI and Anthropic updates.
+You are a news researcher specializing in Claude AI, Anthropic, and the Claude developer ecosystem.
 Find GENUINELY NEW items from the last 48 hours only.
 Skip anything already covered (see list below).
-Focus on: model releases, product updates, API changes, pricing, features, partnerships, research papers.
+
+Focus areas:
+- Official: model releases, product updates, API changes, pricing, features, partnerships, research papers
+- Developer ecosystem: new libraries, SDKs, tools, frameworks built for/with Claude
+- Community: tutorials, benchmarks, comparisons, creative use cases, developer experiences
+- Industry: funding, hiring, regulatory, competitive analysis with OpenAI/Google/Meta
+
+Priority: Official announcements > Major community discoveries > Developer tools > General coverage
 
 Respond ONLY in valid JSON (no markdown):
-{"found_news":true,"items":[{"title":"...","source_url":"https://...","source_type":"blog|youtube|twitter|docs|news","summary":"2-3 sentences","significance":"high|medium|low","references":[{"type":"...","url":"...","title":"..."}]}]}
+{"found_news":true,"items":[{"title":"...","source_url":"https://...","source_type":"blog|youtube|twitter|docs|news|reddit|github|forum","summary":"2-3 sentences","significance":"high|medium|low","references":[{"type":"...","url":"...","title":"..."}]}]}
 
 If nothing new: {"found_news":false,"items":[]}
 PROMPT;
 
-        $user = "Search for latest Claude AI and Anthropic news. Check anthropic.com/news, @AnthropicAI on X, YouTube, tech news.\n\nAlready covered:\n{$existingUrls}";
+        $user = <<<USER
+Search for latest Claude AI and Anthropic news across these sources:
+
+Official:
+- anthropic.com/news and anthropic.com/research
+- @AnthropicAI and @alexalbert__ on X/Twitter
+- Anthropic YouTube channel
+
+Developer communities:
+- Reddit: r/ClaudeAI, r/LocalLLaMA, r/MachineLearning, r/artificial
+- Hacker News (news.ycombinator.com) — Claude-related posts
+- GitHub trending repos related to Claude/Anthropic
+- Dev.to, Medium — Claude AI articles
+
+Tech news:
+- The Verge, TechCrunch, Ars Technica, VentureBeat — AI/Claude coverage
+- Simon Willison's blog (simonwillison.net)
+- AI-focused newsletters and blogs
+
+YouTube:
+- AI-focused channels covering Claude (Matt Wolfe, AI Explained, Fireship, etc.)
+
+Already covered:
+{$existingUrls}
+USER;
 
         $response = $this->claude->askWithWebSearch($system, $user);
         $text = preg_replace('/```json\s*|\s*```/', '', $this->claude->extractText($response));
