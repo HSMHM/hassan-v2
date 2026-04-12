@@ -58,7 +58,7 @@ class OgImageService
         // Title — render each line separately for proper line spacing
         $wrapped = wordwrap($title, $positions['titleWrap'], "\n", true);
         $lines = explode("\n", $wrapped);
-        $lineSpacing = (int) ($positions['titleSize'] * 2.2);
+        $lineSpacing = (int) ($positions['titleSize'] * 1.6);
         $totalHeight = count($lines) * $lineSpacing;
         $startY = $positions['titleY'] - (int) ($totalHeight / 2) + (int) ($lineSpacing / 2);
 
@@ -119,7 +119,7 @@ class OgImageService
     {
         $image = $this->buildImage(1080, 1350, $title, true, [
             'logoX' => 540, 'logoY' => 180, 'logoH' => 65,
-            'titleX' => 540, 'titleY' => 620, 'titleWrap' => 22, 'titleSize' => 52,
+            'titleX' => 540, 'titleY' => 650, 'titleWrap' => 22, 'titleSize' => 52,
             'domainX' => 540, 'domainY' => 1270, 'domainSize' => 28,
         ]);
 
@@ -133,7 +133,7 @@ class OgImageService
     {
         $image = $this->buildImage(1080, 1350, $title, false, [
             'logoX' => 540, 'logoY' => 180, 'logoH' => 65,
-            'titleX' => 540, 'titleY' => 620, 'titleWrap' => 26, 'titleSize' => 48,
+            'titleX' => 540, 'titleY' => 650, 'titleWrap' => 26, 'titleSize' => 48,
             'domainX' => 540, 'domainY' => 1270, 'domainSize' => 28,
         ]);
 
@@ -158,7 +158,7 @@ class OgImageService
 
         $wrapped = wordwrap($title, 18, "\n", true);
         $lines = explode("\n", $wrapped);
-        $lineSpacing = (int) (52 * 2.2);
+        $lineSpacing = (int) (52 * 1.6);
         $totalHeight = count($lines) * $lineSpacing;
         $startY = 960 - (int) ($totalHeight / 2) + (int) ($lineSpacing / 2);
 
