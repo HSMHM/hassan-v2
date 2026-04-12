@@ -4,7 +4,7 @@
     $font = "'Segoe UI', Tahoma, Arial, sans-serif";
 @endphp
 
-<x-mail::layouts.base :locale="$locale" :subject="$locale === 'ar' ? 'رسالة تواصل جديدة' : 'New Contact Form Submission'"
+<x-emails.layouts.base :locale="$locale" :subject="$locale === 'ar' ? 'رسالة تواصل جديدة' : 'New Contact Form Submission'"
     :badge="$locale === 'ar' ? 'رسالة جديدة' : 'NEW MESSAGE'"
     badge-color="#e8f5e9" badge-text-color="#2e7d32"
     :preheader="($locale === 'ar' ? 'رسالة جديدة من ' : 'New message from ') . $senderName">
@@ -116,4 +116,4 @@
         IP: {{ $ip }}
     </p>
 
-</x-mail::layouts.base>
+</x-emails.layouts.base>

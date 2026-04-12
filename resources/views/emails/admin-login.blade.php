@@ -4,7 +4,7 @@
     $font = "'Segoe UI', Tahoma, Arial, sans-serif";
 @endphp
 
-<x-mail::layouts.base :locale="$locale" :subject="$locale === 'ar' ? 'تنبيه أمني — تسجيل دخول' : 'Security Alert — Admin Login'"
+<x-emails.layouts.base :locale="$locale" :subject="$locale === 'ar' ? 'تنبيه أمني — تسجيل دخول' : 'Security Alert — Admin Login'"
     :badge="$locale === 'ar' ? 'تنبيه أمني' : 'SECURITY ALERT'"
     badge-color="#fff3e0" badge-text-color="#e65100"
     :preheader="$locale === 'ar' ? 'تم تسجيل دخول جديد إلى لوحة التحكم' : 'A new admin login was detected'">
@@ -92,4 +92,4 @@
         </tr>
     </table>
 
-</x-mail::layouts.base>
+</x-emails.layouts.base>

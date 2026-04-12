@@ -11,7 +11,7 @@
     $typeLabel = $typeLabels[$contentType] ?? $contentType;
 @endphp
 
-<x-mail::layouts.base :locale="$locale" :subject="($locale === 'ar' ? 'محتوى جديد — ' : 'New Content — ') . $typeLabel"
+<x-emails.layouts.base :locale="$locale" :subject="($locale === 'ar' ? 'محتوى جديد — ' : 'New Content — ') . $typeLabel"
     :badge="($locale === 'ar' ? 'محتوى جديد: ' : 'NEW: ') . $typeLabel"
     badge-color="#e3f2fd" badge-text-color="#1565c0"
     :preheader="($locale === 'ar' ? 'تمت إضافة محتوى جديد: ' : 'New content published: ') . $contentTitle">
@@ -76,4 +76,4 @@
     </table>
     @endif
 
-</x-mail::layouts.base>
+</x-emails.layouts.base>

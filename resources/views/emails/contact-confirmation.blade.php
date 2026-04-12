@@ -4,7 +4,7 @@
     $font = "'Segoe UI', Tahoma, Arial, sans-serif";
 @endphp
 
-<x-mail::layouts.base :locale="$locale" :subject="$locale === 'ar' ? 'شكراً لتواصلك' : 'Thank you for reaching out'"
+<x-emails.layouts.base :locale="$locale" :subject="$locale === 'ar' ? 'شكراً لتواصلك' : 'Thank you for reaching out'"
     :badge="$locale === 'ar' ? 'تم الاستلام' : 'RECEIVED'"
     badge-color="#e8f5e9" badge-text-color="#2e7d32"
     :preheader="$locale === 'ar' ? 'شكراً لتواصلك — سنرد عليك قريباً' : 'Thank you for reaching out — we will reply soon'">
@@ -51,4 +51,4 @@
         <strong>{{ $locale === 'ar' ? 'حسان المالكي' : 'Hassan Almalki' }}</strong>
     </p>
 
-</x-mail::layouts.base>
+</x-emails.layouts.base>
