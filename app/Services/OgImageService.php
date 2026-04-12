@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use ArPHP\I18N\Arabic;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Typography\FontFactory;
@@ -12,10 +13,18 @@ class OgImageService
 
     private string $fontPath;
 
+    private Arabic $arabic;
+
     public function __construct()
     {
         $this->manager = new ImageManager(new Driver);
         $this->fontPath = resource_path('fonts/Cairo.ttf');
+        $this->arabic = new Arabic;
+    }
+
+    private function shapeArabic(string $text): string
+    {
+        return $this->arabic->utf8Glyphs($text);
     }
 
     /**
@@ -26,7 +35,7 @@ class OgImageService
     {
         $image = $this->manager->createImage(1200, 630)->fill('121212');
 
-        $image->text('Hassan Almalki  |  حسان المالكي', 600, 85, function (FontFactory $font) {
+        $image->text($this->shapeArabic('Hassan Almalki  |  حسان المالكي'), 600, 85, function (FontFactory $font) {
             $font->filename($this->fontPath);
             $font->size(22);
             $font->color('757575');
@@ -34,7 +43,7 @@ class OgImageService
         });
 
         $wrapped = wordwrap($title, 35, "\n", true);
-        $image->text($wrapped, 600, 315, function (FontFactory $font) {
+        $image->text($this->shapeArabic($wrapped), 600, 315, function (FontFactory $font) {
             $font->filename($this->fontPath);
             $font->size(44);
             $font->color('ffffff');
@@ -43,7 +52,7 @@ class OgImageService
         });
 
         if ($subtitle) {
-            $image->text($subtitle, 600, 540, function (FontFactory $font) {
+            $image->text($this->shapeArabic($subtitle), 600, 540, function (FontFactory $font) {
                 $font->filename($this->fontPath);
                 $font->size(20);
                 $font->color('a0a0a0');
@@ -69,7 +78,7 @@ class OgImageService
         });
 
         $wrapped = wordwrap($title, 22, "\n", true);
-        $image->text($wrapped, 540, 900, function (FontFactory $font) {
+        $image->text($this->shapeArabic($wrapped), 540, 900, function (FontFactory $font) {
             $font->filename($this->fontPath);
             $font->size(56);
             $font->color('ffffff');
@@ -77,7 +86,7 @@ class OgImageService
             $font->lineHeight(1.5);
         });
 
-        $image->text($subtitle ?: 'almalki.sa', 540, 1780, function (FontFactory $font) {
+        $image->text($this->shapeArabic($subtitle ?: 'almalki.sa'), 540, 1780, function (FontFactory $font) {
             $font->filename($this->fontPath);
             $font->size(30);
             $font->color('a0a0a0');
@@ -94,7 +103,7 @@ class OgImageService
     {
         $image = $this->manager->createImage(1200, 630)->fill('121212');
 
-        $image->text('حسان المالكي', 600, 240, function (FontFactory $font) {
+        $image->text($this->shapeArabic('حسان المالكي'), 600, 240, function (FontFactory $font) {
             $font->filename($this->fontPath);
             $font->size(72);
             $font->color('ffffff');
@@ -108,7 +117,7 @@ class OgImageService
             $font->align('center', 'center');
         });
 
-        $image->text('مطور تطبيقات ويب ومدير منتجات تقنية', 600, 430, function (FontFactory $font) {
+        $image->text($this->shapeArabic('مطور تطبيقات ويب ومدير منتجات تقنية'), 600, 430, function (FontFactory $font) {
             $font->filename($this->fontPath);
             $font->size(24);
             $font->color('757575');
