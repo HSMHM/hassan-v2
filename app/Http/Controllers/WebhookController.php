@@ -13,8 +13,9 @@ class WebhookController extends Controller
 {
     public function whatsapp(Request $request): JsonResponse
     {
+        // Verify webhook secret if configured; skip check if not set yet.
         $expectedSecret = (string) config('services.whapi.webhook_secret');
-        if ($expectedSecret === '' || ! hash_equals($expectedSecret, (string) $request->header('X-Webhook-Secret'))) {
+        if ($expectedSecret !== '' && ! hash_equals($expectedSecret, (string) $request->header('X-Webhook-Secret'))) {
             abort(401);
         }
 
