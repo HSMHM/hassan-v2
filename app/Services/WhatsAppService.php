@@ -45,7 +45,7 @@ class WhatsAppService
             'Authorization' => "Bearer {$this->token}",
             'Content-Type' => 'application/json',
         ])->post("{$this->baseUrl}/stories/send/media", [
-            'media' => ['link' => $imageUrl],
+            'media' => $imageUrl,
             'caption' => $caption,
         ]);
 
