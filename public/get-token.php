@@ -28,52 +28,66 @@ if (isset($_GET['code'])) {
     // Step 2: Exchange short-lived for long-lived token (try multiple methods)
     $shortToken = $data['access_token'];
     $longData = null;
-    $r2 = '';
 
-    // Method A: GET graph.instagram.com (no version)
-    $urlA = 'https://graph.instagram.com/access_token'
+    // Method A: GET graph.facebook.com/access_token (ig_exchange_token)
+    $urlA = 'https://graph.facebook.com/v21.0/access_token'
           . '?grant_type=ig_exchange_token'
           . '&client_secret=' . urlencode($clientSecret)
           . '&access_token=' . urlencode($shortToken);
     $chA = curl_init($urlA);
     curl_setopt($chA, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($chA, CURLOPT_HTTPGET, true);
     $rA = curl_exec($chA);
     curl_close($chA);
     $dataA = json_decode($rA, true);
-    echo "<h2>Method A (GET instagram, no version):</h2><pre>" . htmlspecialchars($rA) . "</pre>";
-    if (isset($dataA['access_token'])) { $longData = $dataA; $r2 = $rA; }
+    echo "<h2>Method A (facebook /access_token):</h2><pre>" . htmlspecialchars($rA) . "</pre>";
+    if (isset($dataA['access_token'])) { $longData = $dataA; }
 
-    // Method B: POST graph.instagram.com (no version)
+    // Method B: GET graph.facebook.com/oauth/access_token (fb_exchange_token)
     if (!$longData) {
-        $chB = curl_init('https://graph.instagram.com/access_token');
-        curl_setopt($chB, CURLOPT_POST, true);
+        $urlB = 'https://graph.facebook.com/v21.0/oauth/access_token'
+              . '?grant_type=fb_exchange_token'
+              . '&client_id=' . urlencode($clientId)
+              . '&client_secret=' . urlencode($clientSecret)
+              . '&fb_exchange_token=' . urlencode($shortToken);
+        $chB = curl_init($urlB);
         curl_setopt($chB, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($chB, CURLOPT_POSTFIELDS, http_build_query([
+        $rB = curl_exec($chB);
+        curl_close($chB);
+        $dataB = json_decode($rB, true);
+        echo "<h2>Method B (facebook /oauth fb_exchange):</h2><pre>" . htmlspecialchars($rB) . "</pre>";
+        if (isset($dataB['access_token'])) { $longData = $dataB; }
+    }
+
+    // Method C: POST graph.instagram.com/access_token
+    if (!$longData) {
+        $chC = curl_init('https://graph.instagram.com/access_token');
+        curl_setopt($chC, CURLOPT_POST, true);
+        curl_setopt($chC, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($chC, CURLOPT_POSTFIELDS, http_build_query([
             'grant_type'    => 'ig_exchange_token',
             'client_secret' => $clientSecret,
             'access_token'  => $shortToken,
         ]));
-        $rB = curl_exec($chB);
-        curl_close($chB);
-        $dataB = json_decode($rB, true);
-        echo "<h2>Method B (POST instagram, no version):</h2><pre>" . htmlspecialchars($rB) . "</pre>";
-        if (isset($dataB['access_token'])) { $longData = $dataB; $r2 = $rB; }
-    }
-
-    // Method C: GET graph.facebook.com/v21.0
-    if (!$longData) {
-        $urlC = 'https://graph.facebook.com/v21.0/oauth/access_token'
-              . '?grant_type=ig_exchange_token'
-              . '&client_secret=' . urlencode($clientSecret)
-              . '&access_token=' . urlencode($shortToken);
-        $chC = curl_init($urlC);
-        curl_setopt($chC, CURLOPT_RETURNTRANSFER, true);
         $rC = curl_exec($chC);
         curl_close($chC);
         $dataC = json_decode($rC, true);
-        echo "<h2>Method C (GET facebook v21.0):</h2><pre>" . htmlspecialchars($rC) . "</pre>";
-        if (isset($dataC['access_token'])) { $longData = $dataC; $r2 = $rC; }
+        echo "<h2>Method C (POST instagram):</h2><pre>" . htmlspecialchars($rC) . "</pre>";
+        if (isset($dataC['access_token'])) { $longData = $dataC; }
+    }
+
+    // Method D: GET graph.instagram.com (no version, explicit)
+    if (!$longData) {
+        $urlD = 'https://graph.instagram.com/access_token'
+              . '?grant_type=ig_exchange_token'
+              . '&client_secret=' . urlencode($clientSecret)
+              . '&access_token=' . urlencode($shortToken);
+        $chD = curl_init($urlD);
+        curl_setopt($chD, CURLOPT_RETURNTRANSFER, true);
+        $rD = curl_exec($chD);
+        curl_close($chD);
+        $dataD = json_decode($rD, true);
+        echo "<h2>Method D (GET instagram):</h2><pre>" . htmlspecialchars($rD) . "</pre>";
+        if (isset($dataD['access_token'])) { $longData = $dataD; }
     }
 
     // Summary
