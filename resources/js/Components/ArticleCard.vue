@@ -25,6 +25,9 @@ const date = computed(() => {
 
 <template>
     <article class="card">
+        <span v-if="article.is_news" class="card__badge">
+            {{ locale === 'ar' ? 'خبر' : 'News' }}
+        </span>
         <Link :href="url" class="card__image" :aria-label="title">
             <img
                 v-if="cover"

@@ -5,12 +5,13 @@ namespace App\Jobs;
 use App\Models\NewsPost;
 use App\Services\OgImageService;
 use App\Services\SocialPublishService;
-use App\Services\WhatsAppService;
+use App\Services\TelegramService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class PublishNewsJob implements ShouldQueue
 {
@@ -27,7 +28,7 @@ class PublishNewsJob implements ShouldQueue
         private array $platforms = ['twitter', 'instagram', 'linkedin', 'snapchat', 'whatsapp'],
     ) {}
 
-    public function handle(SocialPublishService $publisher, WhatsAppService $wa, OgImageService $og): void
+    public function handle(SocialPublishService $publisher, TelegramService $telegram): void
     {
         $post = NewsPost::findOrFail($this->postId);
 
@@ -37,19 +38,18 @@ class PublishNewsJob implements ShouldQueue
 
         $post->update(['status' => 'publishing']);
 
-        // Auto-generate the horizontal OG image if missing.
-        // The vertical story image is generated on-demand inside SocialPublishService.
         if (! $post->og_image) {
             try {
+                $og = app(OgImageService::class);
                 $ogPath = $og->generateOg(
                     $post->title_ar,
-                    $post->source_title ?: 'almalki.sa',
+                    $post->source_title ?? 'almalki.sa',
                     $post->id
                 );
                 $post->update(['og_image' => $ogPath]);
                 $post->refresh();
             } catch (\Throwable $e) {
-                \Illuminate\Support\Facades\Log::warning('OG image generation failed', [
+                Log::warning('OG image generation failed', [
                     'post_id' => $post->id,
                     'error' => $e->getMessage(),
                 ]);
@@ -67,18 +67,18 @@ class PublishNewsJob implements ShouldQueue
             'published_at' => now(),
         ]);
 
-        $msg = $allOk ? "✅ تم النشر بنجاح!\n\n" : "⚠️ نتائج النشر:\n\n";
+        $msg = $allOk ? "✅ <b>تم النشر بنجاح!</b>\n\n" : "⚠️ <b>نتائج النشر:</b>\n\n";
         foreach ($results as $platform => $r) {
             $icon = ($r['status'] ?? '') === 'published' ? '✅' : '❌';
             $msg .= "{$icon} {$platform}";
             if (($r['status'] ?? '') === 'failed') {
-                $msg .= " — {$r['error']}";
+                $msg .= " — <code>{$r['error']}</code>";
             }
             $msg .= "\n";
         }
-        $msg .= "\n📖 AR: {$post->getArticleUrl('ar')}";
-        $msg .= "\n📖 EN: {$post->getArticleUrl('en')}";
+        $msg .= "\n📖 <a href=\"{$post->getArticleUrl('ar')}\">المقالة بالعربي</a>";
+        $msg .= "\n📖 <a href=\"{$post->getArticleUrl('en')}\">English Article</a>";
 
-        $wa->sendMessage($msg);
+        $telegram->notify($msg);
     }
 }

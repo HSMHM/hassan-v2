@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Models\NewsPost;
 use App\Services\NewsDiscoveryService;
-use App\Services\WhatsAppService;
+use App\Services\TelegramService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,7 +20,7 @@ class DiscoverNewsJob implements ShouldQueue
 
     public int $timeout = 180;
 
-    public function handle(NewsDiscoveryService $discovery, WhatsAppService $wa): void
+    public function handle(NewsDiscoveryService $discovery, TelegramService $telegram): void
     {
         if (NewsPost::where('status', 'pending')->exists()) {
             Log::info('Skipping: pending post exists');
@@ -46,9 +46,11 @@ class DiscoverNewsJob implements ShouldQueue
         try {
             $content = $discovery->generateContent($top);
             $post = NewsPost::create([...$content, 'status' => 'draft']);
-            $wa->sendNewsForApproval($post);
+
+            $telegram->sendNewsForApproval($post);
         } catch (\Throwable $e) {
             Log::error('News processing failed', ['error' => $e->getMessage()]);
+            $telegram->notify("❌ فشل معالجة الخبر:\n<code>{$e->getMessage()}</code>");
         }
     }
 }

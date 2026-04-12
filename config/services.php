@@ -65,6 +65,12 @@ return [
         'profile_id' => env('SNAPCHAT_PROFILE_ID'),
     ],
 
+    'telegram' => [
+        'bot_token' => env('TELEGRAM_BOT_TOKEN'),
+        'chat_id' => env('TELEGRAM_CHAT_ID'),
+        'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
+    ],
+
     'whapi' => [
         'token' => env('WHAPI_API_TOKEN'),
         'base_url' => env('WHAPI_BASE_URL', 'https://gate.whapi.cloud'),

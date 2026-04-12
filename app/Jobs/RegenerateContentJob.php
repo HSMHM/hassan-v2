@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Models\NewsPost;
 use App\Services\ClaudeService;
-use App\Services\WhatsAppService;
+use App\Services\TelegramService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -21,7 +21,7 @@ class RegenerateContentJob implements ShouldQueue
 
     public function __construct(private int $postId, private string $instructions) {}
 
-    public function handle(ClaudeService $claude, WhatsAppService $wa): void
+    public function handle(ClaudeService $claude, TelegramService $telegram): void
     {
         $post = NewsPost::findOrFail($this->postId);
 
@@ -38,9 +38,10 @@ class RegenerateContentJob implements ShouldQueue
                 'title_ar', 'title_en', 'social_post_ar', 'social_post_en',
                 'content_ar', 'content_en', 'excerpt_ar', 'excerpt_en',
             ])));
-            $wa->sendNewsForApproval($post);
+
+            $telegram->sendNewsForApproval($post);
         } else {
-            $wa->sendMessage('❌ فشل التعديل. حاول مرة أخرى.');
+            $telegram->notify('❌ فشل التعديل. حاول مرة أخرى.');
         }
     }
 }

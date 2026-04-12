@@ -60,6 +60,11 @@ class NewsPost extends Model
         return $this->og_image ?: $this->cover_image;
     }
 
+    public function getSentForApprovalAtAttribute(): ?\Carbon\Carbon
+    {
+        return $this->sent_to_whatsapp_at;
+    }
+
     public function safeContent(string $locale): string
     {
         return clean_html($locale === 'en' ? $this->content_en : $this->content_ar);

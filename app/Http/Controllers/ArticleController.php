@@ -38,21 +38,31 @@ class ArticleController extends Controller
         $locale = app()->getLocale();
         $column = $locale === 'en' ? 'slug_en' : 'slug_ar';
 
-        $article = Article::published()->where($column, $slug)->first()
-            ?? NewsPost::where($column, $slug)->whereIn('status', ['published', 'partial'])->first()
-            ?? throw new NotFoundHttpException;
+        $article = Article::published()->where($column, $slug)->first();
+        $isNews = false;
+
+        if (! $article) {
+            $article = NewsPost::whereIn('status', ['published', 'partial'])
+                ->where($column, $slug)
+                ->first();
+
+            if (! $article) {
+                throw new NotFoundHttpException;
+            }
+
+            $isNews = true;
+        }
 
         $related = Article::published()
-            ->where('id', '!=', $article instanceof Article ? $article->id : 0)
+            ->where('id', '!=', $isNews ? 0 : $article->id)
             ->latest('published_at')
             ->take(3)
             ->get();
 
-        // Purify HTML content before it reaches the browser (XSS defense for
-        // Claude-generated news and any other HTML-bearing fields).
         $articlePayload = array_merge($article->toArray(), [
             'content_ar' => $article->safeContent('ar'),
             'content_en' => $article->safeContent('en'),
+            'is_news' => $isNews,
         ]);
 
         return Inertia::render('Articles/Show', [
@@ -75,8 +85,15 @@ class ArticleController extends Controller
     {
         $currentPage = request()->integer('page', 1);
 
-        $all = Article::published()->get()
-            ->concat(NewsPost::whereIn('status', ['published', 'partial'])->get())
+        $articles = Article::published()->get()
+            ->map(fn ($a) => array_merge($a->toArray(), ['is_news' => false]));
+
+        $news = NewsPost::whereIn('status', ['published', 'partial'])
+            ->whereNotNull('published_at')
+            ->get()
+            ->map(fn ($n) => array_merge($n->toArray(), ['is_news' => true]));
+
+        $all = $articles->concat($news)
             ->sortByDesc('published_at')
             ->values();
 

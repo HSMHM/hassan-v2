@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Listeners\SendAdminLoginAlert;
 use App\Models\Article;
+use App\Models\NewsPost;
 use App\Models\Portfolio;
 use App\Models\Workshop;
 use App\Observers\ContentObserver;
@@ -30,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Content creation notifications
         Article::observe(ContentObserver::class);
+        NewsPost::observe(ContentObserver::class);
         Workshop::observe(ContentObserver::class);
         Portfolio::observe(ContentObserver::class);
 

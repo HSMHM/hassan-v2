@@ -1,6 +1,5 @@
 <?php
 
-use App\Jobs\DiscoverNewsJob;
 use App\Services\InstagramService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -10,12 +9,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-if (env('NEWS_DISCOVERY_ENABLED', false)) {
-    Schedule::job(new DiscoverNewsJob)
-        ->everySixHours()
-        ->withoutOverlapping()
-        ->name('news:discover');
-}
+// News discovery is now on-demand via Telegram — no automatic scheduling.
 
 Schedule::call(fn () => app(InstagramService::class)->refreshToken())
     ->monthly()
@@ -41,7 +35,7 @@ Schedule::call(function () {
     $message = "⚠️ توكنات هذي المنصات تنتهي خلال أسبوع:\n\n{$lines}\n\nجدّدها من خلال لوحة التحكم أو أعد OAuth flow.";
 
     try {
-        app(\App\Services\WhatsAppService::class)->sendMessage($message);
+        app(\App\Services\TelegramService::class)->notify($message);
     } catch (\Throwable $e) {
         \Illuminate\Support\Facades\Mail::raw($message, fn ($m) =>
             $m->to('hassan@almalki.sa')->subject('⚠️ Platform Tokens Expiring')
@@ -64,7 +58,7 @@ Schedule::call(function () {
     $message = "🔴 توكنات منتهية الصلاحية: {$platforms}\nالنشر على هذي المنصات معطّل حتى تجدّدها!";
 
     try {
-        app(\App\Services\WhatsAppService::class)->sendMessage($message);
+        app(\App\Services\TelegramService::class)->notify($message);
     } catch (\Throwable $e) {
         \Illuminate\Support\Facades\Mail::raw($message, fn ($m) =>
             $m->to('hassan@almalki.sa')->subject('🔴 Platform Tokens Expired')

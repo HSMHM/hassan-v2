@@ -16,6 +16,7 @@ class ContentObserver
     {
         $typeMap = [
             \App\Models\Article::class => 'article',
+            \App\Models\NewsPost::class => 'news',
             \App\Models\Workshop::class => 'workshop',
             \App\Models\Portfolio::class => 'portfolio',
         ];
