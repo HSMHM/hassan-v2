@@ -30,6 +30,18 @@ class OgImageService
         return $this->arabic->utf8Glyphs($text);
     }
 
+    private function wrapByWords(string $text, int $wordsPerLine): string
+    {
+        $words = preg_split('/\s+/u', trim($text));
+        $lines = [];
+
+        for ($i = 0; $i < count($words); $i += $wordsPerLine) {
+            $lines[] = implode(' ', array_slice($words, $i, $wordsPerLine));
+        }
+
+        return implode("\n", $lines);
+    }
+
     private function placeLogo($image, int $centerX, int $centerY, int $height): void
     {
         if (! file_exists($this->logoPath)) {
@@ -56,7 +68,9 @@ class OgImageService
         $this->placeLogo($image, $positions['logoX'], $positions['logoY'], $positions['logoH']);
 
         // Title — render each line separately for proper line spacing
-        $wrapped = wordwrap($title, $positions['titleWrap'], "\n", true);
+        $wrapped = isset($positions['wordsPerLine'])
+            ? $this->wrapByWords($title, $positions['wordsPerLine'])
+            : wordwrap($title, $positions['titleWrap'], "\n", true);
         $lines = explode("\n", $wrapped);
         $lineSpacing = (int) ($positions['titleSize'] * 1.6);
         $totalHeight = count($lines) * $lineSpacing;
@@ -90,9 +104,9 @@ class OgImageService
     public function generateOg(string $title, ?string $subtitle, int|string $id): string
     {
         $image = $this->buildImage(1200, 630, $title, true, [
-            'logoX' => 600, 'logoY' => 90, 'logoH' => 50,
-            'titleX' => 600, 'titleY' => 310, 'titleWrap' => 30, 'titleSize' => 44,
-            'domainX' => 600, 'domainY' => 580, 'domainSize' => 24,
+            'logoX' => 600, 'logoY' => 85, 'logoH' => 60,
+            'titleX' => 600, 'titleY' => 320, 'wordsPerLine' => 4, 'titleWrap' => 50, 'titleSize' => 38,
+            'domainX' => 600, 'domainY' => 585, 'domainSize' => 30,
         ]);
 
         return $this->saveImage($image, "{$id}-og.jpg");
@@ -104,9 +118,9 @@ class OgImageService
     public function generateOgEn(string $title, ?string $subtitle, int|string $id): string
     {
         $image = $this->buildImage(1200, 630, $title, false, [
-            'logoX' => 600, 'logoY' => 90, 'logoH' => 50,
-            'titleX' => 600, 'titleY' => 310, 'titleWrap' => 35, 'titleSize' => 42,
-            'domainX' => 600, 'domainY' => 580, 'domainSize' => 24,
+            'logoX' => 600, 'logoY' => 85, 'logoH' => 60,
+            'titleX' => 600, 'titleY' => 320, 'wordsPerLine' => 5, 'titleWrap' => 55, 'titleSize' => 36,
+            'domainX' => 600, 'domainY' => 585, 'domainSize' => 28,
         ]);
 
         return $this->saveImage($image, "{$id}-og-en.jpg");
@@ -118,9 +132,9 @@ class OgImageService
     public function generateTall(string $title, ?string $subtitle, int|string $id): string
     {
         $image = $this->buildImage(1080, 1350, $title, true, [
-            'logoX' => 540, 'logoY' => 180, 'logoH' => 65,
-            'titleX' => 540, 'titleY' => 650, 'titleWrap' => 22, 'titleSize' => 52,
-            'domainX' => 540, 'domainY' => 1270, 'domainSize' => 28,
+            'logoX' => 540, 'logoY' => 170, 'logoH' => 72,
+            'titleX' => 540, 'titleY' => 620, 'wordsPerLine' => 3, 'titleWrap' => 40, 'titleSize' => 44,
+            'domainX' => 540, 'domainY' => 1280, 'domainSize' => 34,
         ]);
 
         return $this->saveImage($image, "{$id}-tall.jpg");
@@ -132,9 +146,9 @@ class OgImageService
     public function generateTallEn(string $title, ?string $subtitle, int|string $id): string
     {
         $image = $this->buildImage(1080, 1350, $title, false, [
-            'logoX' => 540, 'logoY' => 180, 'logoH' => 65,
-            'titleX' => 540, 'titleY' => 650, 'titleWrap' => 26, 'titleSize' => 48,
-            'domainX' => 540, 'domainY' => 1270, 'domainSize' => 28,
+            'logoX' => 540, 'logoY' => 170, 'logoH' => 72,
+            'titleX' => 540, 'titleY' => 620, 'wordsPerLine' => 4, 'titleWrap' => 45, 'titleSize' => 40,
+            'domainX' => 540, 'domainY' => 1280, 'domainSize' => 32,
         ]);
 
         return $this->saveImage($image, "{$id}-tall-en.jpg");
@@ -147,7 +161,7 @@ class OgImageService
     {
         $image = $this->manager->createImage(1080, 1920)->fill('121212');
 
-        $this->placeLogo($image, 540, 220, 70);
+        $this->placeLogo($image, 540, 230, 90);
 
         $image->text($this->shapeArabic('تم إضافة خبر بعنوان :'), 540, 750, function (FontFactory $font) {
             $font->filename($this->fontPath);
@@ -156,9 +170,9 @@ class OgImageService
             $font->align('center', 'center');
         });
 
-        $wrapped = wordwrap($title, 18, "\n", true);
+        $wrapped = $this->wrapByWords($title, 3);
         $lines = explode("\n", $wrapped);
-        $lineSpacing = (int) (52 * 1.6);
+        $lineSpacing = (int) (44 * 1.6);
         $totalHeight = count($lines) * $lineSpacing;
         $startY = 960 - (int) ($totalHeight / 2) + (int) ($lineSpacing / 2);
 
@@ -166,7 +180,7 @@ class OgImageService
             $y = $startY + ($i * $lineSpacing);
             $image->text($this->shapeArabic(trim($line)), 540, $y, function (FontFactory $font) {
                 $font->filename($this->fontPath);
-                $font->size(52);
+                $font->size(44);
                 $font->color('ffffff');
                 $font->align('center', 'center');
             });
@@ -181,7 +195,7 @@ class OgImageService
 
         $image->text('almalki.sa', 540, 1780, function (FontFactory $font) {
             $font->filename($this->fontPath);
-            $font->size(28);
+            $font->size(34);
             $font->color('666666');
             $font->align('center', 'center');
         });
@@ -196,7 +210,7 @@ class OgImageService
     {
         $image = $this->manager->createImage(1200, 630)->fill('121212');
 
-        $this->placeLogo($image, 600, 250, 80);
+        $this->placeLogo($image, 600, 250, 104);
 
         $image->text($this->shapeArabic('مطور تطبيقات ويب ومدير منتجات تقنية'), 600, 430, function (FontFactory $font) {
             $font->filename($this->fontPath);
