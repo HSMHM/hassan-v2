@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\NewsPost;
+use Illuminate\Support\Facades\Log;
 
 class NewsDiscoveryService
 {
@@ -47,18 +48,53 @@ PROMPT;
         $response = $this->claude->askWithWebSearch($system, $user, $this->discoveryModel);
         $raw = $this->claude->extractText($response);
 
-        // Extract JSON from response — handle text before/after JSON block
-        if (preg_match('/```json\s*(.*?)\s*```/s', $raw, $m)) {
-            $text = $m[1];
-        } elseif (preg_match('/(\{.*"items".*\})/s', $raw, $m)) {
-            $text = $m[1];
-        } else {
-            $text = $raw;
+        $data = $this->extractJson($raw);
+
+        if (! $data || empty($data['items'])) {
+            Log::warning('raw Claude response (no items extracted)', [
+                'preview' => mb_substr($raw, 0, 500),
+                'length' => mb_strlen($raw),
+            ]);
+
+            return null;
         }
 
-        $data = json_decode(trim($text), true);
+        return $data['items'];
+    }
 
-        return ($data && ! empty($data['items'])) ? $data['items'] : null;
+    /**
+     * Pull a JSON object out of Claude's response. Haiku often wraps JSON in
+     * markdown fences or leads with prose — try progressively looser matchers.
+     */
+    private function extractJson(string $raw): ?array
+    {
+        $candidates = [];
+
+        if (preg_match('/```(?:json)?\s*(\{.*?\})\s*```/s', $raw, $m)) {
+            $candidates[] = $m[1];
+        }
+
+        if (preg_match('/(\{[^{}]*"items"[\s\S]*\})/s', $raw, $m)) {
+            $candidates[] = $m[1];
+        }
+
+        // Greedy last-resort: first `{` to last `}`.
+        $first = strpos($raw, '{');
+        $last = strrpos($raw, '}');
+        if ($first !== false && $last !== false && $last > $first) {
+            $candidates[] = substr($raw, $first, $last - $first + 1);
+        }
+
+        $candidates[] = $raw;
+
+        foreach ($candidates as $candidate) {
+            $decoded = json_decode(trim($candidate), true);
+            if (is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        return null;
     }
 
     public function generateContent(array $item): array
