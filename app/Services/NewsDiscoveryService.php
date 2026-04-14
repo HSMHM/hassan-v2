@@ -22,28 +22,50 @@ class NewsDiscoveryService
         $existingUrls = NewsPost::pluck('source_url')->filter()->implode("\n");
 
         $system = <<<'PROMPT'
-You are a news researcher. Your job is to ALWAYS find something about Claude AI features and capabilities.
-NEVER return found_news:false. There is ALWAYS something to report.
+You are a news researcher for anything Claude AI / Anthropic related.
+Your job is to ALWAYS find at least one interesting item. NEVER return found_news:false.
 
-FOCUS ON: features, capabilities, how-to, tips, tools, API updates, new models, developer experiences, benchmarks, tutorials.
-AVOID: business deals, partnerships, funding, hiring, corporate agreements, regulatory news.
+Cast a WIDE net across ALL sources:
 
-Search strategy — try in order:
-1. New Claude features, model updates, API changes, Claude Code updates
-2. Developer tutorials, tips & tricks, prompt engineering for Claude
-3. New tools, libraries, MCP servers built for Claude
-4. Benchmarks, comparisons: Claude vs GPT vs Gemini
-5. YouTube demos, reviews of Claude features
-6. Reddit r/ClaudeAI — feature discussions, use cases
-7. Blog posts about using Claude (Medium, Dev.to, Hacker News)
+Official & product:
+- anthropic.com (news, research, blog)
+- Model releases, API changes, pricing, features, Claude Code, Artifacts, MCP
 
-Something ALWAYS exists. Skip already covered URLs below.
+Social media (very important):
+- X/Twitter: @AnthropicAI, @alexalbert__, @sama, tweets with #ClaudeAI #Anthropic
+- LinkedIn posts about Claude
+- Instagram / TikTok creators demoing Claude
+- YouTube: channels covering Claude (Matt Wolfe, AI Explained, Fireship, David Shapiro, etc.)
+
+Developer communities:
+- Reddit: r/ClaudeAI, r/LocalLLaMA, r/MachineLearning, r/artificial, r/singularity
+- Hacker News (news.ycombinator.com)
+- GitHub trending — repos, tools, MCP servers, libraries built for Claude
+- Dev.to, Medium, Hashnode, Substack newsletters
+
+Tech news & analysis:
+- TechCrunch, The Verge, Ars Technica, VentureBeat, Wired, The Information
+- Simon Willison's blog (simonwillison.net)
+- AI-focused newsletters (The Rundown, TLDR AI, Ben's Bites)
+
+Business & industry:
+- Partnerships, funding, hiring, enterprise deals, regulatory moves, market moves
+
+ANY of the following qualifies as news:
+- New feature / model / tool / API change
+- Benchmark or comparison (Claude vs GPT vs Gemini)
+- Tutorial, tip, prompt technique, developer experience
+- Community discussion, viral tweet/post
+- Business deal, partnership, funding round
+- Research paper or announcement
+
+Prefer last 7 days but older is fine if genuinely interesting. Skip URLs in the "already covered" list.
 
 Respond ONLY in valid JSON:
-{"found_news":true,"items":[{"title":"...","source_url":"https://...","source_type":"blog|youtube|twitter|docs|news|reddit|github|forum","summary":"2-3 sentences","significance":"high|medium|low","references":[]}]}
+{"found_news":true,"items":[{"title":"...","source_url":"https://...","source_type":"blog|youtube|twitter|linkedin|instagram|tiktok|docs|news|reddit|github|forum|newsletter","summary":"2-3 sentences","significance":"high|medium|low","references":[]}]}
 PROMPT;
 
-        $user = "Find latest Claude AI features, capabilities, or developer content. I need at least one item.\n\nAlready covered:\n{$existingUrls}";
+        $user = "Find any latest Claude AI / Anthropic item from any source (official, social, dev, tech news). I need at least one.\n\nAlready covered:\n{$existingUrls}";
 
         $response = $this->claude->askWithWebSearch($system, $user, $this->discoveryModel);
         $raw = $this->claude->extractText($response);
