@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Services;
+
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
+
+/**
+ * Extract the primary image from an article URL (og:image / twitter:image)
+ * and save a local copy so we can embed it in generated OG images.
+ */
+class SourceImageExtractor
+{
+    private ImageManager $manager;
+
+    public function __construct()
+    {
+        $this->manager = new ImageManager(new Driver);
+    }
+
+    /**
+     * Returns public-relative path like /uploads/sources/123.jpg, or null
+     * if the URL yields no usable image.
+     */
+    public function extract(string $url, int|string $id): ?string
+    {
+        try {
+            $html = Http::timeout(10)
+                ->withUserAgent('Mozilla/5.0 (compatible; HassanNewsBot/1.0; +https://almalki.sa)')
+                ->get($url)
+                ->body();
+        } catch (\Throwable $e) {
+            Log::info('SourceImage fetch HTML failed', ['url' => $url, 'error' => $e->getMessage()]);
+
+            return null;
+        }
+
+        $imageUrl = $this->findImageUrl($html, $url);
+        if (! $imageUrl) {
+            return null;
+        }
+
+        return $this->download($imageUrl, $id);
+    }
+
+    private function findImageUrl(string $html, string $pageUrl): ?string
+    {
+        // Try og:image (and og:image:secure_url), then twitter:image.
+        $patterns = [
+            '/<meta[^>]+property=["\']og:image(?::secure_url)?["\'][^>]+content=["\']([^"\']+)["\']/i',
+            '/<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image(?::secure_url)?["\']/i',
+            '/<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']/i',
+            '/<meta[^>]+content=["\']([^"\']+)["\'][^>]+name=["\']twitter:image["\']/i',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $html, $m)) {
+                return $this->resolveUrl(trim($m[1]), $pageUrl);
+            }
+        }
+
+        return null;
+    }
+
+    private function resolveUrl(string $url, string $base): string
+    {
+        if (preg_match('#^https?://#i', $url)) {
+            return $url;
+        }
+        if (str_starts_with($url, '//')) {
+            $scheme = parse_url($base, PHP_URL_SCHEME) ?: 'https';
+
+            return $scheme.':'.$url;
+        }
+        if (str_starts_with($url, '/')) {
+            $parts = parse_url($base);
+
+            return $parts['scheme'].'://'.$parts['host'].$url;
+        }
+
+        return rtrim($base, '/').'/'.ltrim($url, '/');
+    }
+
+    private function download(string $imageUrl, int|string $id): ?string
+    {
+        try {
+            $bytes = Http::timeout(15)
+                ->withUserAgent('Mozilla/5.0 (compatible; HassanNewsBot/1.0)')
+                ->get($imageUrl)
+                ->body();
+
+            if (strlen($bytes) < 1024) {
+                return null; // too small to be a useful image
+            }
+
+            // Decode and resize for the OG layout. Store a 600px-wide thumbnail.
+            $image = $this->manager->read($bytes);
+            $image->scale(width: 600);
+
+            $dir = public_path('uploads/sources');
+            if (! is_dir($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            $path = "{$dir}/{$id}.jpg";
+            $image->save($path, quality: 85);
+
+            return "/uploads/sources/{$id}.jpg";
+        } catch (\Throwable $e) {
+            Log::info('SourceImage download failed', ['url' => $imageUrl, 'error' => $e->getMessage()]);
+
+            return null;
+        }
+    }
+}

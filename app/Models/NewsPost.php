@@ -14,7 +14,7 @@ class NewsPost extends Model
         'social_post_ar', 'social_post_en',
         'meta_title_ar', 'meta_title_en',
         'meta_description_ar', 'meta_description_en',
-        'cover_image', 'og_image', 'og_image_en', 'tall_image', 'tall_image_en', 'references',
+        'cover_image', 'og_image', 'og_image_en', 'tall_image', 'tall_image_en', 'source_image', 'references',
         'status', 'platform_status',
         'sent_to_whatsapp_at', 'approved_at', 'published_at',
     ];

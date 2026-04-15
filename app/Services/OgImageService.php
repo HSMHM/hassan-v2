@@ -19,11 +19,25 @@ class OgImageService
     {
         $subtitle = $post->source_title ?: 'almalki.sa';
 
+        // Pull the source-article thumbnail first (once) so all 4 layouts share it.
+        if (! $post->source_image && $post->source_url) {
+            try {
+                $path = app(SourceImageExtractor::class)->extract($post->source_url, $post->id);
+                if ($path) {
+                    $post->update(['source_image' => $path]);
+                }
+            } catch (\Throwable $e) {
+                Log::info('Source image extract failed', ['post_id' => $post->id, 'error' => $e->getMessage()]);
+            }
+        }
+
+        $src = $post->source_image;
+
         $jobs = [
-            'og_image' => fn () => $this->generateOg($post->title_ar, $subtitle, $post->id),
-            'og_image_en' => fn () => $this->generateOgEn($post->title_en, $subtitle, $post->id),
-            'tall_image' => fn () => $this->generateTall($post->title_ar, $subtitle, $post->id),
-            'tall_image_en' => fn () => $this->generateTallEn($post->title_en, $subtitle, $post->id),
+            'og_image' => fn () => $this->generateOg($post->title_ar, $subtitle, $post->id, $src),
+            'og_image_en' => fn () => $this->generateOgEn($post->title_en, $subtitle, $post->id, $src),
+            'tall_image' => fn () => $this->generateTall($post->title_ar, $subtitle, $post->id, $src),
+            'tall_image_en' => fn () => $this->generateTallEn($post->title_en, $subtitle, $post->id, $src),
         ];
 
         foreach ($jobs as $field => $generator) {
@@ -90,9 +104,9 @@ class OgImageService
     }
 
     /**
-     * Build an image with: logo + title + almalki.sa
+     * Build an image with: logo + title + optional source thumbnail + almalki.sa
      */
-    private function buildImage(int $w, int $h, string $title, bool $isArabic, array $positions)
+    private function buildImage(int $w, int $h, string $title, bool $isArabic, array $positions, ?string $sourceImagePath = null)
     {
         $image = $this->manager->createImage($w, $h)->fill('121212');
 
@@ -119,6 +133,11 @@ class OgImageService
             });
         }
 
+        // Source thumbnail (below title, if provided and if layout defines a slot)
+        if ($sourceImagePath && isset($positions['sourceY'], $positions['sourceW'], $positions['sourceH'])) {
+            $this->placeSourceImage($image, $sourceImagePath, $positions['sourceX'] ?? ($w / 2), $positions['sourceY'], $positions['sourceW'], $positions['sourceH']);
+        }
+
         // Domain
         $image->text('almalki.sa', $positions['domainX'], $positions['domainY'], function (FontFactory $font) use ($positions) {
             $font->filename($this->fontPath);
@@ -130,16 +149,41 @@ class OgImageService
         return $image;
     }
 
+    private function placeSourceImage($canvas, string $relativePath, int $centerX, int $topY, int $maxW, int $maxH): void
+    {
+        $full = public_path(ltrim($relativePath, '/'));
+        if (! is_file($full)) {
+            return;
+        }
+
+        try {
+            $thumb = $this->manager->decodePath($full);
+
+            // Fit within maxW × maxH preserving aspect ratio.
+            $ratio = min($maxW / $thumb->width(), $maxH / $thumb->height());
+            $newW = (int) ($thumb->width() * $ratio);
+            $newH = (int) ($thumb->height() * $ratio);
+            $thumb->resize($newW, $newH);
+
+            $x = $centerX - (int) ($newW / 2);
+            $canvas->insert($thumb, $x, $topY);
+        } catch (\Throwable $e) {
+            Log::info('Source image insert failed', ['path' => $relativePath, 'error' => $e->getMessage()]);
+        }
+    }
+
     /**
      * Horizontal 1200x630 Arabic — Twitter.
      */
-    public function generateOg(string $title, ?string $subtitle, int|string $id): string
+    public function generateOg(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null): string
     {
+        // Layout: logo (y=70) → title (center ~y=240) → source thumb (y=360, 280×160) → domain (y=590)
         $image = $this->buildImage(1200, 630, $title, true, [
-            'logoX' => 600, 'logoY' => 85, 'logoH' => 60,
-            'titleX' => 600, 'titleY' => 320, 'wordsPerLine' => 4, 'titleWrap' => 50, 'titleSize' => 38,
-            'domainX' => 600, 'domainY' => 585, 'domainSize' => 30,
-        ]);
+            'logoX' => 600, 'logoY' => 70, 'logoH' => 52,
+            'titleX' => 600, 'titleY' => 240, 'wordsPerLine' => 4, 'titleWrap' => 50, 'titleSize' => 34,
+            'sourceX' => 600, 'sourceY' => 360, 'sourceW' => 280, 'sourceH' => 160,
+            'domainX' => 600, 'domainY' => 590, 'domainSize' => 28,
+        ], $sourceImage);
 
         return $this->saveImage($image, "{$id}-og.jpg");
     }
@@ -147,13 +191,14 @@ class OgImageService
     /**
      * Horizontal 1200x630 English — LinkedIn.
      */
-    public function generateOgEn(string $title, ?string $subtitle, int|string $id): string
+    public function generateOgEn(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null): string
     {
         $image = $this->buildImage(1200, 630, $title, false, [
-            'logoX' => 600, 'logoY' => 85, 'logoH' => 60,
-            'titleX' => 600, 'titleY' => 320, 'wordsPerLine' => 5, 'titleWrap' => 55, 'titleSize' => 36,
-            'domainX' => 600, 'domainY' => 585, 'domainSize' => 28,
-        ]);
+            'logoX' => 600, 'logoY' => 70, 'logoH' => 52,
+            'titleX' => 600, 'titleY' => 240, 'wordsPerLine' => 5, 'titleWrap' => 55, 'titleSize' => 32,
+            'sourceX' => 600, 'sourceY' => 360, 'sourceW' => 280, 'sourceH' => 160,
+            'domainX' => 600, 'domainY' => 590, 'domainSize' => 26,
+        ], $sourceImage);
 
         return $this->saveImage($image, "{$id}-og-en.jpg");
     }
@@ -161,13 +206,15 @@ class OgImageService
     /**
      * Tall 1080x1350 (4:5) Arabic — Instagram + WhatsApp + Website AR.
      */
-    public function generateTall(string $title, ?string $subtitle, int|string $id): string
+    public function generateTall(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null): string
     {
+        // Layout: logo (y=150) → title (center ~y=500) → source thumb (y=770, 500×280) → domain (y=1290)
         $image = $this->buildImage(1080, 1350, $title, true, [
-            'logoX' => 540, 'logoY' => 170, 'logoH' => 72,
-            'titleX' => 540, 'titleY' => 620, 'wordsPerLine' => 3, 'titleWrap' => 40, 'titleSize' => 44,
-            'domainX' => 540, 'domainY' => 1280, 'domainSize' => 34,
-        ]);
+            'logoX' => 540, 'logoY' => 150, 'logoH' => 64,
+            'titleX' => 540, 'titleY' => 500, 'wordsPerLine' => 3, 'titleWrap' => 40, 'titleSize' => 40,
+            'sourceX' => 540, 'sourceY' => 770, 'sourceW' => 500, 'sourceH' => 280,
+            'domainX' => 540, 'domainY' => 1290, 'domainSize' => 32,
+        ], $sourceImage);
 
         return $this->saveImage($image, "{$id}-tall.jpg");
     }
@@ -175,13 +222,14 @@ class OgImageService
     /**
      * Tall 1080x1350 English — Website EN.
      */
-    public function generateTallEn(string $title, ?string $subtitle, int|string $id): string
+    public function generateTallEn(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null): string
     {
         $image = $this->buildImage(1080, 1350, $title, false, [
-            'logoX' => 540, 'logoY' => 170, 'logoH' => 72,
-            'titleX' => 540, 'titleY' => 620, 'wordsPerLine' => 4, 'titleWrap' => 45, 'titleSize' => 40,
-            'domainX' => 540, 'domainY' => 1280, 'domainSize' => 32,
-        ]);
+            'logoX' => 540, 'logoY' => 150, 'logoH' => 64,
+            'titleX' => 540, 'titleY' => 500, 'wordsPerLine' => 4, 'titleWrap' => 45, 'titleSize' => 36,
+            'sourceX' => 540, 'sourceY' => 770, 'sourceW' => 500, 'sourceH' => 280,
+            'domainX' => 540, 'domainY' => 1290, 'domainSize' => 30,
+        ], $sourceImage);
 
         return $this->saveImage($image, "{$id}-tall-en.jpg");
     }
