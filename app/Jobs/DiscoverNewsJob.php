@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\NewsPost;
 use App\Services\NewsDiscoveryService;
+use App\Services\OgImageService;
 use App\Services\TelegramService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -56,6 +57,10 @@ class DiscoverNewsJob implements ShouldQueue
             // controller's check for the newly-created post always matches, even
             // if the Telegram notification below fails.
             $post = NewsPost::create([...$content, 'status' => 'pending', 'sent_to_whatsapp_at' => now()]);
+
+            // Generate images now so they're available for both website display
+            // and social publishing without depending on the queue worker.
+            app(OgImageService::class)->ensureAll($post);
 
             $this->recordReason('created', ['post_id' => $post->id]);
 

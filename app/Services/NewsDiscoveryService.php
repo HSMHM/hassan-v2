@@ -13,8 +13,8 @@ class NewsDiscoveryService
 
     public function __construct(private GeminiService $gemini)
     {
-        $this->discoveryModel = config('services.gemini.discovery_model', 'gemini-2.0-flash');
-        $this->contentModel = config('services.gemini.content_model', 'gemini-2.0-flash');
+        $this->discoveryModel = config('services.gemini.discovery_model', 'gemini-2.5-flash-lite');
+        $this->contentModel = config('services.gemini.content_model', 'gemini-2.5-flash-lite');
     }
 
     public function discoverNews(): ?array

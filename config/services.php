@@ -30,9 +30,9 @@ return [
 
     'gemini' => [
         'api_key' => env('GEMINI_API_KEY'),
-        'model' => env('GEMINI_MODEL', 'gemini-2.0-flash'),
-        'discovery_model' => env('GEMINI_DISCOVERY_MODEL', 'gemini-2.0-flash'),
-        'content_model' => env('GEMINI_CONTENT_MODEL', 'gemini-2.0-flash'),
+        'model' => env('GEMINI_MODEL', 'gemini-2.5-flash-lite'),
+        'discovery_model' => env('GEMINI_DISCOVERY_MODEL', 'gemini-2.5-flash-lite'),
+        'content_model' => env('GEMINI_CONTENT_MODEL', 'gemini-2.5-flash-lite'),
     ],
 
     'twitter' => [

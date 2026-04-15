@@ -195,6 +195,9 @@ class TelegramWebhookController extends Controller
         if (preg_match('/^publish_website_(\d+)$/', $data, $m)) {
             $post = NewsPost::find($m[1]);
             if ($post && $post->status === 'pending') {
+                // Ensure images exist even when the user skips social publishing.
+                app(\App\Services\OgImageService::class)->ensureAll($post);
+
                 $post->update([
                     'status' => 'published',
                     'published_at' => now(),

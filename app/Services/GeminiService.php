@@ -25,7 +25,7 @@ class GeminiService
     public function __construct()
     {
         $this->apiKey = (string) config('services.gemini.api_key');
-        $this->model = (string) config('services.gemini.model', 'gemini-2.0-flash');
+        $this->model = (string) config('services.gemini.model', 'gemini-2.5-flash-lite');
     }
 
     /**
@@ -73,7 +73,9 @@ class GeminiService
     }
 
     /**
-     * Retry on 429 with exponential backoff.
+     * Retry on 429. Gemini returns the exact wait time inside the error body
+     * (error.details[].retryDelay, e.g. "31s"). Use that when present; fall
+     * back to exponential backoff otherwise.
      */
     private function callWithRetry(callable $request, int $maxAttempts = 3): string
     {
@@ -101,9 +103,21 @@ class GeminiService
                 throw new \RuntimeException('Gemini API failed: '.$body);
             }
 
-            $wait = (int) ($response->header('Retry-After') ?: $backoff[$attempt - 1] ?? 60);
+            $wait = $this->parseRetryDelay($response->json()) ?? ($backoff[$attempt - 1] ?? 60);
             Log::warning('Gemini rate limit — retrying', ['attempt' => $attempt, 'wait_seconds' => $wait]);
             sleep($wait);
         }
+    }
+
+    private function parseRetryDelay(?array $body): ?int
+    {
+        foreach ($body['error']['details'] ?? [] as $detail) {
+            if (($detail['@type'] ?? '') === 'type.googleapis.com/google.rpc.RetryInfo'
+                && preg_match('/^(\d+)s$/', $detail['retryDelay'] ?? '', $m)) {
+                return ((int) $m[1]) + 2;
+            }
+        }
+
+        return null;
     }
 }

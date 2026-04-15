@@ -2,13 +2,45 @@
 
 namespace App\Services;
 
+use App\Models\NewsPost;
 use ArPHP\I18N\Arabic;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Typography\FontFactory;
 
 class OgImageService
 {
+    /**
+     * Generate any missing images for a post and persist their paths.
+     * Safe to call multiple times — skips fields that are already filled.
+     */
+    public function ensureAll(NewsPost $post): void
+    {
+        $subtitle = $post->source_title ?: 'almalki.sa';
+
+        $jobs = [
+            'og_image' => fn () => $this->generateOg($post->title_ar, $subtitle, $post->id),
+            'og_image_en' => fn () => $this->generateOgEn($post->title_en, $subtitle, $post->id),
+            'tall_image' => fn () => $this->generateTall($post->title_ar, $subtitle, $post->id),
+            'tall_image_en' => fn () => $this->generateTallEn($post->title_en, $subtitle, $post->id),
+        ];
+
+        foreach ($jobs as $field => $generator) {
+            if ($post->{$field}) {
+                continue;
+            }
+            try {
+                $post->update([$field => $generator()]);
+            } catch (\Throwable $e) {
+                Log::warning("OG image ({$field}) failed", ['post_id' => $post->id, 'error' => $e->getMessage()]);
+            }
+        }
+
+        $post->refresh();
+    }
+
+
     private ImageManager $manager;
 
     private string $fontPath;
