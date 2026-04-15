@@ -47,17 +47,34 @@ class SourceImageExtractor
 
     private function findImageUrl(string $html, string $pageUrl): ?string
     {
-        // Try og:image (and og:image:secure_url), then twitter:image.
-        $patterns = [
-            '/<meta[^>]+property=["\']og:image(?::secure_url)?["\'][^>]+content=["\']([^"\']+)["\']/i',
-            '/<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image(?::secure_url)?["\']/i',
-            '/<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']/i',
-            '/<meta[^>]+content=["\']([^"\']+)["\'][^>]+name=["\']twitter:image["\']/i',
+        // DOMDocument is more reliable than regex for real-world HTML.
+        $priority = [
+            ['property', 'og:image:secure_url'],
+            ['property', 'og:image'],
+            ['name', 'twitter:image'],
+            ['name', 'twitter:image:src'],
         ];
 
-        foreach ($patterns as $pattern) {
-            if (preg_match($pattern, $html, $m)) {
-                return $this->resolveUrl(trim($m[1]), $pageUrl);
+        $previous = libxml_use_internal_errors(true);
+        $doc = new \DOMDocument;
+        $loaded = $doc->loadHTML('<?xml encoding="UTF-8">'.$html);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+
+        if (! $loaded) {
+            return null;
+        }
+
+        $metas = $doc->getElementsByTagName('meta');
+        foreach ($priority as [$attr, $value]) {
+            foreach ($metas as $meta) {
+                /** @var \DOMElement $meta */
+                if (strtolower($meta->getAttribute($attr)) === $value) {
+                    $content = trim($meta->getAttribute('content'));
+                    if ($content !== '') {
+                        return $this->resolveUrl($content, $pageUrl);
+                    }
+                }
             }
         }
 
