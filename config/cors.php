@@ -7,7 +7,7 @@ return [
     'allowed_methods' => ['POST'],
 
     'allowed_origins' => [
-        'https://gate.whapi.cloud',
+        'https://api.telegram.org',
     ],
 
     'allowed_origins_patterns' => [],
@@ -15,7 +15,7 @@ return [
     'allowed_headers' => [
         'Content-Type',
         'Authorization',
-        'X-Webhook-Secret',
+        'X-Telegram-Bot-Api-Secret-Token',
     ],
 
     'exposed_headers' => [],

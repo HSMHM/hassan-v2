@@ -72,11 +72,12 @@ return [
         'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
     ],
 
-    'whapi' => [
-        'token' => env('WHAPI_API_TOKEN'),
-        'base_url' => env('WHAPI_BASE_URL', 'https://gate.whapi.cloud'),
-        'owner_phone' => env('WHATSAPP_OWNER_PHONE'),
-        'webhook_secret' => env('WHAPI_WEBHOOK_SECRET'),
+    'waha' => [
+        'base_url' => env('WAHA_BASE_URL', 'http://localhost:3000'),
+        'session' => env('WAHA_SESSION', 'default'),
+        'api_key' => env('WAHA_API_KEY'),
+        'status_bg' => env('WAHA_STATUS_BG', '#121212'),
+        'status_font' => (int) env('WAHA_STATUS_FONT', 1),
     ],
 
     'turnstile' => [
