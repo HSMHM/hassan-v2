@@ -317,6 +317,37 @@ class TelegramWebhookController extends Controller
             return;
         }
 
+        // === SCALE UP / DOWN / RESET ===
+        if (preg_match('/^scale_(up|down|reset)_(\d+)$/', $data, $m)) {
+            $action = $m[1];
+            $post = NewsPost::find($m[2]);
+            if (! $post || $post->status !== 'pending') {
+                $telegram->answerCallback($callbackId, '⚠️ الخبر غير متاح');
+
+                return;
+            }
+
+            $current = (float) ($post->source_scale ?? 1.0);
+            $new = match ($action) {
+                'up' => min(2.0, round($current * 1.25, 2)),
+                'down' => max(0.4, round($current / 1.25, 2)),
+                'reset' => 1.0,
+            };
+
+            if (abs($new - $current) < 0.01) {
+                $telegram->answerCallback($callbackId, 'الصورة عند الحد');
+
+                return;
+            }
+
+            $telegram->answerCallback($callbackId, '🔄 ' . (int) ($new * 100).'%');
+            $post->update(['source_scale' => $new]);
+            app(\App\Services\OgImageService::class)->regenerateAll($post);
+            $telegram->sendNewsForApproval($post->refresh());
+
+            return;
+        }
+
         $telegram->answerCallback($callbackId, '❓');
     }
 }
