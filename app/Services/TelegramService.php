@@ -69,21 +69,77 @@ class TelegramService
         ]);
     }
 
+    /**
+     * Send a single photo (by public URL) with optional caption + inline buttons.
+     * Caption is limited to 1024 chars by Telegram.
+     */
+    public function sendPhoto(string $photoUrl, string $caption = '', ?array $replyMarkup = null): array
+    {
+        $payload = [
+            'chat_id' => $this->chatId,
+            'photo' => $photoUrl,
+            'caption' => mb_substr($caption, 0, 1024),
+            'parse_mode' => 'HTML',
+        ];
+
+        if ($replyMarkup) {
+            $payload['reply_markup'] = json_encode($replyMarkup);
+        }
+
+        $response = Http::post("{$this->baseUrl}/sendPhoto", $payload);
+
+        if (! $response->successful()) {
+            Log::error('Telegram sendPhoto failed', ['body' => $response->body()]);
+        }
+
+        return $response->json() ?? [];
+    }
+
+    /**
+     * Send up to 10 photos as a single album. Does NOT support inline buttons
+     * (Telegram limitation) — follow up with a separate sendMessage if needed.
+     */
+    public function sendMediaGroup(array $photoUrls, string $caption = ''): array
+    {
+        $media = [];
+        foreach (array_values($photoUrls) as $i => $url) {
+            $media[] = array_filter([
+                'type' => 'photo',
+                'media' => $url,
+                'caption' => $i === 0 ? mb_substr($caption, 0, 1024) : null,
+                'parse_mode' => $i === 0 ? 'HTML' : null,
+            ]);
+        }
+
+        $response = Http::post("{$this->baseUrl}/sendMediaGroup", [
+            'chat_id' => $this->chatId,
+            'media' => json_encode($media),
+        ]);
+
+        if (! $response->successful()) {
+            Log::error('Telegram sendMediaGroup failed', ['body' => $response->body()]);
+        }
+
+        return $response->json() ?? [];
+    }
+
     public function sendNewsForApproval(NewsPost $post): void
     {
         $previewUrl = rtrim(config('app.url'), '/').'/cpanel/news-posts/'.$post->id.'/edit';
+        $base = rtrim(config('app.url'), '/');
 
-        $msg = "🔔 <b>خبر جديد</b>\n\n";
-        $msg .= "📌 {$post->title_ar}\n\n";
-        $msg .= mb_substr($post->excerpt_ar, 0, 150);
+        $caption = "🔔 <b>خبر جديد</b>\n\n";
+        $caption .= "📌 {$post->title_ar}\n\n";
+        $caption .= mb_substr($post->excerpt_ar, 0, 150);
         if (mb_strlen($post->excerpt_ar) > 150) {
-            $msg .= '...';
+            $caption .= '...';
         }
-        $msg .= "\n\n";
-        $msg .= "📎 <a href=\"{$post->source_url}\">المصدر</a>";
-        $msg .= '  ·  ';
-        $msg .= "<a href=\"{$previewUrl}\">👁 عرض وتعديل</a>";
+        $caption .= "\n\n";
+        $caption .= "📎 <a href=\"{$post->source_url}\">المصدر</a>";
+        $caption .= '  ·  ';
+        $caption .= "<a href=\"{$previewUrl}\">👁 عرض وتعديل</a>";
 
+        $scalePct = (int) round(((float) ($post->source_scale ?? 1.0)) * 100);
         $buttons = [
             'inline_keyboard' => [
                 [
@@ -91,10 +147,31 @@ class TelegramService
                     ['text' => '💾 الموقع فقط', 'callback_data' => "publish_website_{$post->id}"],
                     ['text' => '⏭️ تجاوز', 'callback_data' => "skip_{$post->id}"],
                 ],
+                [
+                    ['text' => '➖ صغّر الصورة', 'callback_data' => "scale_down_{$post->id}"],
+                    ['text' => "🖼 {$scalePct}%", 'callback_data' => "scale_reset_{$post->id}"],
+                    ['text' => '➕ كبّر الصورة', 'callback_data' => "scale_up_{$post->id}"],
+                ],
             ],
         ];
 
-        $this->sendMessage($msg, $buttons);
+        // Show image previews first (tall + OG), then send caption+buttons.
+        // Media group can't carry buttons — so we do: album preview → text w/ buttons.
+        $previewImages = array_values(array_filter([
+            $post->tall_image ? $base.$post->tall_image : null,
+            $post->og_image ? $base.$post->og_image : null,
+        ]));
+
+        if (count($previewImages) >= 2) {
+            $this->sendMediaGroup($previewImages);
+            $this->sendMessage($caption, $buttons);
+        } elseif (count($previewImages) === 1) {
+            // Only one image — send it with caption + buttons in a single photo message.
+            $this->sendPhoto($previewImages[0], $caption, $buttons);
+        } else {
+            // Fallback: no images yet, send text only.
+            $this->sendMessage($caption, $buttons);
+        }
 
         $post->update([
             'sent_to_whatsapp_at' => now(),

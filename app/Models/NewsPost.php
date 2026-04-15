@@ -14,7 +14,7 @@ class NewsPost extends Model
         'social_post_ar', 'social_post_en',
         'meta_title_ar', 'meta_title_en',
         'meta_description_ar', 'meta_description_en',
-        'cover_image', 'og_image', 'og_image_en', 'tall_image', 'tall_image_en', 'source_image', 'references',
+        'cover_image', 'og_image', 'og_image_en', 'tall_image', 'tall_image_en', 'source_image', 'source_scale', 'references',
         'status', 'platform_status',
         'sent_to_whatsapp_at', 'approved_at', 'published_at',
     ];
@@ -22,6 +22,7 @@ class NewsPost extends Model
     protected $casts = [
         'references' => 'array',
         'platform_status' => 'array',
+        'source_scale' => 'float',
         'sent_to_whatsapp_at' => 'datetime',
         'approved_at' => 'datetime',
         'published_at' => 'datetime',

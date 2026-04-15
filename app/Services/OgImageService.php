@@ -32,12 +32,13 @@ class OgImageService
         }
 
         $src = $post->source_image;
+        $scale = (float) ($post->source_scale ?? 1.0);
 
         $jobs = [
-            'og_image' => fn () => $this->generateOg($post->title_ar, $subtitle, $post->id, $src),
-            'og_image_en' => fn () => $this->generateOgEn($post->title_en, $subtitle, $post->id, $src),
-            'tall_image' => fn () => $this->generateTall($post->title_ar, $subtitle, $post->id, $src),
-            'tall_image_en' => fn () => $this->generateTallEn($post->title_en, $subtitle, $post->id, $src),
+            'og_image' => fn () => $this->generateOg($post->title_ar, $subtitle, $post->id, $src, $scale),
+            'og_image_en' => fn () => $this->generateOgEn($post->title_en, $subtitle, $post->id, $src, $scale),
+            'tall_image' => fn () => $this->generateTall($post->title_ar, $subtitle, $post->id, $src, $scale),
+            'tall_image_en' => fn () => $this->generateTallEn($post->title_en, $subtitle, $post->id, $src, $scale),
         ];
 
         foreach ($jobs as $field => $generator) {
@@ -52,6 +53,22 @@ class OgImageService
         }
 
         $post->refresh();
+    }
+
+    /**
+     * Force regenerate all 4 layout images (keeps the already-downloaded source).
+     * Used after the user changes source_scale.
+     */
+    public function regenerateAll(NewsPost $post): void
+    {
+        $post->update([
+            'og_image' => null,
+            'og_image_en' => null,
+            'tall_image' => null,
+            'tall_image_en' => null,
+        ]);
+
+        $this->ensureAll($post);
     }
 
 
@@ -135,7 +152,10 @@ class OgImageService
 
         // Source thumbnail (below title, if provided and if layout defines a slot)
         if ($sourceImagePath && isset($positions['sourceY'], $positions['sourceW'], $positions['sourceH'])) {
-            $this->placeSourceImage($image, $sourceImagePath, $positions['sourceX'] ?? ($w / 2), $positions['sourceY'], $positions['sourceW'], $positions['sourceH']);
+            $scale = max(0.4, min(2.0, (float) ($positions['sourceScale'] ?? 1.0)));
+            $scaledW = (int) ($positions['sourceW'] * $scale);
+            $scaledH = (int) ($positions['sourceH'] * $scale);
+            $this->placeSourceImage($image, $sourceImagePath, $positions['sourceX'] ?? ($w / 2), $positions['sourceY'], $scaledW, $scaledH);
         }
 
         // Domain
@@ -175,59 +195,48 @@ class OgImageService
     /**
      * Horizontal 1200x630 Arabic — Twitter.
      */
-    public function generateOg(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null): string
+    public function generateOg(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null, float $sourceScale = 1.0): string
     {
-        // Layout: logo (y=70) → title (center ~y=240) → source thumb (y=360, 280×160) → domain (y=590)
         $image = $this->buildImage(1200, 630, $title, true, [
             'logoX' => 600, 'logoY' => 70, 'logoH' => 52,
             'titleX' => 600, 'titleY' => 240, 'wordsPerLine' => 4, 'titleWrap' => 50, 'titleSize' => 34,
-            'sourceX' => 600, 'sourceY' => 360, 'sourceW' => 280, 'sourceH' => 160,
+            'sourceX' => 600, 'sourceY' => 360, 'sourceW' => 280, 'sourceH' => 160, 'sourceScale' => $sourceScale,
             'domainX' => 600, 'domainY' => 590, 'domainSize' => 28,
         ], $sourceImage);
 
         return $this->saveImage($image, "{$id}-og.jpg");
     }
 
-    /**
-     * Horizontal 1200x630 English — LinkedIn.
-     */
-    public function generateOgEn(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null): string
+    public function generateOgEn(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null, float $sourceScale = 1.0): string
     {
         $image = $this->buildImage(1200, 630, $title, false, [
             'logoX' => 600, 'logoY' => 70, 'logoH' => 52,
             'titleX' => 600, 'titleY' => 240, 'wordsPerLine' => 5, 'titleWrap' => 55, 'titleSize' => 32,
-            'sourceX' => 600, 'sourceY' => 360, 'sourceW' => 280, 'sourceH' => 160,
+            'sourceX' => 600, 'sourceY' => 360, 'sourceW' => 280, 'sourceH' => 160, 'sourceScale' => $sourceScale,
             'domainX' => 600, 'domainY' => 590, 'domainSize' => 26,
         ], $sourceImage);
 
         return $this->saveImage($image, "{$id}-og-en.jpg");
     }
 
-    /**
-     * Tall 1080x1350 (4:5) Arabic — Instagram + WhatsApp + Website AR.
-     */
-    public function generateTall(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null): string
+    public function generateTall(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null, float $sourceScale = 1.0): string
     {
-        // Layout: logo (y=150) → title (center ~y=500) → source thumb (y=770, 500×280) → domain (y=1290)
         $image = $this->buildImage(1080, 1350, $title, true, [
             'logoX' => 540, 'logoY' => 150, 'logoH' => 64,
             'titleX' => 540, 'titleY' => 500, 'wordsPerLine' => 3, 'titleWrap' => 40, 'titleSize' => 40,
-            'sourceX' => 540, 'sourceY' => 770, 'sourceW' => 500, 'sourceH' => 280,
+            'sourceX' => 540, 'sourceY' => 770, 'sourceW' => 500, 'sourceH' => 280, 'sourceScale' => $sourceScale,
             'domainX' => 540, 'domainY' => 1290, 'domainSize' => 32,
         ], $sourceImage);
 
         return $this->saveImage($image, "{$id}-tall.jpg");
     }
 
-    /**
-     * Tall 1080x1350 English — Website EN.
-     */
-    public function generateTallEn(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null): string
+    public function generateTallEn(string $title, ?string $subtitle, int|string $id, ?string $sourceImage = null, float $sourceScale = 1.0): string
     {
         $image = $this->buildImage(1080, 1350, $title, false, [
             'logoX' => 540, 'logoY' => 150, 'logoH' => 64,
             'titleX' => 540, 'titleY' => 500, 'wordsPerLine' => 4, 'titleWrap' => 45, 'titleSize' => 36,
-            'sourceX' => 540, 'sourceY' => 770, 'sourceW' => 500, 'sourceH' => 280,
+            'sourceX' => 540, 'sourceY' => 770, 'sourceW' => 500, 'sourceH' => 280, 'sourceScale' => $sourceScale,
             'domainX' => 540, 'domainY' => 1290, 'domainSize' => 30,
         ], $sourceImage);
 

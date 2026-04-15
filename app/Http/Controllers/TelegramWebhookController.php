@@ -155,12 +155,61 @@ class TelegramWebhookController extends Controller
             return;
         }
 
+        // === scale commands — apply to the current pending post ===
+        if (preg_match('/^(كبّ?ر|كبير|\+)(\s+الصورة)?$/u', trim($text))) {
+            $this->adjustScale('up');
+
+            return;
+        }
+        if (preg_match('/^(صغّ?ر|صغير|\-|\−)(\s+الصورة)?$/u', trim($text))) {
+            $this->adjustScale('down');
+
+            return;
+        }
+
         // Unknown command
         $telegram->sendMessage(
             "🤔 ما فهمت الأمر.\n\n".
             "اكتب <b>خبر جديد</b> للبحث عن أخبار\n".
             "أو <b>/start</b> لعرض كل الأوامر"
         );
+    }
+
+    /**
+     * Apply source-image scale change to the current pending post,
+     * regenerate all 4 OG/tall images, and resend the preview.
+     */
+    private function adjustScale(string $direction): void
+    {
+        $telegram = app(TelegramService::class);
+        $post = NewsPost::where('status', 'pending')->latest('sent_to_whatsapp_at')->first();
+
+        if (! $post) {
+            $telegram->sendMessage('⚠️ لا يوجد خبر بانتظار الموافقة.');
+
+            return;
+        }
+
+        $current = (float) ($post->source_scale ?? 1.0);
+        $new = $direction === 'up'
+            ? min(2.0, round($current * 1.25, 2))
+            : max(0.4, round($current / 1.25, 2));
+
+        if (abs($new - $current) < 0.01) {
+            $telegram->sendMessage(
+                $direction === 'up'
+                    ? '⚠️ الصورة وصلت الحد الأقصى (200%).'
+                    : '⚠️ الصورة وصلت الحد الأدنى (40%).'
+            );
+
+            return;
+        }
+
+        $telegram->sendMessage("🔄 جاري إعادة التوليد بحجم ".(int) ($new * 100).'%...');
+
+        $post->update(['source_scale' => $new]);
+        app(\App\Services\OgImageService::class)->regenerateAll($post);
+        $telegram->sendNewsForApproval($post->refresh());
     }
 
     private function handleCallback(array $callback): void
