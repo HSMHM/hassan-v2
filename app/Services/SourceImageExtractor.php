@@ -102,6 +102,7 @@ class SourceImageExtractor
 
     private function download(string $imageUrl, int|string $id): ?string
     {
+        $tmp = null;
         try {
             $bytes = Http::timeout(15)
                 ->withUserAgent('Mozilla/5.0 (compatible; HassanNewsBot/1.0)')
@@ -109,11 +110,14 @@ class SourceImageExtractor
                 ->body();
 
             if (strlen($bytes) < 1024) {
-                return null; // too small to be a useful image
+                return null;
             }
 
-            // Decode and resize for the OG layout. Store a 600px-wide thumbnail.
-            $image = $this->manager->read($bytes);
+            // Intervention v4 has no read() — write bytes to a temp file then decodePath().
+            $tmp = tempnam(sys_get_temp_dir(), 'src_img_');
+            file_put_contents($tmp, $bytes);
+
+            $image = $this->manager->decodePath($tmp);
             $image->scale(width: 600);
 
             $dir = public_path('uploads/sources');
@@ -128,6 +132,10 @@ class SourceImageExtractor
             Log::info('SourceImage download failed', ['url' => $imageUrl, 'error' => $e->getMessage()]);
 
             return null;
+        } finally {
+            if ($tmp && is_file($tmp)) {
+                @unlink($tmp);
+            }
         }
     }
 }
