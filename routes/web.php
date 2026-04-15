@@ -34,6 +34,10 @@ Route::get('/cpanel/locale/{locale}', function (string $locale) {
 // Legacy redirect — anyone bookmarking /admin goes to /cpanel
 Route::get('/admin/{any?}', fn () => redirect('/cpanel'))->where('any', '.*');
 
+// Snapchat OAuth callback (gated by one-time state from `php artisan snapchat:auth`)
+Route::get('/snapchat/callback', [\App\Http\Controllers\SnapchatAuthController::class, 'callback'])
+    ->middleware('throttle:10,1');
+
 // Arabic (default, no prefix)
 Route::get('/', [HomeController::class, 'index'])->name('home.ar');
 Route::get('/about', [AboutController::class, 'index'])->name('about.ar');

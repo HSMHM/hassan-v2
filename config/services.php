@@ -63,6 +63,7 @@ return [
         'client_id' => env('SNAPCHAT_CLIENT_ID'),
         'client_secret' => env('SNAPCHAT_CLIENT_SECRET'),
         'access_token' => env('SNAPCHAT_ACCESS_TOKEN'),
+        'refresh_token' => env('SNAPCHAT_REFRESH_TOKEN'),
         'organization_id' => env('SNAPCHAT_ORGANIZATION_ID'),
         'profile_id' => env('SNAPCHAT_PROFILE_ID'),
     ],
