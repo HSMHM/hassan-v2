@@ -28,13 +28,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'anthropic' => [
-        'api_key' => env('ANTHROPIC_API_KEY'),
-        'model' => env('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001'),
-        'max_tokens' => (int) env('ANTHROPIC_MAX_TOKENS', 4096),
-        'base_url' => 'https://api.anthropic.com/v1',
-        'discovery_model' => env('ANTHROPIC_DISCOVERY_MODEL', 'claude-haiku-4-5-20251001'),
-        'content_model' => env('ANTHROPIC_CONTENT_MODEL', 'claude-haiku-4-5-20251001'),
+    'gemini' => [
+        'api_key' => env('GEMINI_API_KEY'),
+        'model' => env('GEMINI_MODEL', 'gemini-2.0-flash'),
+        'discovery_model' => env('GEMINI_DISCOVERY_MODEL', 'gemini-2.0-flash'),
+        'content_model' => env('GEMINI_CONTENT_MODEL', 'gemini-2.0-flash'),
     ],
 
     'twitter' => [
