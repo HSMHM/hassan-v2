@@ -44,15 +44,44 @@ class DiscoverNewsJob implements ShouldQueue
             return;
         }
 
-        $top = collect($items)->sortByDesc(fn ($i) => match ($i['significance'] ?? 'low') {
+        $sorted = collect($items)->sortByDesc(fn ($i) => match ($i['significance'] ?? 'low') {
             'high' => 3,
             'medium' => 2,
             default => 1,
-        })->first();
+        })->values();
 
-        if (NewsPost::where('source_url', $top['source_url'])->exists()) {
-            $this->recordReason('duplicate_url', ['url' => $top['source_url']]);
-            $telegram->notify('🔁 الخبر اللي لقاه منشور عندك من قبل — جرّب مرة ثانية.');
+        $top = null;
+        foreach ($sorted as $candidate) {
+            $url = $candidate['source_url'] ?? null;
+            if (! $url) {
+                continue;
+            }
+
+            if (NewsPost::where('source_url', $url)->exists()) {
+                continue;
+            }
+
+            try {
+                $status = \Illuminate\Support\Facades\Http::timeout(8)
+                    ->withUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+                    ->get($url)
+                    ->status();
+            } catch (\Throwable $e) {
+                Log::info('Candidate URL unreachable', ['url' => $url, 'error' => $e->getMessage()]);
+                continue;
+            }
+
+            if ($status >= 200 && $status < 400) {
+                $top = $candidate;
+                break;
+            }
+
+            Log::info('Candidate URL non-2xx, trying next', ['url' => $url, 'status' => $status]);
+        }
+
+        if (! $top) {
+            $this->recordReason('no_valid_url');
+            $telegram->notify('🔗 كل الـURLs اللي رجّعها Gemini هالمرة ما اشتغلت. جرّب مرة ثانية.');
 
             return;
         }

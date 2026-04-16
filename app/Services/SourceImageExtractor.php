@@ -47,12 +47,9 @@ class SourceImageExtractor
         }
 
         $imageUrl = $this->findImageUrl($html, $url);
-        if (! $imageUrl) {
-            $imageUrl = $this->findFavicon($html, $url);
-        }
 
         if (! $imageUrl) {
-            Log::warning('SourceImage no og:image/favicon found', ['url' => $url]);
+            Log::warning('SourceImage no og:image found', ['url' => $url]);
 
             return null;
         }
