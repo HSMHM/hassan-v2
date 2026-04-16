@@ -60,7 +60,7 @@ class SourceImageExtractor
     private function downloadScreenshot(string $url, int|string $id): ?string
     {
         try {
-            $screenshotUrl = 'https://image.thum.io/get/width/600/crop/400/'.urlencode($url);
+            $screenshotUrl = 'https://image.thum.io/get/width/600/crop/400/'.$url;
 
             $bytes = Http::timeout(20)
                 ->withUserAgent('Mozilla/5.0')
