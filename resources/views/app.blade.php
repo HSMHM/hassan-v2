@@ -13,6 +13,20 @@
 
     <title inertia>{{ config('app.name', 'Hassan Almalki') }}</title>
 
+    @if(isset($page['props']['meta']['og']))
+        <meta property="og:title" content="{{ $page['props']['meta']['og']['title'] ?? '' }}" />
+        <meta property="og:description" content="{{ $page['props']['meta']['og']['description'] ?? '' }}" />
+        <meta property="og:image" content="{{ $page['props']['meta']['og']['image'] ?? '' }}" />
+        <meta property="og:url" content="{{ $page['props']['meta']['og']['url'] ?? '' }}" />
+        <meta property="og:type" content="{{ $page['props']['meta']['og']['type'] ?? 'website' }}" />
+    @endif
+    @if(isset($page['props']['meta']['twitter']))
+        <meta name="twitter:card" content="{{ $page['props']['meta']['twitter']['card'] ?? 'summary_large_image' }}" />
+        <meta name="twitter:title" content="{{ $page['props']['meta']['twitter']['title'] ?? '' }}" />
+        <meta name="twitter:description" content="{{ $page['props']['meta']['twitter']['description'] ?? '' }}" />
+        <meta name="twitter:image" content="{{ $page['props']['meta']['twitter']['image'] ?? '' }}" />
+    @endif
+
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
