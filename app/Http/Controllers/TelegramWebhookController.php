@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\DiscoverNewsJob;
+use App\Jobs\GeneratePostImagesJob;
 use App\Jobs\PublishNewsJob;
 use App\Jobs\RegenerateContentJob;
 use App\Models\NewsPost;
@@ -185,8 +186,7 @@ class TelegramWebhookController extends Controller
         $telegram->sendMessage("🔄 جاري إعادة التوليد بحجم ".(int) ($new * 100).'%...');
 
         $post->update(['source_scale' => $new]);
-        app(\App\Services\OgImageService::class)->regenerateAll($post);
-        $telegram->sendNewsForApproval($post->refresh());
+        GeneratePostImagesJob::dispatch($post->id, mode: 'regenerate', resendPreview: true);
     }
 
     private function handleCallback(array $callback): void
@@ -221,13 +221,11 @@ class TelegramWebhookController extends Controller
         if (preg_match('/^publish_website_(\d+)$/', $data, $m)) {
             $post = NewsPost::find($m[1]);
             if ($post && $post->status === 'pending') {
-                // Ensure images exist even when the user skips social publishing.
-                app(\App\Services\OgImageService::class)->ensureAll($post);
-
                 $post->update([
                     'status' => 'published',
                     'published_at' => now(),
                 ]);
+                GeneratePostImagesJob::dispatch($post->id);
                 $telegram->answerCallback($callbackId, '✅ منشور في الموقع');
 
                 if ($messageId) {
@@ -319,8 +317,7 @@ class TelegramWebhookController extends Controller
 
             $telegram->answerCallback($callbackId, '🔄 ' . (int) ($new * 100).'%');
             $post->update(['source_scale' => $new]);
-            app(\App\Services\OgImageService::class)->regenerateAll($post);
-            $telegram->sendNewsForApproval($post->refresh());
+            GeneratePostImagesJob::dispatch($post->id, mode: 'regenerate', resendPreview: true);
 
             return;
         }
