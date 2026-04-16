@@ -12,7 +12,13 @@ const prefix = computed(() => (locale.value === 'en' ? '/en' : ''));
 const slug = computed(() => (locale.value === 'en' ? props.article.slug_en : props.article.slug_ar));
 const title = computed(() => (locale.value === 'en' ? props.article.title_en : props.article.title_ar));
 const excerpt = computed(() => (locale.value === 'en' ? props.article.excerpt_en : props.article.excerpt_ar));
-const cover = computed(() => (locale.value === 'en' ? (props.article.cover_image_en || props.article.cover_image) : props.article.cover_image));
+const cover = computed(() => {
+    const a = props.article;
+    if (locale.value === 'en') {
+        return a.tall_image_en || a.og_image_en || a.cover_image_en || a.tall_image || a.og_image || a.cover_image;
+    }
+    return a.tall_image || a.og_image || a.cover_image;
+});
 const url = computed(() => `${prefix.value}/articles/${slug.value}`);
 const date = computed(() => {
     if (!props.article.published_at) return '';
