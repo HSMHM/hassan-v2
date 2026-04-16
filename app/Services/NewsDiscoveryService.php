@@ -59,28 +59,54 @@ PROMPT;
      */
     private function extractJson(string $raw): ?array
     {
-        $candidates = [];
+        $decoded = json_decode(trim($raw), true);
+        if (is_array($decoded)) {
+            return $decoded;
+        }
 
         if (preg_match('/```(?:json)?\s*(\{.*?\})\s*```/s', $raw, $m)) {
-            $candidates[] = $m[1];
-        }
-
-        if (preg_match('/(\{[^{}]*"items"[\s\S]*\})/s', $raw, $m)) {
-            $candidates[] = $m[1];
-        }
-
-        $first = strpos($raw, '{');
-        $last = strrpos($raw, '}');
-        if ($first !== false && $last !== false && $last > $first) {
-            $candidates[] = substr($raw, $first, $last - $first + 1);
-        }
-
-        $candidates[] = $raw;
-
-        foreach ($candidates as $candidate) {
-            $decoded = json_decode(trim($candidate), true);
+            $decoded = json_decode(trim($m[1]), true);
             if (is_array($decoded)) {
                 return $decoded;
+            }
+        }
+
+        // Balanced bracket matching — find the first complete JSON object.
+        $start = strpos($raw, '{');
+        if ($start !== false) {
+            $depth = 0;
+            $inStr = false;
+            $escape = false;
+            $len = strlen($raw);
+            for ($i = $start; $i < $len; $i++) {
+                $c = $raw[$i];
+                if ($escape) {
+                    $escape = false;
+                    continue;
+                }
+                if ($c === '\\') {
+                    $escape = true;
+                    continue;
+                }
+                if ($c === '"') {
+                    $inStr = ! $inStr;
+                    continue;
+                }
+                if ($inStr) {
+                    continue;
+                }
+                if ($c === '{') {
+                    $depth++;
+                } elseif ($c === '}') {
+                    $depth--;
+                    if ($depth === 0) {
+                        $decoded = json_decode(substr($raw, $start, $i - $start + 1), true);
+                        if (is_array($decoded)) {
+                            return $decoded;
+                        }
+                        break;
+                    }
+                }
             }
         }
 
