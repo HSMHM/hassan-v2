@@ -37,11 +37,14 @@ class WhatsAppService
             'font' => (int) config('services.waha.status_font', 1),
         ]);
 
-        if (! $response->successful()) {
+        $data = $response->json() ?? [];
+
+        if (! $response->successful() || isset($data['error'])) {
             Log::error('WAHA text status failed', ['body' => $response->body()]);
+            throw new \RuntimeException('WAHA status failed: '.($data['message'] ?? $response->body()));
         }
 
-        return $response->json() ?? [];
+        return $data;
     }
 
     public function postImageStatus(string $imageUrl, string $caption = ''): array
@@ -54,11 +57,15 @@ class WhatsAppService
             'caption' => $caption,
         ]);
 
-        if (! $response->successful()) {
-            Log::error('WAHA image status failed', ['body' => $response->body()]);
+        $data = $response->json() ?? [];
+
+        if (! $response->successful() || isset($data['error'])) {
+            Log::warning('WAHA image status failed, falling back to text', ['body' => $response->body()]);
+
+            return $this->postTextStatus($caption ?: $imageUrl);
         }
 
-        return $response->json() ?? [];
+        return $data;
     }
 
     private function request()

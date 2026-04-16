@@ -22,14 +22,7 @@ class LinkedInService
         $mediaCategory = 'NONE';
         $media = [];
 
-        if ($imageUrl) {
-            $mediaCategory = 'IMAGE';
-            $media[] = [
-                'status' => 'READY',
-                'originalUrl' => $imageUrl,
-                'title' => ['text' => $articleTitle ?? ''],
-            ];
-        } elseif ($articleUrl) {
+        if ($articleUrl) {
             $mediaCategory = 'ARTICLE';
             $media[] = [
                 'status' => 'READY',
