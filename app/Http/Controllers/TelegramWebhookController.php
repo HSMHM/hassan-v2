@@ -80,7 +80,7 @@ class TelegramWebhookController extends Controller
 
                 $telegram->sendMessage($message);
             } catch (\Throwable $e) {
-                $telegram->sendMessage("❌ حدث خطأ أثناء البحث:\n<code>{$e->getMessage()}</code>");
+                $telegram->sendMessage("❌ حدث خطأ أثناء البحث:\n<code>".htmlspecialchars(mb_substr($e->getMessage(), 0, 500))."</code>");
             }
 
             return;

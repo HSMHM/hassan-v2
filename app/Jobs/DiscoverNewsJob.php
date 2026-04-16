@@ -68,7 +68,7 @@ class DiscoverNewsJob implements ShouldQueue
         } catch (\Throwable $e) {
             Log::error('News processing failed', ['error' => $e->getMessage()]);
             $this->recordReason('generate_failed', ['error' => $e->getMessage()]);
-            $telegram->notify("❌ فشل معالجة الخبر:\n<code>{$e->getMessage()}</code>");
+            $telegram->notify("❌ فشل معالجة الخبر:\n<code>".htmlspecialchars(mb_substr($e->getMessage(), 0, 500))."</code>");
         }
     }
 
