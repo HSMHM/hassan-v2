@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\NewsPosts\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -11,6 +12,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Illuminate\Support\HtmlString;
 
 class NewsPostForm
 {
@@ -135,6 +137,27 @@ class NewsPostForm
                     TextInput::make('cover_image')->label($isAr() ? 'صورة الغلاف' : 'Cover Image'),
                     TextInput::make('og_image')->label('OG Image (AR)'),
                     TextInput::make('og_image_en')->label('OG Image (EN)'),
+
+                    Placeholder::make('image_preview')
+                        ->label($isAr() ? 'معاينة الصور' : 'Image Preview')
+                        ->content(function ($record) {
+                            if (! $record) {
+                                return new HtmlString('<span style="color:#888">لم يتم توليد الصور بعد</span>');
+                            }
+                            $base = rtrim(config('app.url'), '/');
+                            $html = '<div style="display:flex;gap:12px;flex-wrap:wrap;">';
+                            foreach (['tall_image' => 'Tall AR', 'og_image' => 'OG AR', 'og_image_en' => 'OG EN'] as $field => $label) {
+                                if ($record->{$field}) {
+                                    $url = $base.$record->{$field};
+                                    $html .= "<div style=\"text-align:center\"><a href=\"{$url}\" target=\"_blank\"><img src=\"{$url}\" style=\"max-height:200px;border-radius:8px;border:1px solid #333\" /></a><br><small>{$label}</small></div>";
+                                }
+                            }
+                            $html .= '</div>';
+
+                            return new HtmlString($html);
+                        })
+                        ->columnSpanFull(),
+
                     DateTimePicker::make('published_at')->label($isAr() ? 'تاريخ النشر' : 'Published At'),
                     DateTimePicker::make('approved_at')->label($isAr() ? 'تاريخ الموافقة' : 'Approved At'),
                 ])

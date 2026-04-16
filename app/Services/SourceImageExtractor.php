@@ -27,6 +27,8 @@ class SourceImageExtractor
     public function extract(string $url, int|string $id): ?string
     {
         try {
+            $url = $this->resolveRedirect($url);
+
             $html = Http::timeout(10)
                 ->withUserAgent('Mozilla/5.0 (compatible; HassanNewsBot/1.0; +https://almalki.sa)')
                 ->get($url)
@@ -43,6 +45,34 @@ class SourceImageExtractor
         }
 
         return $this->download($imageUrl, $id);
+    }
+
+    /**
+     * Follow redirects (especially Google's vertexaisearch grounding-api-redirect)
+     * to reach the actual source article URL.
+     */
+    private function resolveRedirect(string $url): string
+    {
+        if (! str_contains($url, 'vertexaisearch.cloud.google.com') && ! str_contains($url, 'google.com/grounding')) {
+            return $url;
+        }
+
+        try {
+            $response = Http::timeout(10)
+                ->withoutRedirecting()
+                ->withUserAgent('Mozilla/5.0')
+                ->get($url);
+
+            $location = $response->header('Location');
+            if ($location && str_starts_with($location, 'http')) {
+                Log::info('SourceImage resolved redirect', ['from' => mb_substr($url, 0, 80), 'to' => $location]);
+
+                return $location;
+            }
+        } catch (\Throwable) {
+        }
+
+        return $url;
     }
 
     private function findImageUrl(string $html, string $pageUrl): ?string

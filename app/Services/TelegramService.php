@@ -135,8 +135,17 @@ class TelegramService
             $caption .= '...';
         }
         $caption .= "\n\n";
+
+        // Image links — clickable to preview in browser
+        if ($post->tall_image) {
+            $caption .= "🖼 <a href=\"{$base}{$post->tall_image}\">صورة طويلة</a>";
+        }
+        if ($post->og_image) {
+            $caption .= "  ·  <a href=\"{$base}{$post->og_image}\">صورة OG</a>";
+        }
+        $caption .= "\n";
         $caption .= "📎 <a href=\"{$post->source_url}\">المصدر</a>";
-        $caption .= '  ·  ';
+        $caption .= "  ·  ";
         $caption .= "<a href=\"{$previewUrl}\">👁 عرض وتعديل</a>";
 
         $scalePct = (int) round(((float) ($post->source_scale ?? 1.0)) * 100);
