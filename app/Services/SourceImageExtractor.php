@@ -40,17 +40,85 @@ class SourceImageExtractor
         }
 
         $imageUrl = $this->findImageUrl($html, $url);
-        if (! $imageUrl) {
-            return null;
+
+        if ($imageUrl) {
+            return $this->download($imageUrl, $id);
         }
 
-        return $this->download($imageUrl, $id);
+        // Fallback: take a screenshot of the page via thum.io (free, no key).
+        return $this->downloadScreenshot($url, $id);
     }
 
     /**
      * Follow redirects (especially Google's vertexaisearch grounding-api-redirect)
      * to reach the actual source article URL.
      */
+    /**
+     * Take a screenshot of the page via thum.io (free, no API key).
+     * Returns a 600px-wide JPEG, or null on failure.
+     */
+    private function downloadScreenshot(string $url, int|string $id): ?string
+    {
+        try {
+            $screenshotUrl = 'https://image.thum.io/get/width/600/crop/400/'.urlencode($url);
+
+            $bytes = Http::timeout(20)
+                ->withUserAgent('Mozilla/5.0')
+                ->get($screenshotUrl)
+                ->body();
+
+            if (strlen($bytes) < 2048) {
+                Log::info('Screenshot too small, skipping', ['url' => $url]);
+
+                return null;
+            }
+
+            $tmp = tempnam(sys_get_temp_dir(), 'snap_ss_');
+            file_put_contents($tmp, $bytes);
+
+            $image = $this->manager->decodePath($tmp);
+            $image->scale(width: 600);
+
+            $dir = public_path('uploads/sources');
+            if (! is_dir($dir)) {
+                mkdir($dir, 0755, true);
+            }
+            $path = "{$dir}/{$id}.jpg";
+            $image->save($path, quality: 85);
+
+            @unlink($tmp);
+
+            Log::info('Screenshot fallback used', ['url' => $url]);
+
+            return "/uploads/sources/{$id}.jpg";
+        } catch (\Throwable $e) {
+            Log::info('Screenshot fallback failed', ['url' => $url, 'error' => $e->getMessage()]);
+
+            return null;
+        }
+    }
+
+    private function findFavicon(string $html, string $pageUrl): ?string
+    {
+        $patterns = [
+            '/<link[^>]+rel=["\']apple-touch-icon["\'][^>]+href=["\']([^"\']+)["\']/i',
+            '/<link[^>]+href=["\']([^"\']+)["\'][^>]+rel=["\']apple-touch-icon["\']/i',
+            '/<link[^>]+rel=["\']icon["\'][^>]+href=["\']([^"\']+)["\']/i',
+            '/<link[^>]+href=["\']([^"\']+)["\'][^>]+rel=["\']icon["\']/i',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $html, $m)) {
+                $href = trim($m[1]);
+                if ($href && ! str_contains($href, '.svg')) {
+                    return $this->resolveUrl($href, $pageUrl);
+                }
+            }
+        }
+
+        return null;
+    }
+
     private function resolveRedirect(string $url): string
     {
         if (! str_contains($url, 'vertexaisearch.cloud.google.com') && ! str_contains($url, 'google.com/grounding')) {
