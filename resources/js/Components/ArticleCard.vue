@@ -15,9 +15,9 @@ const excerpt = computed(() => (locale.value === 'en' ? props.article.excerpt_en
 const cover = computed(() => {
     const a = props.article;
     if (locale.value === 'en') {
-        return a.tall_image_en || a.og_image_en || a.cover_image_en || a.tall_image || a.og_image || a.cover_image;
+        return a.og_image_en || a.cover_image_en || a.og_image || a.cover_image;
     }
-    return a.tall_image || a.og_image || a.cover_image;
+    return a.og_image || a.cover_image;
 });
 const url = computed(() => `${prefix.value}/articles/${slug.value}`);
 const date = computed(() => {
