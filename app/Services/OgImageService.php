@@ -25,9 +25,14 @@ class OgImageService
                 $path = app(SourceImageExtractor::class)->extract($post->source_url, $post->id);
                 if ($path) {
                     $post->update(['source_image' => $path]);
+                } else {
+                    Log::warning('Source image extraction returned null', [
+                        'post_id' => $post->id,
+                        'source_url' => $post->source_url,
+                    ]);
                 }
             } catch (\Throwable $e) {
-                Log::info('Source image extract failed', ['post_id' => $post->id, 'error' => $e->getMessage()]);
+                Log::warning('Source image extract failed', ['post_id' => $post->id, 'error' => $e->getMessage()]);
             }
         }
 

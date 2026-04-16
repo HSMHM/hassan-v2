@@ -34,7 +34,7 @@ class SourceImageExtractor
                 ->get($url)
                 ->body();
         } catch (\Throwable $e) {
-            Log::info('SourceImage fetch HTML failed', ['url' => $url, 'error' => $e->getMessage()]);
+            Log::warning('SourceImage fetch HTML failed', ['url' => $url, 'error' => $e->getMessage()]);
 
             return null;
         }
@@ -45,6 +45,8 @@ class SourceImageExtractor
         }
 
         if (! $imageUrl) {
+            Log::warning('SourceImage no og:image/favicon found', ['url' => $url]);
+
             return null;
         }
 
@@ -229,7 +231,7 @@ class SourceImageExtractor
 
             return "/uploads/sources/{$id}.jpg";
         } catch (\Throwable $e) {
-            Log::info('SourceImage download failed', ['url' => $imageUrl, 'error' => $e->getMessage()]);
+            Log::warning('SourceImage download failed', ['url' => $imageUrl, 'error' => $e->getMessage()]);
 
             return null;
         } finally {

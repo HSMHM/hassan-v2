@@ -22,12 +22,16 @@ class DiscoverNewsJob implements ShouldQueue
 
     public int $tries = 2;
 
-    public int $timeout = 180;
+    public int $timeout = 300;
 
     public function handle(NewsDiscoveryService $discovery, TelegramService $telegram): void
     {
+        @set_time_limit(0);
+        @ini_set('memory_limit', '512M');
+
         if ($pending = NewsPost::where('status', 'pending')->latest('id')->first()) {
             $this->recordReason('pending_exists', ['post_id' => $pending->id]);
+            $telegram->sendNewsForApproval($pending);
 
             return;
         }
@@ -35,6 +39,7 @@ class DiscoverNewsJob implements ShouldQueue
         $items = $discovery->discoverNews();
         if (empty($items)) {
             $this->recordReason('no_items');
+            $telegram->notify("🔍 ما لقيت أخبار جديدة هالمرة. جرّب مرة ثانية بعد دقيقة.");
 
             return;
         }
@@ -47,24 +52,20 @@ class DiscoverNewsJob implements ShouldQueue
 
         if (NewsPost::where('source_url', $top['source_url'])->exists()) {
             $this->recordReason('duplicate_url', ['url' => $top['source_url']]);
+            $telegram->notify('🔁 الخبر اللي لقاه منشور عندك من قبل — جرّب مرة ثانية.');
 
             return;
         }
 
         try {
             $content = $discovery->generateContent($top);
-            // Create directly as `pending` — skip the `draft` intermediate so the
-            // controller's check for the newly-created post always matches, even
-            // if the Telegram notification below fails.
             $post = NewsPost::create([...$content, 'status' => 'pending', 'sent_to_whatsapp_at' => now()]);
 
-            // Generate images now so they're available for both website display
-            // and social publishing without depending on the queue worker.
             app(OgImageService::class)->ensureAll($post);
 
             $this->recordReason('created', ['post_id' => $post->id]);
 
-            $telegram->sendNewsForApproval($post);
+            $telegram->sendNewsForApproval($post->refresh());
         } catch (\Throwable $e) {
             Log::error('News processing failed', ['error' => $e->getMessage()]);
             $this->recordReason('generate_failed', ['error' => $e->getMessage()]);

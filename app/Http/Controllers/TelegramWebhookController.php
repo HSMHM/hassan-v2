@@ -58,30 +58,7 @@ class TelegramWebhookController extends Controller
             }
 
             $telegram->sendMessage('🔍 جاري البحث عن آخر أخبار Claude...');
-
-            try {
-                DiscoverNewsJob::dispatchSync();
-
-                $last = \Illuminate\Support\Facades\Cache::get(DiscoverNewsJob::REASON_CACHE_KEY);
-                $reason = $last['reason'] ?? null;
-
-                if ($reason === 'created') {
-                    // sendNewsForApproval was already called inside the job.
-                    return;
-                }
-
-                $message = match ($reason) {
-                    'pending_exists' => '⏳ فيه خبر بانتظار موافقتك — ارجع للرسالة السابقة.',
-                    'no_items' => "🔍 Claude ما رجّع أخبار هالمرة. جرّب مرة ثانية بعد دقيقة.\n\nلو تكرر الخطأ، شيك اللوق:\n<code>grep 'raw Claude response' storage/logs/laravel.log | tail -5</code>",
-                    'duplicate_url' => '🔁 الخبر اللي لقاه منشور عندك من قبل — جرّب مرة ثانية لتغطية مصدر آخر.',
-                    'generate_failed' => "❌ فشل توليد المحتوى:\n<code>".($last['error'] ?? 'unknown')."</code>",
-                    default => 'ℹ️ لا توجد أخبار جديدة حالياً. حاول لاحقاً.',
-                };
-
-                $telegram->sendMessage($message);
-            } catch (\Throwable $e) {
-                $telegram->sendMessage("❌ حدث خطأ أثناء البحث:\n<code>".htmlspecialchars(mb_substr($e->getMessage(), 0, 500))."</code>");
-            }
+            DiscoverNewsJob::dispatch();
 
             return;
         }
