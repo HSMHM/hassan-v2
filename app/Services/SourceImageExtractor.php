@@ -40,13 +40,15 @@ class SourceImageExtractor
         }
 
         $imageUrl = $this->findImageUrl($html, $url);
-
-        if ($imageUrl) {
-            return $this->download($imageUrl, $id);
+        if (! $imageUrl) {
+            $imageUrl = $this->findFavicon($html, $url);
         }
 
-        // Fallback: take a screenshot of the page via thum.io (free, no key).
-        return $this->downloadScreenshot($url, $id);
+        if (! $imageUrl) {
+            return null;
+        }
+
+        return $this->download($imageUrl, $id);
     }
 
     /**
