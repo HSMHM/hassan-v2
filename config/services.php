@@ -33,6 +33,7 @@ return [
         'model' => env('GEMINI_MODEL', 'gemini-2.5-flash-lite'),
         'discovery_model' => env('GEMINI_DISCOVERY_MODEL', 'gemini-2.5-flash-lite'),
         'content_model' => env('GEMINI_CONTENT_MODEL', 'gemini-2.5-flash-lite'),
+        'fallback_model' => env('GEMINI_FALLBACK_MODEL', 'gemini-2.5-flash'),
     ],
 
     'twitter' => [

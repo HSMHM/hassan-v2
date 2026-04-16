@@ -142,18 +142,13 @@ PROMPT;
 
         $raw = $this->gemini->ask($system, $user, $this->contentModel);
 
-        if (preg_match('/```json\s*(.*?)\s*```/s', $raw, $m)) {
-            $text = $m[1];
-        } elseif (preg_match('/(\{.*"title_ar".*\})/s', $raw, $m)) {
-            $text = $m[1];
-        } else {
-            $text = $raw;
-        }
-
-        $data = json_decode(trim($text), true);
+        $data = $this->extractJson($raw);
 
         if (! $data || ! isset($data['title_ar'])) {
-            Log::warning('Gemini content response (parse failed)', ['preview' => mb_substr($raw, 0, 500)]);
+            Log::warning('Gemini content response (parse failed)', [
+                'preview' => mb_substr($raw, 0, 500),
+                'length' => mb_strlen($raw),
+            ]);
             throw new \RuntimeException('Failed to parse content from Gemini');
         }
 
