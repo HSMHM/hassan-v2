@@ -29,10 +29,17 @@ class SourceImageExtractor
         try {
             $url = $this->resolveRedirect($url);
 
-            $html = Http::timeout(10)
+            $response = Http::timeout(10)
                 ->withUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
-                ->get($url)
-                ->body();
+                ->get($url);
+
+            if (! $response->successful()) {
+                Log::warning('SourceImage non-2xx response', ['url' => $url, 'status' => $response->status()]);
+
+                return null;
+            }
+
+            $html = $response->body();
         } catch (\Throwable $e) {
             Log::warning('SourceImage fetch HTML failed', ['url' => $url, 'error' => $e->getMessage()]);
 
@@ -212,6 +219,8 @@ class SourceImageExtractor
                 ->body();
 
             if (strlen($bytes) < 1024) {
+                Log::warning('SourceImage download too small', ['url' => $imageUrl, 'bytes' => strlen($bytes)]);
+
                 return null;
             }
 
@@ -223,8 +232,10 @@ class SourceImageExtractor
             $image->scale(width: 600);
 
             $dir = public_path('uploads/sources');
-            if (! is_dir($dir)) {
-                mkdir($dir, 0755, true);
+            if (! is_dir($dir) && ! @mkdir($dir, 0755, true)) {
+                Log::warning('SourceImage cannot create uploads dir', ['dir' => $dir]);
+
+                return null;
             }
             $path = "{$dir}/{$id}.jpg";
             $image->save($path, quality: 85);
