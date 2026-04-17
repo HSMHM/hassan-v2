@@ -21,8 +21,7 @@ class SocialPublishService
         $results = [];
         $baseUrl = rtrim(config('app.url'), '/');
 
-        $socialAr = str_replace('[ARTICLE_URL_AR]', $post->getArticleUrl('ar'), $post->social_post_ar);
-        $socialEn = str_replace('[ARTICLE_URL_EN]', $post->getArticleUrl('en'), $post->social_post_en);
+        $captions = $this->resolveCaptions($post);
 
         // Generate all image formats
         $this->ensureImages($post);
@@ -31,28 +30,26 @@ class SocialPublishService
         $ogImageEn = $post->og_image_en ? $baseUrl.$post->og_image_en : $ogImageAr;
         $tallImage = $post->tall_image ? $baseUrl.$post->tall_image : $ogImageAr;
 
-        // Twitter — Arabic only + horizontal image
+        // Twitter — Najdi Arabic + horizontal image
         if (in_array('twitter', $platforms, true)) {
             $results['twitter'] = $ogImageAr
-                ? $this->tryPublish('Twitter', fn () => $this->twitter->tweetWithImage($socialAr, $ogImageAr))
-                : $this->tryPublish('Twitter', fn () => $this->twitter->tweet($socialAr));
+                ? $this->tryPublish('Twitter', fn () => $this->twitter->tweetWithImage($captions['twitter_ar'], $ogImageAr))
+                : $this->tryPublish('Twitter', fn () => $this->twitter->tweet($captions['twitter_ar']));
             sleep(5);
         }
 
-        // Instagram — tall image + Arabic+English caption
+        // Instagram — tall image + Najdi Arabic caption (same voice as Twitter, longer allowed)
         if (in_array('instagram', $platforms, true)) {
-            $igCaption = "{$socialAr}\n\n---\n\n{$socialEn}";
             $igImage = $tallImage ?? $ogImageAr;
             $results['instagram'] = $igImage
-                ? $this->tryPublish('Instagram', fn () => $this->instagram->postImage($igImage, $igCaption))
+                ? $this->tryPublish('Instagram', fn () => $this->instagram->postImage($igImage, $captions['instagram_ar']))
                 : ['status' => 'skipped', 'reason' => 'Image generation failed'];
             sleep(5);
         }
 
-        // LinkedIn — English only + horizontal English image
+        // LinkedIn — English inspiring voice + horizontal English image
         if (in_array('linkedin', $platforms, true)) {
-            $liText = "{$post->title_en}\n\n{$post->excerpt_en}\n\n📖 {$post->getArticleUrl('en')}";
-            $results['linkedin'] = $this->tryPublish('LinkedIn', fn () => $this->linkedin->sharePost($liText, $post->getArticleUrl('en'), $post->title_en, $ogImageEn));
+            $results['linkedin'] = $this->tryPublish('LinkedIn', fn () => $this->linkedin->sharePost($captions['linkedin_en'], $post->getArticleUrl('en'), $post->title_en, $ogImageEn));
             sleep(5);
         }
 
@@ -86,6 +83,32 @@ class SocialPublishService
         ];
 
         return $results;
+    }
+
+    /**
+     * Resolve final captions per platform with URL placeholders replaced.
+     * Falls back to social_post_ar/en when platform_captions is missing.
+     */
+    private function resolveCaptions(NewsPost $post): array
+    {
+        $urlAr = $post->getArticleUrl('ar');
+        $urlEn = $post->getArticleUrl('en');
+
+        $platform = $post->platform_captions ?? [];
+        $fallbackAr = (string) $post->social_post_ar;
+
+        $resolve = fn (?string $text, string $url, string $placeholder) => $text
+            ? str_replace($placeholder, $url, $text)
+            : null;
+
+        return [
+            'twitter_ar' => $resolve($platform['twitter_ar'] ?? null, $urlAr, '[ARTICLE_URL_AR]')
+                ?? str_replace('[ARTICLE_URL_AR]', $urlAr, $fallbackAr),
+            'instagram_ar' => $resolve($platform['instagram_ar'] ?? null, $urlAr, '[ARTICLE_URL_AR]')
+                ?? str_replace('[ARTICLE_URL_AR]', $urlAr, $fallbackAr),
+            'linkedin_en' => $resolve($platform['linkedin_en'] ?? null, $urlEn, '[ARTICLE_URL_EN]')
+                ?? ($post->title_en."\n\n".$post->excerpt_en."\n\n📖 ".$urlEn),
+        ];
     }
 
     private function ensureImages(NewsPost $post): void

@@ -17,7 +17,7 @@ class NewsDiscoveryService
         $this->contentModel = config('services.gemini.content_model', 'gemini-2.5-flash-lite');
     }
 
-    public function discoverNews(): ?array
+    public function discoverNews(?string $topic = null): ?array
     {
         $existingUrls = NewsPost::whereNotNull('source_url')
             ->latest('id')
@@ -25,7 +25,22 @@ class NewsDiscoveryService
             ->pluck('source_url')
             ->implode("\n");
 
-        $system = <<<'PROMPT'
+        $topic = $topic ? trim($topic) : null;
+
+        if ($topic) {
+            $system = <<<PROMPT
+Find ONE recent, high-quality item about: "{$topic}" (last 30 days preferred, older acceptable if significant).
+Search broadly: official blogs, news sites, YouTube, X/Twitter, Reddit, Hacker News, research papers, industry reports.
+ANY type counts: announcement, launch, tutorial, analysis, interview, benchmark, case study, opinion.
+NEVER return found_news:false. Skip URLs in "already covered".
+
+Respond ONLY in valid JSON (no markdown, no prose):
+{"found_news":true,"items":[{"title":"...","source_url":"https://...","source_type":"blog|youtube|twitter|reddit|news|github|docs|paper","summary":"2-3 sentences","significance":"high|medium|low","references":[]}]}
+PROMPT;
+
+            $user = "Find one item about: {$topic}\n\nAlready covered:\n{$existingUrls}";
+        } else {
+            $system = <<<'PROMPT'
 Find ONE new Claude AI / Anthropic item from the last 7 days.
 Sources: anthropic.com, X #ClaudeAI, Reddit r/ClaudeAI, YouTube, Hacker News, TechCrunch, dev blogs.
 ANY type counts: product, feature, tutorial, benchmark, tool, social post, deal, research.
@@ -35,7 +50,8 @@ Respond ONLY in valid JSON (no markdown, no prose):
 {"found_news":true,"items":[{"title":"...","source_url":"https://...","source_type":"blog|youtube|twitter|reddit|news|github|docs","summary":"2-3 sentences","significance":"high|medium|low","references":[]}]}
 PROMPT;
 
-        $user = "Find one Claude AI item.\n\nAlready covered:\n{$existingUrls}";
+            $user = "Find one Claude AI item.\n\nAlready covered:\n{$existingUrls}";
+        }
 
         $raw = $this->gemini->askWithWebSearch($system, $user, $this->discoveryModel);
 
@@ -113,12 +129,20 @@ PROMPT;
         return null;
     }
 
-    public function generateContent(array $item): array
+    public function generateContent(array $item, ?string $topic = null): array
     {
-        $system = <<<'PROMPT'
-You are Hassan Almalki's bilingual content writer (AR + EN) about Claude AI news.
+        $topicLine = $topic ? "Topic context: {$topic}\n\n" : '';
 
-Style: Professional, enthusiastic about AI, Saudi professional Arabic (not formal MSA), clear English.
+        $system = <<<PROMPT
+You are Hassan Almalki writing news on his personal site (almalki.sa). Hassan is a Saudi product/tech professional.
+Voice: Hassan speaks in first person — as if he personally wrote each caption.
+
+{$topicLine}You produce bilingual article content (AR + EN) PLUS per-platform social captions with distinct tones.
+
+Per-platform tone rules (CRITICAL — these are NOT interchangeable):
+- twitter_ar: Saudi Najdi colloquial dialect (لهجة نجدية عامية), personal first-person, like Hassan is chatting with friends. Use words like: "الصراحة", "والله", "شفت", "جربت", "ياخي", "طاف علي خبر", "وش رايكم". NO formal MSA. Emoji allowed.
+- instagram_ar: Same Najdi colloquial style as twitter_ar but can be slightly longer. Same personal voice.
+- linkedin_en: English, inspiring and reflective tone, first-person, suited for a thoughtful professional. Think: personal insight + takeaway. NOT a press-release summary. Start with a hook. 2-4 short paragraphs.
 
 Return ONLY valid JSON (no markdown):
 {
@@ -127,15 +151,20 @@ Return ONLY valid JSON (no markdown):
   "excerpt_ar":"2-3 جمل","excerpt_en":"2-3 sentences",
   "content_ar":"HTML, 300-500 words, references section at end",
   "content_en":"HTML, 300-500 words, references section at end",
-  "social_post_ar":"max 250 chars, emoji, end with: 📖 اقرأ المزيد: [ARTICLE_URL_AR]",
-  "social_post_en":"max 250 chars, emoji, end with: 📖 Read more: [ARTICLE_URL_EN]",
+  "social_post_ar":"max 250 chars Saudi Arabic general, emoji, end with: 📖 [ARTICLE_URL_AR]",
+  "social_post_en":"max 250 chars clear English, emoji, end with: 📖 [ARTICLE_URL_EN]",
+  "platform_captions":{
+    "twitter_ar":"max 260 chars, NAJDI colloquial, first-person Hassan voice, end with: [ARTICLE_URL_AR]",
+    "instagram_ar":"max 800 chars, NAJDI colloquial, first-person Hassan voice, hashtags at end OK, end with link: [ARTICLE_URL_AR]",
+    "linkedin_en":"max 1500 chars, inspiring English first-person, paragraphs separated by blank lines, end with: [ARTICLE_URL_EN]"
+  },
   "meta_title_ar":"SEO title | حسان المالكي",
   "meta_title_en":"SEO title | Hassan Almalki",
   "meta_description_ar":"max 160 chars",
   "meta_description_en":"max 160 chars"
 }
 
-CRITICAL: social posts MUST be under 250 chars. Use [ARTICLE_URL_AR] and [ARTICLE_URL_EN] as URL placeholders.
+Placeholders [ARTICLE_URL_AR] and [ARTICLE_URL_EN] will be replaced with the real URLs at publish time — keep them literal.
 PROMPT;
 
         $user = "Title: {$item['title']}\nSource: {$item['source_url']}\nSummary: {$item['summary']}\nRefs: ".json_encode($item['references'] ?? []);
@@ -155,6 +184,7 @@ PROMPT;
         $data['source_url'] = $item['source_url'];
         $data['source_title'] = $item['title'];
         $data['source_type'] = $item['source_type'] ?? 'blog';
+        $data['topic'] = $topic;
         $data['references'] = $item['references'] ?? [];
 
         return $this->sanitize($data);
@@ -194,6 +224,23 @@ PROMPT;
             if (isset($data[$f]) && mb_strlen($data[$f]) > 280) {
                 $data[$f] = mb_substr($data[$f], 0, 277).'...';
             }
+        }
+
+        if (isset($data['platform_captions']) && is_array($data['platform_captions'])) {
+            $limits = ['twitter_ar' => 280, 'instagram_ar' => 2200, 'linkedin_en' => 3000];
+            $clean = [];
+            foreach ($limits as $key => $max) {
+                $val = $data['platform_captions'][$key] ?? null;
+                if (! is_string($val)) {
+                    continue;
+                }
+                $val = trim(strip_tags($val));
+                if (mb_strlen($val) > $max) {
+                    $val = mb_substr($val, 0, $max - 3).'...';
+                }
+                $clean[$key] = $val;
+            }
+            $data['platform_captions'] = $clean;
         }
 
         return $data;

@@ -47,6 +47,24 @@ class TelegramWebhookController extends Controller
         $lower = mb_strtolower(trim($text));
         $telegram = app(TelegramService::class);
 
+        // === "خبر عن X" or "news about X" — Discover news on a SPECIFIC topic ===
+        if (preg_match('/^(?:\/news\s+about|news\s+about|خبر(?:\s+جديد)?\s+عن|اكتب\s+(?:خبر\s+)?عن)\s+(.+)$/iu', trim($text), $m)) {
+            $topic = trim($m[1]);
+
+            $pending = NewsPost::where('status', 'pending')->first();
+            if ($pending) {
+                $telegram->sendMessage('⚠️ فيه خبر معلّق بانتظار الموافقة. وافق عليه أو تجاوزه أولاً.');
+                $telegram->sendNewsForApproval($pending);
+
+                return;
+            }
+
+            $telegram->sendMessage("🔍 جاري البحث عن خبر حول: <b>".htmlspecialchars($topic).'</b>');
+            DiscoverNewsJob::dispatch($topic);
+
+            return;
+        }
+
         // === "خبر جديد" or "news" — Discover new Claude news ON DEMAND ===
         if (in_array($lower, ['خبر', 'خبر جديد', 'news', 'ابحث', 'search', '/news'], true)
             || str_starts_with($lower, '/news')) {
@@ -106,12 +124,14 @@ class TelegramWebhookController extends Controller
         if ($lower === '/start') {
             $telegram->sendMessage(
                 "👋 مرحباً حسان!\n\n".
-                "أنا بوت أخبار Claude AI. هذي الأوامر المتاحة:\n\n".
+                "هذي الأوامر المتاحة:\n\n".
                 "🔍 <b>خبر جديد</b> أو <b>/news</b> — ابحث عن آخر أخبار Claude\n".
+                "🎯 <b>خبر عن [موضوع]</b> — ولّد خبر عن موضوع محدد\n".
+                "     مثال: <code>خبر عن إدارة المنتجات</code>\n".
+                "     مثال: <code>news about product management</code>\n\n".
                 "✅ <b>publish</b> أو <b>نشر</b> — انشر الخبر المعلّق\n".
                 "✏️ <b>edit: تعليمات</b> — عدّل المحتوى\n".
-                "⏭️ <b>skip</b> أو <b>تجاوز</b> — تجاوز الخبر\n\n".
-                "أو ببساطة اكتب <b>خبر</b> وأنا أسوي الباقي 🚀"
+                "⏭️ <b>skip</b> أو <b>تجاوز</b> — تجاوز الخبر"
             );
 
             return;

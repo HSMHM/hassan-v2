@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class NewsPost extends Model
 {
     protected $fillable = [
-        'source_url', 'source_title', 'source_type',
+        'source_url', 'source_title', 'source_type', 'topic',
         'title_ar', 'title_en', 'slug_ar', 'slug_en',
         'excerpt_ar', 'excerpt_en', 'content_ar', 'content_en',
-        'social_post_ar', 'social_post_en',
+        'social_post_ar', 'social_post_en', 'platform_captions',
         'meta_title_ar', 'meta_title_en',
         'meta_description_ar', 'meta_description_en',
         'cover_image', 'og_image', 'og_image_en', 'tall_image', 'tall_image_en', 'source_image', 'source_scale', 'references',
@@ -22,6 +22,7 @@ class NewsPost extends Model
     protected $casts = [
         'references' => 'array',
         'platform_status' => 'array',
+        'platform_captions' => 'array',
         'source_scale' => 'float',
         'sent_to_whatsapp_at' => 'datetime',
         'approved_at' => 'datetime',

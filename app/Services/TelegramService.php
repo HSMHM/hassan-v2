@@ -128,13 +128,31 @@ class TelegramService
         $previewUrl = rtrim(config('app.url'), '/').'/cpanel/news-posts/'.$post->id.'/edit';
         $base = rtrim(config('app.url'), '/');
 
-        $caption = "🔔 <b>خبر جديد</b>\n\n";
-        $caption .= "📌 {$post->title_ar}\n\n";
+        $caption = "🔔 <b>خبر جديد</b>";
+        if ($post->topic) {
+            $caption .= " · <i>".htmlspecialchars($post->topic).'</i>';
+        }
+        $caption .= "\n\n📌 {$post->title_ar}\n\n";
         $caption .= mb_substr($post->excerpt_ar, 0, 150);
         if (mb_strlen($post->excerpt_ar) > 150) {
             $caption .= '...';
         }
         $caption .= "\n\n";
+
+        $platforms = is_array($post->platform_captions) ? $post->platform_captions : [];
+        if (! empty($platforms['twitter_ar'])) {
+            $caption .= "🐦 <b>تويتر</b>\n";
+            $caption .= htmlspecialchars(mb_substr($platforms['twitter_ar'], 0, 200));
+            $caption .= "\n\n";
+        }
+        if (! empty($platforms['linkedin_en'])) {
+            $caption .= "💼 <b>LinkedIn</b>\n";
+            $caption .= htmlspecialchars(mb_substr($platforms['linkedin_en'], 0, 200));
+            if (mb_strlen($platforms['linkedin_en']) > 200) {
+                $caption .= '...';
+            }
+            $caption .= "\n\n";
+        }
 
         // Image links — clickable to preview in browser
         if ($post->tall_image) {

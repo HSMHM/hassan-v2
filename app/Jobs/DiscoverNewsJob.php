@@ -24,6 +24,8 @@ class DiscoverNewsJob implements ShouldQueue
 
     public int $timeout = 300;
 
+    public function __construct(public ?string $topic = null) {}
+
     public function handle(NewsDiscoveryService $discovery, TelegramService $telegram): void
     {
         @set_time_limit(0);
@@ -36,7 +38,7 @@ class DiscoverNewsJob implements ShouldQueue
             return;
         }
 
-        $items = $discovery->discoverNews();
+        $items = $discovery->discoverNews($this->topic);
         if (empty($items)) {
             $this->recordReason('no_items');
             $telegram->notify("🔍 ما لقيت أخبار جديدة هالمرة. جرّب مرة ثانية بعد دقيقة.");
@@ -87,7 +89,7 @@ class DiscoverNewsJob implements ShouldQueue
         }
 
         try {
-            $content = $discovery->generateContent($top);
+            $content = $discovery->generateContent($top, $this->topic);
             $post = NewsPost::create([...$content, 'status' => 'pending', 'sent_to_whatsapp_at' => now()]);
 
             app(OgImageService::class)->ensureAll($post);
