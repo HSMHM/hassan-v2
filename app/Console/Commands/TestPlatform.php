@@ -7,12 +7,11 @@ use App\Services\LinkedInService;
 use App\Services\SnapchatService;
 use App\Services\TelegramService;
 use App\Services\TwitterService;
-use App\Services\WhatsAppService;
 use Illuminate\Console\Command;
 
 class TestPlatform extends Command
 {
-    protected $signature = 'news:test-platform {platform : twitter|instagram|linkedin|snapchat|whatsapp|telegram}';
+    protected $signature = 'news:test-platform {platform : twitter|instagram|linkedin|snapchat|telegram}';
 
     protected $description = 'Send a test post to a single platform to verify connectivity';
 
@@ -33,7 +32,6 @@ class TestPlatform extends Command
                     rtrim(config('app.url'), '/').'/img/og-image.jpg',
                     $message,
                 ),
-                'whatsapp' => app(WhatsAppService::class)->postTextStatus($message),
                 'telegram' => app(TelegramService::class)->sendMessage($message),
                 default => throw new \InvalidArgumentException("Unknown platform: {$platform}"),
             };

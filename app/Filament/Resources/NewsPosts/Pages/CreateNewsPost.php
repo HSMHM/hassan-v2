@@ -145,8 +145,8 @@ class CreateNewsPost extends CreateRecord
                 ->requiresConfirmation()
                 ->modalHeading($isAr ? 'نشر على جميع المنصات' : 'Publish everywhere')
                 ->modalDescription($isAr
-                    ? "سيتم نشر الخبر في الموقع ومشاركته على:\nTwitter · Instagram · LinkedIn · Snapchat · WhatsApp Status"
-                    : "Will publish to your website and share on:\nTwitter · Instagram · LinkedIn · Snapchat · WhatsApp Status")
+                    ? "سيتم نشر الخبر في الموقع ومشاركته على:\nTwitter · Instagram · LinkedIn · Snapchat"
+                    : "Will publish to your website and share on:\nTwitter · Instagram · LinkedIn · Snapchat")
                 ->modalSubmitActionLabel($isAr ? '🚀 نشر الآن' : '🚀 Publish Now')
                 ->action(function () use ($isAr) {
                     $data = $this->form->getState();

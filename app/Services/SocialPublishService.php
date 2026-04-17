@@ -12,7 +12,6 @@ class SocialPublishService
         private InstagramService $instagram,
         private LinkedInService $linkedin,
         private SnapchatService $snapchat,
-        private WhatsAppService $whatsapp,
         private OgImageService $og,
     ) {}
 
@@ -64,15 +63,6 @@ class SocialPublishService
                 $results['snapchat'] = ['status' => 'skipped', 'reason' => 'Story image failed'];
             }
             sleep(5);
-        }
-
-        // WhatsApp Status — tall image + link
-        if (in_array('whatsapp', $platforms, true)) {
-            $caption = "📖 {$post->getArticleUrl('ar')}";
-            $waImage = $tallImage ?? $ogImageAr;
-            $results['whatsapp_status'] = $waImage
-                ? $this->tryPublish('WhatsApp Status', fn () => $this->whatsapp->postImageStatus($waImage, $caption))
-                : $this->tryPublish('WhatsApp Status', fn () => $this->whatsapp->postTextStatus($caption));
         }
 
         // Website

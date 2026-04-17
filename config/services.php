@@ -73,14 +73,6 @@ return [
         'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
     ],
 
-    'waha' => [
-        'base_url' => env('WAHA_BASE_URL', 'http://localhost:3000'),
-        'session' => env('WAHA_SESSION', 'default'),
-        'api_key' => env('WAHA_API_KEY'),
-        'status_bg' => env('WAHA_STATUS_BG', '#121212'),
-        'status_font' => (int) env('WAHA_STATUS_FONT', 1),
-    ],
-
     'turnstile' => [
         'site_key' => env('TURNSTILE_SITE_KEY'),
         'secret_key' => env('TURNSTILE_SECRET_KEY'),

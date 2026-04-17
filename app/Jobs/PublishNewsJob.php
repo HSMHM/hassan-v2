@@ -25,7 +25,7 @@ class PublishNewsJob implements ShouldQueue
 
     public function __construct(
         private int $postId,
-        private array $platforms = ['twitter', 'instagram', 'linkedin', 'snapchat', 'whatsapp'],
+        private array $platforms = ['twitter', 'instagram', 'linkedin', 'snapchat'],
     ) {}
 
     public function handle(SocialPublishService $publisher, TelegramService $telegram): void

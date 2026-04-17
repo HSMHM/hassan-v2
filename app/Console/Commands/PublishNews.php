@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 
 class PublishNews extends Command
 {
-    protected $signature = 'news:publish {id} {--platforms=twitter,instagram,linkedin,snapchat,whatsapp} {--sync}';
+    protected $signature = 'news:publish {id} {--platforms=twitter,instagram,linkedin,snapchat} {--sync}';
 
     protected $description = 'Publish a specific news post to selected platforms';
 
