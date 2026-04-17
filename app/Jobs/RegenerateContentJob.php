@@ -28,9 +28,11 @@ class RegenerateContentJob implements ShouldQueue
         $currentCaptions = is_array($post->platform_captions) ? $post->platform_captions : [];
 
         $system = <<<'PROMPT'
-Edit this news post per instructions. Preserve Hassan Almalki's voice:
-- platform_captions.twitter_ar & instagram_ar: Saudi Najdi colloquial, first-person
-- platform_captions.linkedin_en: inspiring English, first-person
+Edit this news post per instructions. Preserve Hassan Almalki's voice — he writes as a PEER in the field, not a spectator:
+- platform_captions.twitter_ar & instagram_ar: calm Najdi peer tone, analytical not fanboy. NEVER: "يا جماعة", "🤯", "بطل", "صدق"
+- platform_captions.linkedin_en: reflective professional English, first-person. NEVER: "changes the game", "just when you think...", "mind-blowing"
+
+Open with an observation or technical detail, not awe. 0-2 emojis max.
 
 Return ONLY valid JSON (no markdown) with any subset of: title_ar, title_en,
 social_post_ar, social_post_en, content_ar, content_en, excerpt_ar, excerpt_en,

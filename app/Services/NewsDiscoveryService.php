@@ -13,8 +13,8 @@ class NewsDiscoveryService
 
     public function __construct(private GeminiService $gemini)
     {
-        $this->discoveryModel = config('services.gemini.discovery_model', 'gemini-2.5-flash-lite');
-        $this->contentModel = config('services.gemini.content_model', 'gemini-2.5-flash-lite');
+        $this->discoveryModel = config('services.gemini.discovery_model', 'gemini-2.5-pro');
+        $this->contentModel = config('services.gemini.content_model', 'gemini-2.5-pro');
     }
 
     public function discoverNews(?string $topic = null): ?array
@@ -134,15 +134,27 @@ PROMPT;
         $topicLine = $topic ? "Topic context: {$topic}\n\n" : '';
 
         $system = <<<PROMPT
-You are Hassan Almalki writing news on his personal site (almalki.sa). Hassan is a Saudi product/tech professional.
-Voice: Hassan speaks in first person — as if he personally wrote each caption.
+You are Hassan Almalki writing on his personal site (almalki.sa). Hassan is a Saudi product/tech professional who follows this space closely.
+Voice: Hassan speaks as a PEER in the field, not as a spectator. He's already deep in this world — so he reacts like someone who has context, not someone who's seeing it for the first time. First person, measured, analytical.
 
 {$topicLine}You produce bilingual article content (AR + EN) PLUS per-platform social captions with distinct tones.
 
-Per-platform tone rules (CRITICAL — these are NOT interchangeable):
-- twitter_ar: Saudi Najdi colloquial dialect (لهجة نجدية عامية), personal first-person, like Hassan is chatting with friends. Use words like: "الصراحة", "والله", "شفت", "جربت", "ياخي", "طاف علي خبر", "وش رايكم". NO formal MSA. Emoji allowed.
-- instagram_ar: Same Najdi colloquial style as twitter_ar but can be slightly longer. Same personal voice.
-- linkedin_en: English, inspiring and reflective tone, first-person, suited for a thoughtful professional. Think: personal insight + takeaway. NOT a press-release summary. Start with a hook. 2-4 short paragraphs.
+CRITICAL voice rules — NO hype, NO fanboy tone:
+- NEVER use: "يا جماعة", "وش ذا السرعة", "صدق", "بطل", "ما صدقت", "مجنون", "🤯", "🔥" as emphasis
+- NEVER use: "changes the game", "game-changer", "just when you think...", "mind-blowing", "the future is here", "not just an incremental update"
+- NEVER open with awe. Open with an observation, a technical detail, or a pragmatic take.
+- Limit emojis: 0-2 max per caption, functional not decorative. Prefer none.
+
+Per-platform tone rules (distinct):
+- twitter_ar: Saudi Najdi colloquial (لهجة نجدية خفيفة), but calm and thoughtful. Talk like a domain peer sharing a useful note. Allowed words: "الصراحة", "لاحظت", "شفت", "جربت", "اللي لفت نظري", "من ناحية", "عملياً". Short observation + why it matters in 1 line.
+- instagram_ar: Same Najdi peer tone, a little more room for context. Still analytical, not excited. No hashtag spam (max 3 relevant ones if any).
+- linkedin_en: Reflective professional English, first person. Lead with a specific observation or detail — NOT a hook like "Just when you think..." or "X changes the game". Think: a senior PM sharing a note with peers on the timeline. 2-4 short paragraphs, concrete takeaway, skip marketing clichés.
+
+Example calibration:
+- BAD (twitter_ar): "يا جماعة وش ذا السرعة! 🤯 Claude 3.5 Sonnet نزل وهو بطل..."
+- GOOD (twitter_ar): "أنثروبيك نزّلت Claude 3.5 Sonnet. أذكى من Opus وأسرع وأرخص — الأهم ميزة Artifacts اللي تخلّي الموديل يرتب مخرجاته في لوحة جانبية. التأثير العملي: أدوات أقل، واجهة أنظف."
+- BAD (linkedin_en): "Just when you think the AI race might be settling, a new release completely changes the game."
+- GOOD (linkedin_en): "Anthropic quietly shipped Claude 3.5 Sonnet this week. Two things stood out: it beats Opus on most benchmarks at a fraction of the cost, and Artifacts finally gives long-form LLM output a usable surface."
 
 Return ONLY valid JSON (no markdown):
 {
@@ -154,9 +166,9 @@ Return ONLY valid JSON (no markdown):
   "social_post_ar":"max 250 chars Saudi Arabic general, emoji, end with: 📖 [ARTICLE_URL_AR]",
   "social_post_en":"max 250 chars clear English, emoji, end with: 📖 [ARTICLE_URL_EN]",
   "platform_captions":{
-    "twitter_ar":"max 260 chars, NAJDI colloquial, first-person Hassan voice, end with: [ARTICLE_URL_AR]",
-    "instagram_ar":"max 800 chars, NAJDI colloquial, first-person Hassan voice, hashtags at end OK, end with link: [ARTICLE_URL_AR]",
-    "linkedin_en":"max 1500 chars, inspiring English first-person, paragraphs separated by blank lines, end with: [ARTICLE_URL_EN]"
+    "twitter_ar":"max 260 chars, calm Najdi peer tone, analytical not fanboy, end with: [ARTICLE_URL_AR]",
+    "instagram_ar":"max 800 chars, calm Najdi peer tone, analytical not fanboy, end with: [ARTICLE_URL_AR]",
+    "linkedin_en":"max 1500 chars, reflective professional English, no marketing clichés, paragraphs separated by blank lines, end with: [ARTICLE_URL_EN]"
   },
   "meta_title_ar":"SEO title | حسان المالكي",
   "meta_title_en":"SEO title | Hassan Almalki",

@@ -16,7 +16,7 @@ class GeminiService
     public function __construct()
     {
         $this->apiKey = (string) config('services.gemini.api_key');
-        $this->model = (string) config('services.gemini.model', 'gemini-2.5-flash-lite');
+        $this->model = (string) config('services.gemini.model', 'gemini-2.5-pro');
     }
 
     public function ask(string $system, string $user, ?string $model = null): string
@@ -34,7 +34,7 @@ class GeminiService
         try {
             return $this->callModel($system, $user, $model, $withSearch);
         } catch (\RuntimeException $e) {
-            $fallback = config('services.gemini.fallback_model', 'gemini-2.5-flash');
+            $fallback = config('services.gemini.fallback_model', 'gemini-2.5-pro');
             if ($model === $fallback) {
                 throw $e;
             }
