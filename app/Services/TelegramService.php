@@ -175,6 +175,10 @@ class TelegramService
                     ['text' => '⏭️ تجاوز', 'callback_data' => "skip_{$post->id}"],
                 ],
                 [
+                    ['text' => '🔄 نبرة تويتر/انستا', 'callback_data' => "regen_twitter_{$post->id}"],
+                    ['text' => '🔄 نبرة LinkedIn', 'callback_data' => "regen_linkedin_{$post->id}"],
+                ],
+                [
                     ['text' => '➖ صغّر الصورة', 'callback_data' => "scale_down_{$post->id}"],
                     ['text' => "🖼 {$scalePct}%", 'callback_data' => "scale_reset_{$post->id}"],
                     ['text' => '➕ كبّر الصورة', 'callback_data' => "scale_up_{$post->id}"],

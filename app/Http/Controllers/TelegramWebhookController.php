@@ -6,6 +6,7 @@ use App\Jobs\DiscoverNewsJob;
 use App\Jobs\GeneratePostImagesJob;
 use App\Jobs\PublishNewsJob;
 use App\Jobs\RegenerateContentJob;
+use App\Jobs\RegeneratePlatformCaptionsJob;
 use App\Models\NewsPost;
 use App\Services\TelegramService;
 use Illuminate\Http\JsonResponse;
@@ -308,6 +309,26 @@ class TelegramWebhookController extends Controller
                 "<code>edit: قصّر العنوان العربي</code>\n".
                 "<code>edit: make the English tweet more engaging</code>"
             );
+
+            return;
+        }
+
+        // === REGENERATE PLATFORM CAPTIONS (twitter/instagram share one tone; linkedin separate) ===
+        if (preg_match('/^regen_(twitter|linkedin)_(\d+)$/', $data, $m)) {
+            $target = $m[1];
+            $post = NewsPost::find($m[2]);
+            if (! $post || $post->status !== 'pending') {
+                $telegram->answerCallback($callbackId, '⚠️ الخبر غير متاح');
+
+                return;
+            }
+
+            [$platforms, $label] = $target === 'twitter'
+                ? [['twitter_ar', 'instagram_ar'], 'تويتر/انستا']
+                : [['linkedin_en'], 'LinkedIn'];
+
+            $telegram->answerCallback($callbackId, "🔄 جاري تجديد نبرة {$label}...");
+            RegeneratePlatformCaptionsJob::dispatch($post->id, $platforms, $label);
 
             return;
         }

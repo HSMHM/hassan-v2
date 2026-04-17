@@ -203,6 +203,78 @@ PROMPT;
     }
 
     /**
+     * Regenerate only the platform_captions for the given platforms, preserving
+     * any existing captions for platforms not in the list. Returns the full
+     * merged captions array ready to persist.
+     */
+    public function regeneratePlatformCaptions(NewsPost $post, array $platforms): array
+    {
+        $allowed = ['twitter_ar', 'instagram_ar', 'linkedin_en'];
+        $keys = array_values(array_intersect($platforms, $allowed));
+        if (empty($keys)) {
+            throw new \InvalidArgumentException('No valid platforms specified');
+        }
+
+        $rules = [
+            'twitter_ar' => 'max 260 chars, calm Najdi peer tone, analytical not fanboy, end with: [ARTICLE_URL_AR]',
+            'instagram_ar' => 'max 800 chars, calm Najdi peer tone, analytical not fanboy, end with: [ARTICLE_URL_AR]',
+            'linkedin_en' => 'max 1500 chars, reflective professional English, no marketing clichés, end with: [ARTICLE_URL_EN]',
+        ];
+
+        $requested = [];
+        foreach ($keys as $k) {
+            $requested[] = "  \"{$k}\":\"{$rules[$k]}\"";
+        }
+        $shape = "{\n".implode(",\n", $requested)."\n}";
+
+        $system = <<<PROMPT
+You are Hassan Almalki — a Saudi product/tech professional speaking as a PEER in this field, not a spectator.
+NO hype, NO fanboy tone.
+NEVER use: "يا جماعة", "وش ذا السرعة", "صدق", "بطل", "🤯", "🔥", "changes the game", "mind-blowing", "just when you think...", "not just an incremental update".
+Open with an observation or technical detail, not awe. 0-2 emojis max — functional, not decorative.
+
+Regenerate ONLY these social captions FROM SCRATCH — try a different angle/wording than a typical first attempt:
+{$shape}
+
+Return ONLY valid JSON (no markdown) containing exactly the requested keys and nothing else.
+Keep [ARTICLE_URL_AR] and [ARTICLE_URL_EN] placeholders literal.
+PROMPT;
+
+        $user = "Title AR: {$post->title_ar}\n"
+            ."Title EN: {$post->title_en}\n"
+            ."Excerpt AR: {$post->excerpt_ar}\n"
+            ."Excerpt EN: {$post->excerpt_en}\n"
+            ."Source: {$post->source_url}";
+
+        $raw = $this->gemini->ask($system, $user, $this->contentModel);
+        $data = $this->extractJson($raw);
+
+        if (! $data) {
+            Log::warning('regeneratePlatformCaptions parse failed', [
+                'post_id' => $post->id,
+                'preview' => mb_substr($raw, 0, 500),
+            ]);
+            throw new \RuntimeException('Failed to parse regenerated captions');
+        }
+
+        $limits = ['twitter_ar' => 280, 'instagram_ar' => 2200, 'linkedin_en' => 3000];
+        $existing = is_array($post->platform_captions) ? $post->platform_captions : [];
+
+        foreach ($keys as $key) {
+            if (! isset($data[$key]) || ! is_string($data[$key])) {
+                continue;
+            }
+            $val = trim(strip_tags($data[$key]));
+            if (mb_strlen($val) > $limits[$key]) {
+                $val = mb_substr($val, 0, $limits[$key] - 3).'...';
+            }
+            $existing[$key] = $val;
+        }
+
+        return $existing;
+    }
+
+    /**
      * Strip dangerous tags from AI-generated content before persisting.
      * Plain-text fields get strip_tags; HTML content fields keep safe formatting
      * tags only — no scripts, iframes, style, or event handlers.
